@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects</title>
+</head>
+<body>
+
+<h1 align="center">Manage Projects</h1>
+
+<table class="table table-dark" th:each="project : ${projects}">
+    <thead>
+    <tr>
+        <th scope="col">Project Number</th>
+        <th scope="col">Project Name</th>
+        <th scope="col">Duration</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${project.projectID}"/>
+        <td th:text="${project.projectName}"/>
+        <td th:text="${project.duration}"/>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html
