@@ -22,6 +22,4 @@ public class Controller {
         model.addAttribute("projects", projects);
         return "projects";
     }
-
-
 }
