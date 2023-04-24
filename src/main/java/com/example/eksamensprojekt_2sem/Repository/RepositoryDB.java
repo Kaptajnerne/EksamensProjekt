@@ -26,13 +26,13 @@ public class RepositoryDB {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT projectName, duration FROM pmdb;";
+            String SQL = "SELECT project_name, duration FROM pmdb;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                int projectID = rs.getInt("projectID");
-                String projectName = rs.getString("projectName");
+                int projectID = rs.getInt("project_id");
+                String projectName = rs.getString("project_name");
                 double duration = rs.getDouble("duration");
 
                 projects.add(new Project(projectID, projectName, duration));
