@@ -4,9 +4,11 @@ import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@RequestMapping(path="")
 @org.springframework.stereotype.Controller
 public class Controller {
 
@@ -16,7 +18,7 @@ public class Controller {
         this.repositoryDB = repositoryDB;
     }
 
-    @GetMapping(path = "")
+    @GetMapping(path = "projects")
     public String showProjects(Model model) {
         List<Project> projects = repositoryDB.getProjects();
         model.addAttribute("projects", projects);
