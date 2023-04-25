@@ -26,7 +26,7 @@ public class RepositoryDB {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT projectname, duration FROM project;";
+            String SQL = "SELECT projectid, projectname, duration FROM project;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
