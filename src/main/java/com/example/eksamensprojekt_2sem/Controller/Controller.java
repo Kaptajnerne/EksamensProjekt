@@ -18,6 +18,11 @@ public class Controller {
         this.repositoryDB = repositoryDB;
     }
 
+    @GetMapping(path = "")
+    public String showHome(){
+        return "home";
+    }
+
     @GetMapping(path = "projects")
     public String showProjects(Model model) {
         List<Project> projects = repositoryDB.getProjects();
