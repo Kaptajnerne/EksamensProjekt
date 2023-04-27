@@ -1,5 +1,5 @@
 #This workflow works with continous integration.
-#workflow checks that the dockerfile build an image, and makes sure it can delpoy, run and push
+#This workflow checks that the dockerfile build an image, and makes sure it can delpoy, run and push
 name: Docker Image continous integration
 
 on:
