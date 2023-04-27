@@ -1,4 +1,4 @@
-#This workflow checks for any merge conflicts, if not it will merge branch to main
+#This workflow checks for any merge conflicts, if not it will merge branch to main branch
 
 name: Merge to main if there are no merge conflicts
 
