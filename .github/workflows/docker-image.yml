@@ -1,4 +1,6 @@
-name: Docker Image CI
+#This workflow works with continous integration.
+#workflow checks that the dockerfile build an image, and makes sure it can delpoy, run and push
+name: Docker Image continous integration
 
 on:
   push:
@@ -14,5 +16,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
