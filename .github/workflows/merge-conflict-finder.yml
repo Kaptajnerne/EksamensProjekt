@@ -1,1 +1,30 @@
+name: Merge to main if there are no merge conflicts
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  merge-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Merge branch to main
+        run: |
+          git merge --no-commit --no-ff ${{ github.event.ref }}
+      
+      - name: Check for conflicts
+        run: |
+          if [[ -n $(git diff --name-only --diff-filter=U) ]]; then
+            echo "Merge conflict occured, resolve the conflict before merging"
+            git merge --abort
+            exit 1
+          else
+            echo "No merge conflicts"
+          fi
+
 
