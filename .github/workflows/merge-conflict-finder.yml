@@ -1,3 +1,5 @@
+#This workflow checks for any merge conflicts, if not it will merge branch to main
+
 name: Merge to main if there are no merge conflicts
 
 on:
@@ -13,10 +15,6 @@ jobs:
         with:
           ref: main
 
-      - name: Merge branch to main
-        run: |
-          git merge --no-commit --no-ff ${{ github.event.ref }}
-      
       - name: Check for conflicts
         run: |
           if [[ -n $(git diff --name-only --diff-filter=U) ]]; then
@@ -27,4 +25,6 @@ jobs:
             echo "No merge conflicts"
           fi
 
-
+      - name: Merge branch to main
+        run: |
+          git merge --no-commit --no-ff ${{ github.event.ref }}
