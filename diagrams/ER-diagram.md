@@ -4,13 +4,13 @@
 
 Table User {
   userID int [pk]
-  email varchar [pk]
+  email varchar
   username varchar
   password varchar
 }
 
 Table Project {
-  projectID [pk]
+  projectID int [pk]
   projectName varchar
   estimateDeadline deadline
   userID int
@@ -46,5 +46,6 @@ ref: public.Project.projectID < public.Subproject.projectID
 ref: public.Subproject.subprojectID < public.Subprojecttask.subprojectID
 
 ```
-![ER diagram](https://user-images.githubusercontent.com/113116068/235443386-54c5faa1-9dd7-4c7c-80fd-da8a90222036.png)
+![Er diagram](https://user-images.githubusercontent.com/113116068/235443568-abb7e365-8e8a-4150-b255-5ddffb169621.png)
+
 
