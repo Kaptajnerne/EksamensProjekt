@@ -26,16 +26,18 @@ public class RepositoryDB {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT projectid, projectname, duration FROM project;";
+            String SQL = "SELECT * FROM project;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                int projectID = rs.getInt("projectid");
-                String projectName = rs.getString("projectname");
-                double duration = rs.getDouble("duration");
+                int project_id = rs.getInt("project_id");
+                String project_name = rs.getString("project_name");
+                double estimated_time = rs.getDouble("estimated_time");
+                int employee_id = rs.getInt("employee_id");
+                int organization_id = rs.getInt("organization_id");
 
-                projects.add(new Project(projectID, projectName, duration));
+                projects.add(new Project(project_id, project_name, estimated_time, employee_id, organization_id));
             }
             return projects;
         } catch (SQLException e) {

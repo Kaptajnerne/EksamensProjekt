@@ -13,14 +13,18 @@
     <tr>
         <th scope="col">Project Number</th>
         <th scope="col">Project Name</th>
-        <th scope="col">Duration</th>
+        <th scope="col">Estimated Time</th>
+        <th scope="col">Employee ID</th>
+        <th scope="col">Organization ID</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td th:text="${project.projectID}"/>
-        <td th:text="${project.projectName}"/>
-        <td th:text="${project.duration}"/>
+        <td th:text="${project.project_id}"/>
+        <td th:text="${project.project_name}"/>
+        <td th:text="${project.estimated_time}"/>
+        <td th:text="${project.employee_id}"/>
+        <td th:text="${project.organization_id}"/>
     </tr>
     </tbody>
 </table>
