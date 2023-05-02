@@ -12,6 +12,9 @@ public class Organization {
         this.password = password;
     }
 
+    public Organization() {
+    }
+
     public int getOrganization_id() {
         return organization_id;
     }
