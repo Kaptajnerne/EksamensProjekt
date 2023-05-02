@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class RepositoryDB {
 
-    @Value("jdbc:mysql://localhost:3306/pmdb")
+    @Value("jdbc:mysql://localhost:3306/pct_db")
     private String db_url;
 
     @Value("root")
@@ -26,7 +26,7 @@ public class RepositoryDB {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM project;";
+            String SQL = "SELECT project_id, project_name, estimated_time, employee_id, organization_id FROM project;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
@@ -44,7 +44,4 @@ public class RepositoryDB {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }
