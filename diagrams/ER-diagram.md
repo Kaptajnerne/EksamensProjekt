@@ -1,66 +1,71 @@
 <h2>ER diagram:</h2>
 
 ```SQL
+
 Table Organisation {
-  organisationID int [pk]
-  organisationName varchar
+  organisation_id int [pk]
+  organisation_name varchar
   password varchar
 }
 
 Table Employee {
-  empID int [pk]
+  emp_id int [pk]
   email varchar
   username varchar
-  organisationID int
+  organisation_id int
 }
 
 Table Project {
-  projectID int [pk]
-  projectName varchar
-  estimateDeadline deadline
-  empID int
-  organisationID int
+  project_id int [pk]
+  project_name varchar
+  estimated_time double
+  emp_id int
+  organisation_id int
 }
 
 Table Task {
-  taskID int [pk]
-  taskName varchar
-  startDate deadline
-  endDate deadline
-  projectID int
+  task_id int [pk]
+  task_name varchar
+  start_date date
+  end_date date
+  project_id int
 }
 
 Table Subtask {
-  subprojectID int [pk]
-  taskName varchar
-  startDate deadline
-  endDate deadline
-  taskID int
+  subtask_id int [pk]
+  subtask_name varchar
+  start_date date
+  end_date date
+  task_id int
 }
 
 
 Table User_task {
-  taskID int [pk]
-  empID int [pk]
+  task_id int [pk]
+  emp_id int [pk]
 }
 
 Table User_subtask {
-  taskID int [pk]
-  empID int [pk]
+  subtask_id int [pk]
+  emp_id int [pk]
 }
 
 ref: public.Organisation.organisationID < public.Project.organisationID
-ref: public.Employee.empID < public.Project.empID
+ref: public.Employee.empID <> public.Project.empID
 ref: public.Project.projectID < public.Task.projectID
 ref: public.Task.taskID < public.Subtask.taskID
 ref: public.Organisation.organisationID < Employee.organisationID
 ref: public.Project.empID < public.User_task.empID
 ref: public.User_task.taskID - public.Task.taskID
 ref: public.Project.empID < public.User_subtask.empID
-ref: public.User_subtask.taskID - public.Subtask.taskID
+ref: public.User_subtask.subtaskID - public.Subtask.taskID
 
 ```
-![Er diagram](https://user-images.githubusercontent.com/113116068/235455153-4e5d4655-9691-44f8-897d-1530b8ccdb4f.png)
+
+![ER diagram](https://user-images.githubusercontent.com/113116068/235660804-e99adc8a-1254-4d7d-8b87-7425ecc32115.png)
+
+
+
 
 
 
