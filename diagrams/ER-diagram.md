@@ -1,5 +1,7 @@
 <h2>ER diagram:</h2>
 
+```SQL
+
 Table Organisation {
   organisation_id int [pk]
   organisation_name varchar
@@ -57,6 +59,10 @@ ref: public.Project.empID < public.User_task.empID
 ref: public.User_task.taskID - public.Task.taskID
 ref: public.Project.empID < public.User_subtask.empID
 ref: public.User_subtask.subtaskID - public.Subtask.taskID
+
+```
+
+![ER diagram](https://user-images.githubusercontent.com/113116068/235660804-e99adc8a-1254-4d7d-8b87-7425ecc32115.png)
 
 
 
