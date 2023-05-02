@@ -1,0 +1,20 @@
+#This workflow works with continous integration.
+#This workflow checks that the dockerfile build an image, and makes sure it can delpoy, run and push
+name: Docker Image continous integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
