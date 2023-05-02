@@ -21,12 +21,18 @@ public class RepositoryDB {
     @Value("1234")
     private String pwd;
 
+    //---------------------------------ORGANIZATION JDBC METHODS---------------------------------//
+
+    //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
+
+    //---------------------------------PROJECT JDBC METHODS--------------------------------------//
+
+    //Get All Projects
     public List<Project> getProjects() {
         List<Project> projects = new ArrayList<>();
-
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT project_id, project_name, estimated_time, employee_id, organization_id FROM project;";
+            String SQL = "SELECT * FROM project;";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL);
 
@@ -44,4 +50,10 @@ public class RepositoryDB {
             throw new RuntimeException(e);
         }
     }
+
+    //---------------------------------TASK JDBC METHODS-----------------------------------------//
+
+    //---------------------------------SUBTASK JDBC METHODS--------------------------------------//
+
+
 }
