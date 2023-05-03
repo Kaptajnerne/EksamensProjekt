@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IRepository {
 
+    //Sign in with user
     public Organization signIn(String organization_name, String password);
 
-    public List<Project> getProjects();
+    //Get projects from org
+    public List<Project> getProjects(int organization_id);
 }

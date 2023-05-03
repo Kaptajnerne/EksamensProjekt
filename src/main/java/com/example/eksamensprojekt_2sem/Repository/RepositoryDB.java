@@ -59,7 +59,7 @@ public class RepositoryDB implements IRepository {
         }
     }*/
 
-    //Login
+    //Sign in with user
     public Organization signIn(String organization_name, String password) {
         Organization organization = null;
 
@@ -85,21 +85,22 @@ public class RepositoryDB implements IRepository {
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
-    //Get All Projects
-    public List<Project> getProjects() {
+    //Get projects from org
+    public List<Project> getProjects(int organization_id) {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM project;";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(SQL);
+            String SQL = "SELECT * FROM project WHERE organization_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, organization_id);
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
                 double estimated_time = rs.getDouble("estimated_time");
                 int employee_id = rs.getInt("employee_id");
-                int organization_id = rs.getInt("organization_id");
+
                 projects.add(new Project(project_id, project_name, estimated_time, employee_id, organization_id));
             }
             return projects;

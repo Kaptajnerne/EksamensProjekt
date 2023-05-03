@@ -5,10 +5,7 @@ import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(path = "")
 @Controller
@@ -20,43 +17,45 @@ public class LoginController {
         this.repositoryDB = repositoryDB;
     }
 
+    //Index page shows sign in or sign up
     @GetMapping(path = "/")
     public String index() {
         return "index";
     }
 
-
-    @GetMapping(path ="/home")
-    public String homeOrg() {
+    //First page users see when they sign in
+    @GetMapping(path ="/home/{organization_id}")
+    public String homeOrg(Model model, @PathVariable int organization_id) {
+        model.addAttribute("organization_id", organization_id);
         return "home";
     }
 
     //Checks if user is in current session
     @GetMapping(path = "/signin")
     public String isUserConnected(HttpSession session, Model model) {
-        Organization organization = new Organization();
+        //Organization object from session
+        Organization organization = (Organization) session.getAttribute("organization");
 
         //If not connected redirect to login page. if connected continue to home page
-        if (session.getAttribute("organization_id") == null) {
-            model.addAttribute("organization", organization);
-
+        if (organization == null) {
+            model.addAttribute("organization", new Organization());
             return "signin";
-
         } else {
-            return "redirect:/home";
+            return "redirect:/home/" + organization.getOrganization_id();
         }
     }
+
 
     //Sign in with user
     @PostMapping(path = "/signin")
     public String signIn(HttpSession session, @ModelAttribute("org") Organization org) {
-
         try {
-            Organization org2 = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
-            if (org2 != null) {
-                session.setAttribute("organization_id", org2.getOrganization_id());
+            Organization orgLogin = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
+            if (orgLogin != null) {
+                session.setAttribute("organization", orgLogin);
                 session.setMaxInactiveInterval(10);
-                return "redirect:/home";
+
+                return "redirect:/home/" + orgLogin.getOrganization_id();
             } else {
                 return "signin";
             }
@@ -65,6 +64,8 @@ public class LoginController {
         }
     }
 
+
+    //Logout user
     @GetMapping(path="/logout")
     public String logout(HttpSession session) {
         session.invalidate();

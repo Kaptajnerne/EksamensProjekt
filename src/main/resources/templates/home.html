@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>WELCOME</title>
@@ -8,13 +8,15 @@
 
 <h1>YOU SIGNED IN</h1>
 
-<a th:href="@{/logout}">
-    <button type="button" class ="btn">Logout</button>
-</a>
+<div>
+    <a th:href="@{/logout}">
+        <button type="button" class ="btn">Logout</button>
+    </a>
 
-<a th:href="@{/projects}">
-    <button type="button" class ="btn">See current projects</button>
-</a>
+    <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
+        <button type="button" class ="btn">See current projects</button>
+    </a>
+</div>
 
 </body>
 </html>
