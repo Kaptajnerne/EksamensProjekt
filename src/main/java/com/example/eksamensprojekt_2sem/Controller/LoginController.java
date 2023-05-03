@@ -2,7 +2,6 @@ package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +27,7 @@ public class LoginController {
 
 
     @GetMapping(path ="/home")
-    public String homeOrg(HttpSession session) {
-        session.setMaxInactiveInterval(30);
+    public String homeOrg() {
         return "home";
     }
 
@@ -57,7 +55,7 @@ public class LoginController {
             Organization org2 = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
             if (org2 != null) {
                 session.setAttribute("organization_id", org2.getOrganization_id());
-                session.setMaxInactiveInterval(30);
+                session.setMaxInactiveInterval(10);
                 return "redirect:/home";
             } else {
                 return "signin";
@@ -70,7 +68,7 @@ public class LoginController {
     @GetMapping(path="/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "signin";
+        return "redirect:/signin";
     }
 
 }
