@@ -28,19 +28,20 @@ public class LoginController {
 
 
     @GetMapping(path ="/home")
-    public String homeOrg() {
+    public String homeOrg(HttpSession session) {
+        session.setMaxInactiveInterval(30);
         return "home";
     }
 
-    //Is user in current session
+    //Checks if user is in current session
     @GetMapping(path = "/signin")
-    public String isUserConnected(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
+    public String isUserConnected(HttpSession session, Model model) {
         Organization organization = new Organization();
 
         //If not connected redirect to login page. if connected continue to home page
         if (session.getAttribute("organization_id") == null) {
             model.addAttribute("organization", organization);
+
             return "signin";
 
         } else {
@@ -50,13 +51,13 @@ public class LoginController {
 
     //Sign in with user
     @PostMapping(path = "/signin")
-    public String signIn(HttpServletRequest request, @ModelAttribute("org") Organization org) {
-        HttpSession session = request.getSession();
+    public String signIn(HttpSession session, @ModelAttribute("org") Organization org) {
 
         try {
             Organization org2 = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
             if (org2 != null) {
                 session.setAttribute("organization_id", org2.getOrganization_id());
+                session.setMaxInactiveInterval(30);
                 return "redirect:/home";
             } else {
                 return "signin";
@@ -64,6 +65,12 @@ public class LoginController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping(path="/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "signin";
     }
 
 }
