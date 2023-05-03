@@ -23,9 +23,10 @@ public class LoginController {
         return "index";
     }
 
-    //First page users see when they sign in
+    //Page users see when they sign in
+    //TODO:: Session timer doesn't translate over to org home page. "session.setMaxInactiveInterval(10);"
     @GetMapping(path ="/home/{organization_id}")
-    public String homeOrg(Model model, @PathVariable int organization_id) {
+    public String homeOrg(Model model, @PathVariable int organization_id, HttpSession session) {
         model.addAttribute("organization_id", organization_id);
         return "home";
     }
@@ -65,11 +66,10 @@ public class LoginController {
     }
 
 
-    //Logout user
+    //Sign out
     @GetMapping(path="/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/signin";
     }
-
 }

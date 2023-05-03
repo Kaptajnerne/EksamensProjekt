@@ -19,6 +19,7 @@ public class Controller {
     }
 
     //Get projects from org
+    //TODO:: Session timer from signin page doesn't translate over to projects. "session.setMaxInactiveInterval(10);"
     @GetMapping(path = "projects/{organization_id}")
     public String showProjects(Model model,@PathVariable int organization_id) {
         List<Project> projects = repositoryDB.getProjects(organization_id);
