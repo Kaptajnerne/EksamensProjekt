@@ -54,7 +54,7 @@ public class LoginController {
             Organization orgLogin = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
             if (orgLogin != null) {
                 session.setAttribute("organization", orgLogin);
-                session.setMaxInactiveInterval(10);
+                session.setMaxInactiveInterval(300);
 
                 return "redirect:/home/" + orgLogin.getOrganization_id();
             } else {
