@@ -11,14 +11,16 @@ DROP TABLE IF EXISTS organization;
 
 CREATE TABLE organization
 (organization_id int not null auto_increment,
- organziation_name varchar(100) not null,
+ organization_name varchar(100) not null,
  password varchar(30),
  primary key(organization_id));
 
 CREATE TABLE employee
 (employee_id int not null auto_increment,
- employee_name varchar(100) not null,
+ employee_firstname varchar(100) not null,
+ employee_lastname varchar(100),
  email varchar(320),
+ organization_id int not null,
  primary key(employee_id));
 
 CREATE TABLE project
