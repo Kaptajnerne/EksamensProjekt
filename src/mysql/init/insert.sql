@@ -1,8 +1,9 @@
 USE pct_db;
 
-INSERT INTO organization (organization_name, password) VALUES ('Jan´s autofirma', '1234');
+INSERT INTO organization (organization_name, password) VALUES ('KEA', '1234');
+>>>>>>> simons-branch
 
-INSERT INTO employee (employee_name, email) VALUES ('Jan Mikkelsen', 'janautofirma@live.dk');
+INSERT INTO employee (employee_firstname, employee_lastname, email, organization_id) VALUES ('Jan', 'Mikkelsen', 'janautofirma@live.dk', 1);
 
 INSERT INTO project (project_name, estimated_time, employee_id, organization_id) VALUES ('Project Auto Jan', null, 1, 1);
 
@@ -15,4 +16,4 @@ INSERT INTO user_task (task_id, employee_id) VALUES (1, 1);
 INSERT INTO user_task (task_id, employee_id) VALUES (2, 1);
 
 INSERT INTO user_subtask (subtask_id, employee_id) VALUES (1, 1);
-
+>>>>>>> simons-branch

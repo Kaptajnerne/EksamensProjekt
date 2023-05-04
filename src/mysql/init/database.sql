@@ -17,8 +17,10 @@ CREATE TABLE organization
 
 CREATE TABLE employee
 (employee_id int not null auto_increment,
- employee_name varchar(100) not null,
+ employee_firstname varchar(100) not null,
+ employee_lastname varchar(100),
  email varchar(320),
+ organization_id int not null,
  primary key(employee_id));
 
 CREATE TABLE project
