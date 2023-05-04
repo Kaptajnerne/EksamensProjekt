@@ -10,6 +10,9 @@ public interface IRepository {
     //Sign in with user
     public Organization signIn(String organization_name, String password);
 
+    //Sign up
+    public void signUp(Organization organization);
+
     //Get projects from org
-    public List<Project> getProjects(int organization_id);
+    public List<Project> getProjectsByID(int organization_id);
 }

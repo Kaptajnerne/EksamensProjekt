@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
+import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
@@ -106,10 +107,34 @@ public class RepositoryDB implements IRepository {
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
 
+    //Get all employees from org
+    public List<Employee> getEmployeesByID(int organization_id) {
+        List<Employee> employees = new ArrayList<>();
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM employee WHERE organization_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, organization_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int employee_id = rs.getInt("employee_id");
+                String employee_firstname = rs.getString("employee_firstname");
+                String employee_lastname  = rs.getString("employee_lastname");
+                String email = rs.getString("email");
+
+                employees.add(new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id));
+            }
+            return employees;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
     //Get projects from org
-    public List<Project> getProjects(int organization_id) {
+    public List<Project> getProjectsByID(int organization_id) {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
@@ -118,7 +143,7 @@ public class RepositoryDB implements IRepository {
             pstmt.setInt(1, organization_id);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
                 double estimated_time = rs.getDouble("estimated_time");
