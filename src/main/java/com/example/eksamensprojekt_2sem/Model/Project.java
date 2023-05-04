@@ -17,6 +17,9 @@ public class Project {
 
     }
 
+    public Project(int projectId, String projectName) {
+    }
+
     public int getProject_id() {
         return project_id;
     }

@@ -131,6 +131,42 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+    public Project getProject (int id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url,uid,pwd);
+            String SQL = "SELECT * FROM project WHERE project_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1,id);
+            ResultSet rs = pstmt.executeQuery();
+            Project project = null;
+            while (rs.next()){
+                int project_id = rs.getInt("project_id");
+                String project_name = rs.getString("project_name");
+
+                project= new Project(project_id,project_name);
+            }
+            return project;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Update project
+public void editProject(Project project, int project_ID){
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "UPDATE project SET project_name = ?, estimated_time = ?";
+            try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+                stmt.setString(1, project.getProject_name());
+                stmt.setDouble(2, project.getEstimated_time());
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e){
+            throw new RuntimeException(e);
+        }
+}
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 
