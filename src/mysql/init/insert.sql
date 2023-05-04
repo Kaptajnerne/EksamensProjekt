@@ -1,8 +1,8 @@
 USE pct_db;
 
-INSERT INTO organization (organziation_name, password) VALUES ('Jan´s autofirma', '1234');
+INSERT INTO organization (organization_name, password) VALUES ('KEA', '1234');
 
-INSERT INTO employee (employee_name, email) VALUES ('Jan Mikkelsen', 'janautofirma@live.dk');
+INSERT INTO employee (employee_firstname, employee_lastname, email, organization_id) VALUES ('Jan', 'Mikkelsen', 'janautofirma@live.dk', 1);
 
 INSERT INTO project (project_name, estimated_time, employee_id, organization_id) VALUES ('Project Auto Jan', null, 1, 1);
 
