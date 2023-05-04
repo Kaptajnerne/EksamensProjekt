@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Project</title>
+</head>
+
+<body>
+<div>
+    <form method="post" th:action="@{/editProject/{project_id}(project_id=${project_id})}">
+        <label for="project_name">Project_Name:</label>
+        <input id="project_name" type="text" th:name="project_name">
+
+    </form>
+</div>
+</body>
+</html>
