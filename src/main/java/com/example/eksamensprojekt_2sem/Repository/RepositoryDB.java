@@ -65,7 +65,7 @@ public class RepositoryDB implements IRepository {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM organization WHERE organziation_name = ? AND password = ?;";
+            String SQL = "SELECT * FROM organization WHERE organization_name = ? AND password = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, organization_name);
             pstmt.setString(2, password);
@@ -84,8 +84,6 @@ public class RepositoryDB implements IRepository {
 
     //Sign up user
     public void signUp(Organization organization) {
-        int organization_id = 0;
-
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL ="INSERT INTO organization (organization_name, password) VALUES (?, ?)";
@@ -96,14 +94,14 @@ public class RepositoryDB implements IRepository {
             ResultSet rs = pstmt.getGeneratedKeys();
 
             if(rs.next()) {
-                organization_id = rs.getInt(1);
-                Organization org = new Organization(organization_id, organization.getOrganization_name(), organization.getPassword());
-                org.setOrganization_id(organization_id);
+                int organization_id = rs.getInt(1);
+                organization.setOrganization_id(organization_id);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//

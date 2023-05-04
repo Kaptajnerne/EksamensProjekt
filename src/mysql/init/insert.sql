@@ -1,6 +1,6 @@
 USE pct_db;
 
-INSERT INTO organization (organziation_name, password) VALUES ('Jan´s autofirma', '1234');
+INSERT INTO organization (organization_name, password) VALUES ('Jan´s autofirma', '1234');
 
 INSERT INTO employee (employee_name, email) VALUES ('Jan Mikkelsen', 'janautofirma@live.dk');
 
@@ -15,3 +15,4 @@ INSERT INTO user_task (task_id, employee_id) VALUES (1, 1);
 INSERT INTO user_task (task_id, employee_id) VALUES (2, 1);
 
 INSERT INTO user_subtask (subtask_id, employee_id) VALUES (1, 1);
+
