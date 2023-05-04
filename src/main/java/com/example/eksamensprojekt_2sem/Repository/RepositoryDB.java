@@ -65,7 +65,7 @@ public class RepositoryDB implements IRepository {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM organization WHERE organziation_name = ? AND password = ?;";
+            String SQL = "SELECT * FROM organization WHERE organization_name = ? AND password = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, organization_name);
             pstmt.setString(2, password);

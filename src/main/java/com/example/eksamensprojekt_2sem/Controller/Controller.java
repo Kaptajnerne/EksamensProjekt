@@ -3,9 +3,8 @@ package com.example.eksamensprojekt_2sem.Controller;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RequestMapping(path = "")
@@ -43,5 +42,12 @@ public class Controller {
         Project project = repositoryDB.getProject(project_ID);
         model.addAttribute("project", project);
         return "editProject";
+    }
+    @PostMapping(path="/editProject/{project_ID}")
+    public String updateProject(@PathVariable("project_ID") int project_ID, @RequestParam("project_name") String project_name) {
+        Project project = repositoryDB.getProject(project_ID);
+        project.setProject_name(project_name);
+        repositoryDB.editProject(project,project_ID);
+        return "redirect:/projects/"+project_ID;
     }
 }

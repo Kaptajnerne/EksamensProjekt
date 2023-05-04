@@ -25,10 +25,12 @@
         <td th:text="${project.estimated_time}"/>
         <td th:text="${project.employee_id}"/>
         <td th:text="${project.organization_id}"/>
+        <td><a th:href="@{/editProject/{project_id}(project_id=${project.project_id})}">
+            <button type="button" class="btn">Edit project</button>
+        </a></td>
+
     </tr>
     </tbody>
 </table>
-<a th:href="@{/editProject/{project_id}(project_id=${project_id})}">
-    <button type="button" class ="btn">Edit project</button>
 </body>
 </html>
