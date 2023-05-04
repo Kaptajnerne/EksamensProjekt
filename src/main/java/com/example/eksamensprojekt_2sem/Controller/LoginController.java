@@ -65,11 +65,25 @@ public class LoginController {
         }
     }
 
-
     //Sign out
     @GetMapping(path="/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/signin";
+    }
+
+    //Sign up page
+    @GetMapping(path = "/signup")
+    public String showSignUp(Model model) {
+        Organization organization = new Organization();
+        model.addAttribute("organization", organization);
+        return "signup";
+    }
+
+    //Sign up
+    @PostMapping(path = "/signup")
+    public String signup(@ModelAttribute ("organization") Organization organization){
+        repositoryDB.signUp(organization);
         return "redirect:/signin";
     }
 }
