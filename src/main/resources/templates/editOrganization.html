@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/styles.css}" rel="stylesheet">
+    <title>Edit Organization</title>
+</head>
+
+<body>
+
+<form method="post" th:action="@{/editOrganization/{organization_id}(organization_id=${organization.organization_id})}">
+    <h1 class="loginh1">Edit organization</h1>
+
+    <label for="organization_name">Organizion name:</label>
+    <input id="organization_name" type="text" th:name="organization_name" th:value="${organization.organization_name}" required>
+
+    <label for="password">Password:</label>
+    <input id="password" type="text" th:name="password" th:value="${organization.password}" required>
+
+    <input type="hidden" th:field="*{organization_id}">
+
+    <button type="submit">Save</button>
+</form>
+
+
+</body>
+
+</html>

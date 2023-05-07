@@ -17,6 +17,11 @@
         <button type="button" class ="btn">See current projects</button>
     </a>
 
+    <a th:href="@{/editOrganization/{organization_id}(organization_id=${organization_id})}">
+        <button type="button" class ="btn">Edit</button>
+    </a>
+
+
 
     <a th:href="@{/employees/{organization_id}(organization_id=${organization_id})}">
         <button type="button" class ="btn">See Employees</button>

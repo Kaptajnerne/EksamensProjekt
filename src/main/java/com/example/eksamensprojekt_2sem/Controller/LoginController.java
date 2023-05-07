@@ -66,6 +66,7 @@ public class LoginController {
         }
     }
 
+
     //Sign out
     @GetMapping(path="/logout")
     public String logout(HttpSession session) {

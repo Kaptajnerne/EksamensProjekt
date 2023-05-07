@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
@@ -41,6 +42,27 @@ public class Controller {
         model.addAttribute("projects", projects);
         return "projects";
     }
+
+    //edit org
+    @GetMapping(path = "/editOrganization/{organization_id}")
+    public String showEditOrganization(@PathVariable("organization_id") int organization_id, Model model) {
+        model.addAttribute("organization_id", organization_id);
+        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
+        model.addAttribute("organization", organization);
+        return "editOrganization";
+    }
+
+    @PostMapping(path = "/editOrganization/{organization_id}")
+    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name")  String organization_name, String password) {
+        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
+        organization.setOrganization_name(organization_name);
+        organization.setPassword(password);
+        repositoryDB.editOrganization(organization,organization_id);
+        return  "redirect:/home/"+ organization_id;
+
+
+    }
+
 
     //edit project page
     @GetMapping(path = "/editProject/{project_ID}")

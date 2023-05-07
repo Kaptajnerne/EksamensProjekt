@@ -81,6 +81,44 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+    //edit organization
+    public void editOrganization(Organization organization, int organization_id) {
+        try {
+        Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "UPDATE organization SET organization_name = ?, password = ? WHERE organization_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(SQL)) {
+                stmt.setString(1, organization.getOrganization_name());
+                stmt.setString(2, organization.getPassword());
+                stmt.setInt(3, organization_id);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Organization getOrganizationFromId(int organization_id) {
+        try {
+            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM organization WHERE organization_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps.setInt(1, organization_id);
+            ResultSet rs = ps.executeQuery();
+            Organization organization1 = null;
+            if (rs.next()) {
+                String organization_name = rs.getString("ORGANIZATION_NAME");
+                String password = rs.getString("PASSWORD");
+                organization1 = new Organization(organization_id,organization_name, password);
+            }
+            return organization1;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
 
 
     //Sign up user
