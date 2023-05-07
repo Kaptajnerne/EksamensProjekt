@@ -10,13 +10,13 @@
     <form th:action="@{/employees/edit/{employee_id}(employee_id=${employee_id})}" method="POST" th:object="${employee}">
 
         <label for="first_name">First name:</label>
-        <input id="first_name" type="text" th:name="first_name" th:text="*{first_name}" required>
+        <input id="first_name" type="text" th:name="first_name" required>
 
         <label for="last_name">Last name:</label>
-        <input id="last_name" type="text" th:name="last_name" th:text="*{last_name}">
+        <input id="last_name" type="text" th:name="last_name">
 
         <label for="email">Email:</label>
-        <input id="email" type="text" th:name="email" th:text="*{email}">
+        <input id="email" type="text" th:name="email">
 
         <input type="hidden" th:name="employee_id" th:value="*{employee_id}" required>
 
