@@ -30,9 +30,15 @@
 </table>
 
 <div>
+
   <a th:href="@{/employees/create/{organization_id}(organization_id=${organization_id})}">
     <button>Create employee</button>
   </a>
+
+  <a th:href="@{/employees/edit/{employee_id}(employee_id=${employee_id})}">
+    <button>Edit employee</button>
+  </a>
+
 </div>
 
 </body>
