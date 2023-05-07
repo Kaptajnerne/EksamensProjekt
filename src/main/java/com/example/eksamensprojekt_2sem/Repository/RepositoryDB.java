@@ -125,14 +125,14 @@ public class RepositoryDB implements IRepository {
     public void signUp(Organization organization) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL ="INSERT INTO organization (organization_name, password) VALUES (?, ?)";
+            String SQL = "INSERT INTO organization (organization_name, password) VALUES (?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, organization.getOrganization_name());
             pstmt.setString(2, organization.getPassword());
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 int organization_id = rs.getInt(1);
                 organization.setOrganization_id(organization_id);
             }
@@ -140,7 +140,6 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
-
 
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
@@ -158,7 +157,7 @@ public class RepositoryDB implements IRepository {
             while (rs.next()) {
                 int employee_id = rs.getInt("employee_id");
                 String employee_firstname = rs.getString("employee_firstname");
-                String employee_lastname  = rs.getString("employee_lastname");
+                String employee_lastname = rs.getString("employee_lastname");
                 String email = rs.getString("email");
 
                 employees.add(new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id));
@@ -169,9 +168,33 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+    //Create employee and add to organization
+    public Employee createEmployee(Employee employee, int organization_id) {
+        Employee emp = null;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "INSERT INTO employee (employee_firstname, employee_lastname, email, organization_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, employee.getFirst_name());
+            pstmt.setString(2, employee.getLast_name());
+            pstmt.setString(3, employee.getEmail());
+            pstmt.setInt(4, organization_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if(rs.next()) {
+                int employee_id = rs.getInt(1);
+                emp = new Employee(employee_id, employee.getFirst_name(), employee.getLast_name(), employee.getEmail(), organization_id);
+            }
+            return emp;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
-    //Get projects from org
+    //Get projects from org id
     public List<Project> getProjectsByID(int organization_id) {
         List<Project> projects = new ArrayList<>();
         try {
@@ -194,19 +217,22 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
-    public Project getProject (int id) {
+
+    //Get project from org id
+    //TODO:: Change to better descriptive names, to increase code consistency and readability
+    public Project getProject(int id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url,uid,pwd);
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT * FROM project WHERE project_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1,id);
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             Project project = null;
-            while (rs.next()){
+            while (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
 
-                project= new Project(project_id,project_name);
+                project = new Project(project_id, project_name);
             }
             return project;
         } catch (SQLException e) {
@@ -215,7 +241,8 @@ public class RepositoryDB implements IRepository {
     }
 
     //Update project
-public void editProject(Project project, int project_ID){
+    //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
+    public void editProject(Project project, int project_ID) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE project SET project_name = ?, estimated_time = ?";
@@ -226,10 +253,10 @@ public void editProject(Project project, int project_ID){
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-}
+    }
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 

@@ -16,6 +16,9 @@ public class Employee {
         this.organization_id = organization_id;
     }
 
+    public Employee() {
+    }
+
     public int getEmployee_id() {
         return employee_id;
     }
