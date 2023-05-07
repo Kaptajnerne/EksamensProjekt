@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Employee</title>
+</head>
+<body>
+
+<div align="center">
+
+    <h1>Create Employee</h1>
+
+    <form th:action="@{/employees/create/{organization_id}(organization_id=${organization_id})}" method="POST" th:object="${emp}">
+
+        <div class="createEmployeeForm">
+            <label class="createEmployeeForm">First name:</label>
+            <input type="text" th:field="*{first_name}" placeholder="First name" required>
+        </div>
+
+        <div class="createEmployeeForm">
+            <label class="createEmployeeForm">Last name:</label>
+            <input type="text" th:field="*{last_name}" placeholder="Last name" required>
+        </div>
+
+        <div class="createEmployeeForm">
+            <label class="createEmployeeForm">Email:</label>
+            <input type="text" th:field="*{email}" placeholder="Email" required>
+        </div>
+
+        <br>
+
+        <div>
+            <input type="submit" value="Create Employee" class="btn success"/>
+            <input type="reset" value="Reset" class="btn reset"/>
+        </div>
+
+        <br>
+
+        <a th:href="@{/employees/{organization_id}(organization_id=${organization_id})}">
+            <button type="button" class="btn go-back">Go Back</button>
+        </a>
+
+    </form>
+
+
+</div>
+
+</body>
+</html>
