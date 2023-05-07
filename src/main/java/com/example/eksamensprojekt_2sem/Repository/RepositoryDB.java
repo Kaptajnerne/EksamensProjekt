@@ -103,6 +103,22 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+    public int findOrganizationID(int employee_id) {
+        int organization_id = 0;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT organization_id from employee WHERE employee_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, employee_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                organization_id = rs.getInt("organization_id");
+            }
+            return organization_id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
 
@@ -133,7 +149,7 @@ public class RepositoryDB implements IRepository {
     //Get one employee
     public Employee getEmployeeByID(int employee_id) {
         Employee employee = null;
-        try{
+        try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT * FROM employee WHERE organization_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
@@ -155,7 +171,6 @@ public class RepositoryDB implements IRepository {
     }
 
 
-
     //Create employee and add to organization
     public Employee createEmployee(Employee employee, int organization_id) {
         Employee emp = null;
@@ -170,7 +185,7 @@ public class RepositoryDB implements IRepository {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 int employee_id = rs.getInt(1);
                 emp = new Employee(employee_id, employee.getFirst_name(), employee.getLast_name(), employee.getEmail(), organization_id);
             }
@@ -181,7 +196,7 @@ public class RepositoryDB implements IRepository {
     }
 
     //Edit employee
-    public void editEmployee (Employee employee, int employee_id) {
+    public void editEmployee(Employee employee, int employee_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE employee SET employee_firstname = ?, employee_lastname = ?, email = ? WHERE employee_id = ?;";
@@ -195,8 +210,6 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
