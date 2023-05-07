@@ -107,7 +107,7 @@ public class RepositoryDB implements IRepository {
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
 
     //Get all employees from org
-    public List<Employee> getEmployeesByID(int organization_id) {
+    public List<Employee> getEmployeesByOrgID(int organization_id) {
         List<Employee> employees = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
@@ -129,6 +129,32 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+
+    //Get one employee
+    public Employee getEmployeeByID(int employee_id) {
+        Employee employee = null;
+        try{
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM employee WHERE organization_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, employee_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String employee_firstname = rs.getString("employee_firstname");
+                String employee_lastname = rs.getString("employee_lastname");
+                String email = rs.getString("email");
+                int organization_id = rs.getInt("organization_id");
+
+                employee = new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id);
+            }
+            return employee;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     //Create employee and add to organization
     public Employee createEmployee(Employee employee, int organization_id) {
@@ -153,6 +179,25 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+
+    //Edit employee
+    public void editEmployee (Employee employee, int employee_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "UPDATE employee SET employee_firstname = ?, employee_lastname = ?, email = ? WHERE employee_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, employee.getFirst_name());
+            pstmt.setString(2, employee.getLast_name());
+            pstmt.setString(3, employee.getEmail());
+            pstmt.setInt(4, employee_id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
