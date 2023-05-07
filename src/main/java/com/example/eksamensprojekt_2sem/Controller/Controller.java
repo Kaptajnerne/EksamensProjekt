@@ -37,9 +37,14 @@ public class Controller {
     }
 
     @PostMapping(path = "/editOrganization/{organization_id}")
-    public String editOrganization(@ModelAttribute Organization organization, @PathVariable int organization_id) {
-        repositoryDB.editOrganization(organization, organization_id);
+    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name")  String organization_name, String password) {
+        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
+        organization.setOrganization_name(organization_name);
+        organization.setPassword(password);
+        repositoryDB.editOrganization(organization,organization_id);
         return  "redirect:/home/"+ organization_id;
+
+
     }
 
 }

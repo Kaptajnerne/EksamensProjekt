@@ -82,7 +82,8 @@ public class RepositoryDB implements IRepository {
     }
     //edit organization
     public void editOrganization(Organization organization, int organization_id) {
-        try (Connection conn = ConnectionManager.getConnection(db_url, uid, pwd)) {
+        try {
+        Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE organization SET organization_name = ?, password = ? WHERE organization_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(SQL)) {
                 stmt.setString(1, organization.getOrganization_name());
@@ -92,10 +93,11 @@ public class RepositoryDB implements IRepository {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public Organization getOrganizationFromId(int organization_id) {
         try {
