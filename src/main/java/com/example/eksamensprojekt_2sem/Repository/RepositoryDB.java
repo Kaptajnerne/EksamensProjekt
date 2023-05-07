@@ -147,9 +147,8 @@ public class RepositoryDB implements IRepository {
             if(rs.next()) {
                 int employee_id = rs.getInt(1);
                 emp = new Employee(employee_id, employee.getFirst_name(), employee.getLast_name(), employee.getEmail(), organization_id);
-                return emp;
             }
-
+            return emp;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
