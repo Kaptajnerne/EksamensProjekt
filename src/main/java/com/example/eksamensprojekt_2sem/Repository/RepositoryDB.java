@@ -172,6 +172,7 @@ public class RepositoryDB implements IRepository {
 
 
     //Create employee and add to organization
+    //TODO:: Generated keys doesn't work. the primary key is 1 for all new employees
     public Employee createEmployee(Employee employee, int organization_id) {
         Employee emp = null;
         try {
