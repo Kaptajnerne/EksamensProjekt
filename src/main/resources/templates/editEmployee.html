@@ -7,24 +7,24 @@
 <body>
 
 <div class="editEmployee">
-    <form th:action="@{/employees/edit/{employee_id}(employee_id=${employee_id})}" method="POST" th:object="${employee}">
+    <form th:action="@{/organizations/{organization_id}/employees/{employee_id}/edit(organization_id=${employee.organization_id}, employee_id=${employee.employee_id})}" method="POST" th:object="${employee}">
 
         <label for="first_name">First name:</label>
-        <input id="first_name" type="text" th:name="first_name" required>
+        <input id="first_name" type="text" th:field="*{first_name}" required>
 
         <label for="last_name">Last name:</label>
-        <input id="last_name" type="text" th:name="last_name">
+        <input id="last_name" type="text" th:field="*{last_name}">
 
         <label for="email">Email:</label>
-        <input id="email" type="text" th:name="email">
+        <input id="email" type="text" th:field="*{email}">
 
-        <input type="hidden" th:name="employee_id" th:value="*{employee_id}" required>
+        <input type="hidden" th:field="*{employee_id}" required>
 
         <input type="hidden" th:name="organization" th:value="*{organization_id}" required>
 
         <button type="submit">Save changes</button>
-
     </form>
+
 
 </div>
 

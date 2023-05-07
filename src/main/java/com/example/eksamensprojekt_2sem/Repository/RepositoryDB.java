@@ -146,21 +146,21 @@ public class RepositoryDB implements IRepository {
         }
     }
 
-    //Get one employee
-    public Employee getEmployeeByID(int employee_id) {
+    //Get one employee by org and emp id
+    public Employee getEmployeeByIDs(int organization_id, int employee_id) {
         Employee employee = null;
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM employee WHERE organization_id = ?;";
+            String SQL = "SELECT * FROM employee WHERE organization_id = ? AND employee_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, employee_id);
+            pstmt.setInt(1, organization_id);
+            pstmt.setInt(2, employee_id);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 String employee_firstname = rs.getString("employee_firstname");
                 String employee_lastname = rs.getString("employee_lastname");
                 String email = rs.getString("email");
-                int organization_id = rs.getInt("organization_id");
 
                 employee = new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id);
             }
@@ -171,8 +171,8 @@ public class RepositoryDB implements IRepository {
     }
 
 
+
     //Create employee and add to organization
-    //TODO:: Generated keys doesn't work. the primary key is 1 for all new employees
     public Employee createEmployee(Employee employee, int organization_id) {
         Employee emp = null;
         try {
@@ -197,20 +197,22 @@ public class RepositoryDB implements IRepository {
     }
 
     //Edit employee
-    public void editEmployee(Employee employee, int employee_id) {
+    public void editEmployee(Employee employee, int organization_id, int employee_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE employee SET employee_firstname = ?, employee_lastname = ?, email = ? WHERE employee_id = ?;";
+            String SQL = "UPDATE employee SET employee_firstname = ?, employee_lastname = ?, email = ? WHERE organization_id = ? AND employee_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, employee.getFirst_name());
             pstmt.setString(2, employee.getLast_name());
             pstmt.setString(3, employee.getEmail());
-            pstmt.setInt(4, employee_id);
+            pstmt.setInt(4, organization_id);
+            pstmt.setInt(5, employee_id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//

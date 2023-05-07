@@ -26,9 +26,10 @@
     <td th:text="${employee.email}"/>
     <td th:text="${employee.organization_id}"/>
 
-    <a th:href="@{/employees/edit/{employee_id}(employee_id=${employee.getEmployee_id()})}">
+    <a th:href="@{/organizations/{organization_id}/employees/{employee_id}/edit(organization_id=${employee.organization_id}, employee_id=${employee.employee_id})}">
       <button>Edit employee</button>
     </a>
+
 
   </tr>
   </tbody>
