@@ -27,10 +27,15 @@ public class Controller {
 
     // Get employees from org
     @GetMapping(path = "employees/{organization_id}")
-    public String showEmployees(Model model, @PathVariable int organization_id) {
-        List<Employee> employees = repositoryDB.getEmployeesByID(organization_id);
-        model.addAttribute("employees", employees);
-        return "employees";
+    public String showEmployees(Model model, @PathVariable int organization_id, HttpSession session) {
+
+        if(session.getAttribute("organization") != null) {
+            List<Employee> employees = repositoryDB.getEmployeesByOrgID(organization_id);
+            model.addAttribute("employees", employees);
+            return "employees";
+        } else {
+            return "redirect://";
+        }
     }
 
     //Add employee page
@@ -60,7 +65,36 @@ public class Controller {
         } else {
             return "redirect://";
         }
+    }
 
+
+    //Edit employee page
+    @GetMapping(path = "employees/edit/{employee_id}")
+    public String showEditEmployee(@PathVariable int employee_id, Model model, HttpSession session) {
+
+        if (session.getAttribute("organization") != null) {
+            Employee employee = repositoryDB.getEmployeeByID(employee_id);
+            model.addAttribute("employee", employee);
+            model.addAttribute("employee_id", employee_id);
+            return "editEmployee";
+        } else {
+            return "redirect://";
+        }
+    }
+
+
+    //Edit employee
+    @PostMapping(path = "employees/edit/{employee_id}")
+    public String editEmployee(@ModelAttribute Employee employee, @PathVariable int employee_id, HttpSession session) {
+
+        if (session.getAttribute("organization") != null) {
+            repositoryDB.editEmployee(employee, employee_id);
+
+            int organization_id = repositoryDB.findOrganizationID(employee_id);
+            return "redirect:/employees/" + organization_id;
+        } else {
+            return "redirect://";
+        }
     }
 
 
