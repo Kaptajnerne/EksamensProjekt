@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Task</title>
+</head>
+<body>
+<h1>Delete Task</h1>
+<p>Are you sure you want to delete this task?</p>
+<dl>
+  <dt>Task ID:</dt>
+  <dd th:text="${task.taskId}"></dd>
+  <dt>Task Name:</dt>
+  <dd th:text="${task.taskName}"></dd>
+  <dt>Task Description:</dt>
+  <dd th:text="${task.taskDescription}"></dd>
+</dl>
+<form th:action="@{/tasks/delete}" method="post">
+  <input type="hidden" name="taskId" th:value="${task.taskId}">
+  <button type="submit">Delete Task</button>
+</form>
+<a th:href="@{/tasks}">Back to Task List</a>
+</body>
+</html>

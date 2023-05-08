@@ -2,6 +2,7 @@ package com.example.eksamensprojekt_2sem.Repository;
 
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Project;
+import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @Repository
 public class RepositoryDB implements IRepository {
 
@@ -108,19 +111,20 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
-    public Project getProject (int id) {
+
+    public Project getProject(int id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url,uid,pwd);
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT * FROM project WHERE project_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1,id);
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             Project project = null;
-            while (rs.next()){
+            while (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
 
-                project= new Project(project_id,project_name);
+                project = new Project(project_id, project_name);
             }
             return project;
         } catch (SQLException e) {
@@ -129,7 +133,7 @@ public class RepositoryDB implements IRepository {
     }
 
     //Update project
-public void editProject(Project project, int project_ID){
+    public void editProject(Project project, int project_ID) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE project SET project_name = ?, estimated_time = ?";
@@ -140,12 +144,75 @@ public void editProject(Project project, int project_ID){
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-}
+    }
+
+    //Delete project
+    public void deleteProject(int id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "DELETE from task where project_id = ?";
+            String SQL1 = "DELETE FROM project where project_id = ?";
+            try (PreparedStatement stmt = con.prepareStatement(SQL);
+                 PreparedStatement stmt1 = con.prepareStatement(SQL1)) {
+
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+
+                stmt1.setInt(1, id);
+                stmt1.executeUpdate();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
+    public void deleteTask(int taskId) {
+        try (Connection con = ConnectionManager.getConnection(db_url, uid, pwd)) {
+            String deleteUsersTasksSQL = "DELETE FROM user_task WHERE task_id = ?";
+            String deleteTaskSQL = "DELETE FROM task WHERE task_id = ?";
+            try (PreparedStatement deleteUsersTasksStmt = con.prepareStatement(deleteUsersTasksSQL);
+                 PreparedStatement deleteTaskStmt = con.prepareStatement(deleteTaskSQL)) {
+                // Delete all user tasks associated with the task
+                deleteUsersTasksStmt.setInt(1, taskId);
+                deleteUsersTasksStmt.executeUpdate();
+
+                // Delete the task itself
+                deleteTaskStmt.setInt(1, taskId);
+                deleteTaskStmt.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Task getTask(int taskId) {
+        try (Connection connection = DriverManager.getConnection(db_url, uid, pwd)) {
+            String sql = "SELECT * FROM task WHERE task_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, taskId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("task_id");
+                String name = resultSet.getString("task_name");
+                LocalDate startDate = resultSet.getDate("start_date").toLocalDate();
+                LocalDate endDate = resultSet.getDate("end_date").toLocalDate();
+                int projectId = resultSet.getInt("project_id");
+                return new Task(id, name, startDate, endDate, projectId);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //---------------------------------SUBTASK JDBC METHODS--------------------------------------//
 
