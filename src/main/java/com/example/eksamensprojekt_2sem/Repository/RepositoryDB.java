@@ -271,15 +271,15 @@ public class RepositoryDB implements IRepository {
 
                 //List of employees
                 List<Employee> employees = new ArrayList<>();
-                String SQL2 = "SELECT * FROM employees INNER JOIN project_employee USING(employee_id) WHERE project_id = ?;";
+                String SQL2 = "SELECT * FROM employee INNER JOIN project_employee USING(employee_id) WHERE project_id = ?;";
                 PreparedStatement pstmt2 = con.prepareStatement(SQL2);
                 pstmt2.setInt(1, project_id);
                 ResultSet rs2 = pstmt2.executeQuery();
 
                 while (rs2.next()) {
                     int employee_id = rs2.getInt("employee_id");
-                    String first_name = rs2.getString("first_name");
-                    String last_name = rs2.getString("last_name");
+                    String first_name = rs2.getString("employee_firstname");
+                    String last_name = rs2.getString("employee_lastname");
                     String email = rs2.getString("email");
 
                     employees.add(new Employee(employee_id, first_name, last_name, email, organization_id));
@@ -292,7 +292,7 @@ public class RepositoryDB implements IRepository {
         }
     }
 
-    //Get project from project_id
+   /* //Get project from project_id
     //TODO:: Change to better descriptive names, to increase code consistency and readability
     public Project getProject(int project_id) {
         Project project = null;
@@ -324,7 +324,7 @@ public class RepositoryDB implements IRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 
     //Add projects to org

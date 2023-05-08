@@ -158,7 +158,7 @@ public class Controller {
         */
 
 
-    //edit project page
+ /*   //edit project page
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
     @GetMapping(path = "/editProject/{project_ID}")
     public String editProject(@PathVariable("project_ID") int project_ID, Model model) {
@@ -176,7 +176,7 @@ public class Controller {
         project.setProject_name(project_name);
         repositoryDB.editProject(project, project_ID);
         return "redirect:/projects/" + project_ID;
-    }
+    }*/
 
 
     //---------------------------------TASK ENDPOINTS-----------------------------------------//

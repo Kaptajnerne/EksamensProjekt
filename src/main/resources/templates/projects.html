@@ -23,7 +23,13 @@
         <td th:text="${project.project_id}"/>
         <td th:text="${project.project_name}"/>
         <td th:text="${project.estimated_time}"/>
-        <td th:text="${project.employee_id}"/>
+        <td>
+            <ul>
+                <li th:each="employee : ${project.employees}">
+                    <span th:text="${employee.first_name} + ' ' + ${employee.last_name}"/>
+                </li>
+            </ul>
+        </td>
         <td th:text="${project.organization_id}"/>
         <td><a th:href="@{/editProject/{project_id}(project_id=${project.project_id})}">
             <button type="button" class="btn">Edit project</button>
