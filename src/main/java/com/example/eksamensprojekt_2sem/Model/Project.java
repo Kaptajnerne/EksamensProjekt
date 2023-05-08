@@ -7,14 +7,14 @@ public class Project {
     private int project_id;
     private String project_name;
     private double estimated_time;
-    private List<Integer> employee_id;
+    private List<Employee> employees;
     private int organization_id;
 
-    public Project(int project_id, String project_name, double estimated_time, List<Integer> employee_id, int organization_id) {
+    public Project(int project_id, String project_name, double estimated_time, List<Employee> employees, int organization_id) {
         this.project_id = project_id;
         this.project_name = project_name;
         this.estimated_time = estimated_time;
-        this.employee_id = employee_id;
+        this.employees = employees;
         this.organization_id = organization_id;
     }
 
@@ -45,12 +45,12 @@ public class Project {
         this.estimated_time = estimated_time;
     }
 
-    public List<Integer> getEmployee_id() {
-        return employee_id;
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setEmployee_id(List<Integer> employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployees(List<Employee> employee_id) {
+        this.employees = employee_id;
     }
 
     public int getOrganization_id() {
@@ -60,4 +60,6 @@ public class Project {
     public void setOrganization_id(int organization_id) {
         this.organization_id = organization_id;
     }
+
+
 }

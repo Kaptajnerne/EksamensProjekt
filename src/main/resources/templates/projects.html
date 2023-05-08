@@ -28,9 +28,13 @@
         <td><a th:href="@{/editProject/{project_id}(project_id=${project.project_id})}">
             <button type="button" class="btn">Edit project</button>
         </a></td>
-
     </tr>
     </tbody>
 </table>
+
+<a th:href="@{/projects/{organization_id}/create(organization_id=${organization_id})}">
+    <button type="button" class="btn">Create Project</button>
+</a>
+
 </body>
 </html>

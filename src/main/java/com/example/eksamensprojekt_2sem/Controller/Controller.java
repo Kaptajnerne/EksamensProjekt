@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping(path = "")
@@ -126,6 +127,40 @@ public class Controller {
         model.addAttribute("projects", projects);
         return "projects";
     }
+
+    //Show create project
+    //TODO:: Be able to write a employee to project
+    @GetMapping(path = "projects/{organization_id}/create")
+    public String showCreateProject(Model model, @PathVariable("organization_id") int organization_id) {
+        Project project = new Project();
+        List<Employee> employees = repositoryDB.getEmployeesByOrgID(organization_id);
+        model.addAttribute("project", project);
+        model.addAttribute("employees",employees);
+        model.addAttribute("organization_id", organization_id);
+        return "createProject";
+    }
+
+    //Create Project
+    @PostMapping(path = "projects/{organization_id}/create")
+    public String createProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
+        /*List<Integer> employeeIds = project.getEmployee_id();
+        if (employeeIds == null) {
+            employeeIds = new ArrayList<>();
+        }*/
+        repositoryDB.addProject(project, organization_id);
+        return "redirect:/projects/" + organization_id;
+    }
+
+
+    /*
+    @PostMapping(path = "projects/{organization_id}/addProject")
+    public String addProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
+
+        List<Integer> employeeIds = Arrays.asList(project.getEmployee_id());  // Convert single employee ID to a list
+        project.setEmployee_id(employeeIds);
+        repositoryDB.addProject(project, organization_id);
+        */
+
 
     //edit project page
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Project</title>
+</head>
+<body>
+<div align="center">
+
+    <h1>Create Project</h1>
+
+    <br>
+
+    <form th:action="@{/projects/{organization_id}/create(organization_id=${organization_id})}" method="post"
+          th:object="${project}">
+
+        <div class="createProject">
+            <label class="col-createProject label">Project name:</label>
+            <input type="text" th:field="${project.project_name}" placeholder="Faxxax Hanukkah" required>
+        </div>
+
+        <div class="createProject">
+            <label class="col-createProject label">Estimated Time:</label>
+            <input type="number" th:field="${project.estimated_time}" placeholder="30" required>
+        </div>
+
+        <div class="form-group">
+            <label for="employees">Employees</label>
+            <select multiple class="form-control" id="employees" name="employees">
+                <option th:each="employee : ${employees}" th:value="${employee.getEmployee_id()}"
+                        th:text="${employee.getFirst_name()}"></option>
+            </select>
+        </div>
+
+</div>
+
+
+<br>
+
+<div>
+    <input type="submit" value="Submit" class="btn btn-success"/>
+    <input type="reset" value="Reset" class="btn btn-danger"/>
+</div>
+
+<br>
+
+<a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
+    <button type="button" class="btn">Go Back</button>
+</a>
+
+</form>
+</div>
+</body>
+</html>
