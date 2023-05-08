@@ -314,6 +314,35 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+    //Add projects to org
+    public Project addProject(Project project, int organization_id) {
+        Project project1 = null;
+        try {
+            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "INSERT INTO project (project_name, estimated_time, employee_id, organization_id) " +
+                    "VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, project.getProject_name());
+            pstmt.setDouble(2, project.getEstimated_time());
+
+            List<Integer> employeeIds = project.getEmployee_id();
+            Array employeeIdsArray = conn.createArrayOf("INTEGER", employeeIds.toArray());
+            pstmt.setArray(3, employeeIdsArray);
+            pstmt.setInt(4, organization_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                int project_id = rs.getInt(1);
+                project1 = new Project(project_id, project.getProject_name(), project.getEstimated_time(), project.getEmployee_id(), organization_id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return project1;
+    }
+
+
     //Update project
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
     public void editProject(Project project, int project_ID) {
