@@ -18,6 +18,9 @@ public class Task {
         this.project_id = project_id;
     }
 
+    public Task() {
+    }
+
     public int getTask_id() {
         return task_id;
     }
