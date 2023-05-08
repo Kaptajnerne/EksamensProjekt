@@ -25,8 +25,13 @@
         <td th:text="${project.estimated_time}"/>
         <td th:text="${project.employee_id}"/>
         <td th:text="${project.organization_id}"/>
+
     </tr>
     </tbody>
+
+    <a th:href="@{/projects/{organization_id}/create(organization_id=${organization_id})}">
+        <button type="button" class="btn">Create Project</button>
+    </a>
 </table>
 
 </body>

@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
+import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
