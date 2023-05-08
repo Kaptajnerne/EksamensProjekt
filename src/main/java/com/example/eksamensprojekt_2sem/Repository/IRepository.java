@@ -18,7 +18,7 @@ public interface IRepository {
     //Get projects from org
     public List<Project> getProjects(int organization_id);
     //Add projects to org
-    public void addProject (Project project);
+    public Project addProject(Project project, int organization_id);
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 

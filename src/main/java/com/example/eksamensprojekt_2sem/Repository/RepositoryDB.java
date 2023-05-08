@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -96,13 +97,21 @@ public class RepositoryDB implements IRepository {
             pstmt.setInt(1, organization_id);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
                 double estimated_time = rs.getDouble("estimated_time");
-                int employee_id = rs.getInt("employee_id");
+                String employeeIdsString = rs.getString("employee_id");
+                String[] employeeIdsArray = employeeIdsString.split(",");
 
-                projects.add(new Project(project_id, project_name, estimated_time, employee_id, organization_id));
+                // Convert array of strings to int
+                //JDBC didn't support normal
+                List<Integer> employee_ids = new ArrayList<>();
+                for (String id : employeeIdsArray) {
+                    employee_ids.add(Integer.parseInt(id));
+                }
+
+                projects.add(new Project(project_id, project_name, estimated_time, employee_ids, organization_id));
             }
             return projects;
         } catch (SQLException e) {
@@ -110,37 +119,34 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+
     //Add projects to org
-    public void addProject(Project project) {
+    public Project addProject(Project project, int organization_id) {
+        Project project1 = null;
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "INSERT INTO project (project_name, estimated_time, employee_id, organization_id) " +
+                    "VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, project.getProject_name());
+            pstmt.setDouble(2, project.getEstimated_time());
 
-            //Organization Id
-            int project_id = 0;
-
-            // insert project to organisation table with the corresponding username
-            String SQL = "INSERT INTO project (project_id, project_name, estimated_time, employee_id, organization_id) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, project_id);
-            ps.setString(2, project.getProject_name());
-            ps.setDouble(3, project.getEstimated_time());
-            ps.setInt(4, project.getEmployee_id());
-            ps.setInt(5, project.getOrganization_id());
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            List<Integer> employeeIds = project.getEmployee_id();
+            Array employeeIdsArray = conn.createArrayOf("INTEGER", employeeIds.toArray());
+            pstmt.setArray(3, employeeIdsArray);
+            pstmt.setInt(4, organization_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
 
             if (rs.next()) {
-                project_id = rs.getInt(1);
-                Project projects = new Project(project.getProject_id(), project.getProject_name(), project.getEstimated_time(), project.getEmployee_id(), project.getOrganization_id());
-                projects.setProject_id(project_id);
+                int project_id = rs.getInt(1);
+                project1 = new Project(project_id, project.getProject_name(), project.getEstimated_time(), project.getEmployee_id(), organization_id);
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return project1;
     }
-
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 
     //---------------------------------SUBTASK JDBC METHODS--------------------------------------//

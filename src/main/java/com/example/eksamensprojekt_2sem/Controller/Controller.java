@@ -6,6 +6,7 @@ import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping(path = "")
@@ -43,12 +44,18 @@ public class Controller {
         return "createProject";
     }
 
-    @PostMapping(path = "projects/{organization_id}/addProject")
+   @PostMapping(path = "projects/{organization_id}/addProject")
     public String addProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
-        repositoryDB.addProject(project);
+        repositoryDB.addProject(project, organization_id);
         return "redirect:/projects/" + organization_id;
     }
 
+   /* @PostMapping(path = "projects/{organization_id}/addProject")
+    public String addProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
+
+        List<Integer> employeeIds = Arrays.asList(project.getEmployee_id());  // Convert single employee ID to a list
+        project.setEmployee_id(employeeIds);
+        repositoryDB.addProject(project, organization_id);*/
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 
