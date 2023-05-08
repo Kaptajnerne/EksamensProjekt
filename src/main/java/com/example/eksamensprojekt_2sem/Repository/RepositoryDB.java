@@ -258,24 +258,33 @@ public class RepositoryDB implements IRepository {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM project WHERE organization_id = ?;";
-            PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, organization_id);
-            ResultSet rs = pstmt.executeQuery();
+            String SQL1 = "SELECT * FROM project INNER JOIN project_employee USING(project_id) WHERE organization_id = ?;";
+            PreparedStatement pstmt1 = con.prepareStatement(SQL1);
+            pstmt1.setInt(1, organization_id);
+            ResultSet rs1 = pstmt1.executeQuery();
 
-            while (rs.next()) {
-                int project_id = rs.getInt("project_id");
-                String project_name = rs.getString("project_name");
-                double estimated_time = rs.getDouble("estimated_time");
-                String employeeIdsString = rs.getString("employee_id");
-                String[] employeeIdsArray = employeeIdsString.split(",");
-                // Convert array of strings to int
-                List<Integer> employee_ids = new ArrayList<>();
-                for (String id : employeeIdsArray) {
-                    employee_ids.add(Integer.parseInt(id));
+            while (rs1.next()) {
+                int project_id = rs1.getInt("project_id");
+                String project_name = rs1.getString("project_name");
+                double estimated_time = rs1.getDouble("estimated_time");
+
+
+                //List of employees
+                List<Employee> employees = new ArrayList<>();
+                String SQL2 = "SELECT * FROM employees INNER JOIN project_employee USING(employee_id) WHERE project_id = ?;";
+                PreparedStatement pstmt2 = con.prepareStatement(SQL2);
+                pstmt2.setInt(1, project_id);
+                ResultSet rs2 = pstmt2.executeQuery();
+
+                while (rs2.next()) {
+                    int employee_id = rs2.getInt("employee_id");
+                    String first_name = rs2.getString("first_name");
+                    String last_name = rs2.getString("last_name");
+                    String email = rs2.getString("email");
+
+                    employees.add(new Employee(employee_id, first_name, last_name, email, organization_id));
                 }
-
-                projects.add(new Project(project_id, project_name, estimated_time, employee_ids, organization_id));
+                projects.add(new Project(project_id, project_name, estimated_time, employees, organization_id));
             }
             return projects;
         } catch (SQLException e) {
@@ -301,7 +310,7 @@ public class RepositoryDB implements IRepository {
 
                 String employeeIdsString = rs.getString("employee_id");
                 String[] employeeIdsArray = employeeIdsString.split(",");
-                // Convert array of strings to int
+                //Convert array of strings to int
                 List<Integer> employee_ids = new ArrayList<>();
                 for (String id : employeeIdsArray) {
                     employee_ids.add(Integer.parseInt(id));
