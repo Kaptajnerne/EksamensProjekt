@@ -205,7 +205,7 @@ public class RepositoryDB implements IRepository {
                 employee = new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id);
             }
             return employee;
-        } catch (SQLException e) {
+        } catch (SQLException e)  {
             throw new RuntimeException(e);
         }
     }
