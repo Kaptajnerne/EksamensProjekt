@@ -143,10 +143,6 @@ public class Controller {
     //Create Project
     @PostMapping(path = "projects/{organization_id}/create")
     public String createProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
-        /*List<Integer> employeeIds = project.getEmployee_id();
-        if (employeeIds == null) {
-            employeeIds = new ArrayList<>();
-        }*/
         repositoryDB.addProject(project, organization_id);
         return "redirect:/projects/" + organization_id;
     }

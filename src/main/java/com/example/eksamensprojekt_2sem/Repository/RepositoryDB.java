@@ -297,6 +297,8 @@ public class RepositoryDB implements IRepository {
             while (rs.next()) {
                 String project_name = rs.getString("project_name");
                 double estimated_time = rs.getDouble("estimated_time");
+
+
                 String employeeIdsString = rs.getString("employee_id");
                 String[] employeeIdsArray = employeeIdsString.split(",");
                 // Convert array of strings to int
@@ -304,6 +306,7 @@ public class RepositoryDB implements IRepository {
                 for (String id : employeeIdsArray) {
                     employee_ids.add(Integer.parseInt(id));
                 }
+
                 int organization_id = rs.getInt("organization_id");
 
                 project = (new Project(project_id, project_name, estimated_time, employee_ids, organization_id));
@@ -314,27 +317,42 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+
     //Add projects to org
     public Project addProject(Project project, int organization_id) {
         Project project1 = null;
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "INSERT INTO project (project_name, estimated_time, employee_id, organization_id) " +
-                    "VALUES (?, ?, ?, ?)";
+
+            //List of employees
+            List<Employee> employees = project.getEmployees();
+
+            //
+            String SQL = "INSERT INTO project (project_name, estimated_time organization_id) " +
+                    "VALUES (?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, project.getProject_name());
             pstmt.setDouble(2, project.getEstimated_time());
-
-            List<Integer> employeeIds = project.getEmployee_id();
-            Array employeeIdsArray = conn.createArrayOf("INTEGER", employeeIds.toArray());
-            pstmt.setArray(3, employeeIdsArray);
-            pstmt.setInt(4, organization_id);
+            pstmt.setInt(3, organization_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
             if (rs.next()) {
                 int project_id = rs.getInt(1);
-                project1 = new Project(project_id, project.getProject_name(), project.getEstimated_time(), project.getEmployee_id(), organization_id);
+                project1 = new Project(project_id, project.getProject_name(), project.getEstimated_time(), employees, organization_id);
+
+                //Project employees inserted into project_employee table
+                if (employees != null) {
+                    SQL = "INSERT INTO project_employee (project_id, employee_id) VALUES (?, ?)";
+                    pstmt = conn.prepareStatement(SQL);
+                    for (Employee employee : employees) {
+                        pstmt.setInt(1, project_id);
+                        pstmt.setInt(2, employee.getEmployee_id());
+                        pstmt.addBatch();
+                    }
+                    pstmt.executeBatch();
+                    project1.setEmployees(employees);
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -60,6 +60,4 @@ public class Project {
     public void setOrganization_id(int organization_id) {
         this.organization_id = organization_id;
     }
-
-
 }
