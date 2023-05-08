@@ -65,7 +65,7 @@ public class RepositoryDB implements IRepository {
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM organization WHERE organziation_name = ? AND password = ?;";
+            String SQL = "SELECT * FROM organization WHERE organization_name = ? AND password = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, organization_name);
             pstmt.setString(2, password);
@@ -82,6 +82,7 @@ public class RepositoryDB implements IRepository {
     }
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
+
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
@@ -106,6 +107,37 @@ public class RepositoryDB implements IRepository {
             return projects;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    //Add projects to org
+    public void addProject(Project project) {
+        try {
+            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+
+            //Organization Id
+            int project_id = 0;
+
+            // insert project to organisation table with the corresponding username
+            String SQL = "INSERT INTO project (project_id, project_name, estimated_time, employee_id, organization_id) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, project_id);
+            ps.setString(2, project.getProject_name());
+            ps.setDouble(3, project.getEstimated_time());
+            ps.setInt(4, project.getEmployee_id());
+            ps.setInt(5, project.getOrganization_id());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                project_id = rs.getInt(1);
+                Project projects = new Project(project.getProject_id(), project.getProject_name(), project.getEstimated_time(), project.getEmployee_id(), project.getOrganization_id());
+                projects.setProject_id(project_id);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 

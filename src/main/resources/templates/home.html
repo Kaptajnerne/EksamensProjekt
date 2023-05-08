@@ -16,6 +16,10 @@
     <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
         <button type="button" class ="btn">See current projects</button>
     </a>
+
+    <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})/addProject}">
+        <button type="button" class ="btn">Create new project</button>
+    </a>
 </div>
 
 </body>
