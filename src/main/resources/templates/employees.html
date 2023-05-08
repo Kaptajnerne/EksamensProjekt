@@ -3,43 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Employees</title>
+    <link th:href="@{/theme.css}" rel="stylesheet">
 </head>
 <body>
 
 <h1 align="center">Employees</h1>
 
 <table class="table table-dark">
-  <thead>
-  <tr>
-    <th scope="col">Employee Number</th>
-    <th scope="col">First Name</th>
-    <th scope="col">Last Name</th>
-    <th scope="col">Email</th>
-    <th scope="col">Organization ID</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="employee : ${employees}">
-    <td th:text="${employee.employee_id}"/>
-    <td th:text="${employee.first_name}"/>
-    <td th:text="${employee.last_name}"/>
-    <td th:text="${employee.email}"/>
-    <td th:text="${employee.organization_id}"/>
+    <thead>
+    <tr>
+        <th scope="col">Employee Number</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Organization ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.employee_id}"/>
+        <td th:text="${employee.first_name}"/>
+        <td th:text="${employee.last_name}"/>
+        <td th:text="${employee.email}"/>
+        <td th:text="${employee.organization_id}"/>
 
-    <a th:href="@{/organizations/{organization_id}/employees/{employee_id}/edit(organization_id=${employee.organization_id}, employee_id=${employee.employee_id})}">
-      <button>Edit employee</button>
-    </a>
+        <a th:href="@{/organizations/{organization_id}/employees/{employee_id}/edit(organization_id=${employee.organization_id}, employee_id=${employee.employee_id})}">
+            <button>Edit employee</button>
+        </a>
 
 
-  </tr>
-  </tbody>
+    </tr>
+    </tbody>
 </table>
 
 <div>
 
-  <a th:href="@{/employees/create/{organization_id}(organization_id=${organization_id})}">
-    <button>Create employee</button>
-  </a>
+    <a th:href="@{/employees/create/{organization_id}(organization_id=${organization_id})}">
+        <button>Create employee</button>
+    </a>
 
 </div>
 
