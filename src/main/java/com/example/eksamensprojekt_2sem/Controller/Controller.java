@@ -153,6 +153,18 @@ public class Controller {
 
     //---------------------------------TASK ENDPOINTS-----------------------------------------//
 
+    @GetMapping(path = "tasks/{project_id}")
+    public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
+
+        if(session.getAttribute("project") != null) {
+            List<Task> tasks = repositoryDB.getTaskByProID(project_id);
+            model.addAttribute("Tasks", tasks);
+            return "tasks";
+        } else {
+            return "redirect://";
+        }
+    }
+
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
         Task task = new Task();

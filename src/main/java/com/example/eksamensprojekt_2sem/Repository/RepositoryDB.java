@@ -346,6 +346,29 @@ public class RepositoryDB implements IRepository {
         }
     }
 
+    public List<Task> getTaskByProID(int project_id) {
+        List<Task> tasks = new ArrayList<>();
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM task WHERE project_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, project_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int task_id = rs.getInt("task_id");
+                String task_name = rs.getString("task_name");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
+
+                tasks.add(new Task(task_id, task_name, start_date, end_date, project_id));
+            }
+            return tasks;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     //---------------------------------SUBTASK JDBC METHODS--------------------------------------//
 
