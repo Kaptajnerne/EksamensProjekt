@@ -1,23 +1,24 @@
 package com.example.eksamensprojekt_2sem.Model;
 
+import java.util.List;
+
 public class Project {
 
     private int project_id;
     private String project_name;
     private double estimated_time;
-    private int employee_id;
+    private List<Integer> employee_id;
     private int organization_id;
 
-    public Project(int project_id , String project_name, double estimated_time, int employee_id, int organization_id) {
+    public Project(int project_id, String project_name, double estimated_time, List<Integer> employee_id, int organization_id) {
         this.project_id = project_id;
         this.project_name = project_name;
         this.estimated_time = estimated_time;
         this.employee_id = employee_id;
         this.organization_id = organization_id;
-
     }
 
-    public Project(int projectId, String projectName) {
+    public Project() {
     }
 
     public int getProject_id() {
@@ -44,12 +45,11 @@ public class Project {
         this.estimated_time = estimated_time;
     }
 
-
-    public int getEmployee_id() {
+    public List<Integer> getEmployee_id() {
         return employee_id;
     }
 
-    public void setEmployee_id(int employee_id) {
+    public void setEmployee_id(List<Integer> employee_id) {
         this.employee_id = employee_id;
     }
 

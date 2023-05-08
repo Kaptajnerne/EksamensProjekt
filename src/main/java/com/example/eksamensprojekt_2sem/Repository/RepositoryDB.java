@@ -81,10 +81,11 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+
     //edit organization
     public void editOrganization(Organization organization, int organization_id) {
         try {
-        Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE organization SET organization_name = ?, password = ? WHERE organization_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(SQL)) {
                 stmt.setString(1, organization.getOrganization_name());
@@ -111,14 +112,13 @@ public class RepositoryDB implements IRepository {
             if (rs.next()) {
                 String organization_name = rs.getString("ORGANIZATION_NAME");
                 String password = rs.getString("PASSWORD");
-                organization1 = new Organization(organization_id,organization_name, password);
+                organization1 = new Organization(organization_id, organization_name, password);
             }
             return organization1;
         } catch (SQLException ex) {
             return null;
         }
     }
-
 
 
     //Sign up user
@@ -209,7 +209,6 @@ public class RepositoryDB implements IRepository {
     }
 
 
-
     //Create employee and add to organization
     public Employee createEmployee(Employee employee, int organization_id) {
         Employee emp = null;
@@ -252,11 +251,10 @@ public class RepositoryDB implements IRepository {
     }
 
 
-
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
-    //Get projects from org id
-    public List<Project> getProjectsByID(int organization_id) {
+    //Get projects from org_id
+    public List<Project> getProjectsByOrgID(int organization_id) {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
@@ -269,9 +267,15 @@ public class RepositoryDB implements IRepository {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
                 double estimated_time = rs.getDouble("estimated_time");
-                int employee_id = rs.getInt("employee_id");
+                String employeeIdsString = rs.getString("employee_id");
+                String[] employeeIdsArray = employeeIdsString.split(",");
+                // Convert array of strings to int
+                List<Integer> employee_ids = new ArrayList<>();
+                for (String id : employeeIdsArray) {
+                    employee_ids.add(Integer.parseInt(id));
+                }
 
-                projects.add(new Project(project_id, project_name, estimated_time, employee_id, organization_id));
+                projects.add(new Project(project_id, project_name, estimated_time, employee_ids, organization_id));
             }
             return projects;
         } catch (SQLException e) {
@@ -279,21 +283,30 @@ public class RepositoryDB implements IRepository {
         }
     }
 
-    //Get project from org id
+    //Get project from project_id
     //TODO:: Change to better descriptive names, to increase code consistency and readability
-    public Project getProject(int id) {
+    public Project getProject(int project_id) {
+        Project project = null;
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT * FROM project WHERE project_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, project_id);
             ResultSet rs = pstmt.executeQuery();
-            Project project = null;
-            while (rs.next()) {
-                int project_id = rs.getInt("project_id");
-                String project_name = rs.getString("project_name");
 
-                project = new Project(project_id, project_name);
+            while (rs.next()) {
+                String project_name = rs.getString("project_name");
+                double estimated_time = rs.getDouble("estimated_time");
+                String employeeIdsString = rs.getString("employee_id");
+                String[] employeeIdsArray = employeeIdsString.split(",");
+                // Convert array of strings to int
+                List<Integer> employee_ids = new ArrayList<>();
+                for (String id : employeeIdsArray) {
+                    employee_ids.add(Integer.parseInt(id));
+                }
+                int organization_id = rs.getInt("organization_id");
+
+                project = (new Project(project_id, project_name, estimated_time, employee_ids, organization_id));
             }
             return project;
         } catch (SQLException e) {
@@ -318,6 +331,7 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 

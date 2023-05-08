@@ -23,6 +23,23 @@ public class Controller {
 
     //---------------------------------ORGANIZATION ENDPOINTS---------------------------------//
 
+    //edit org
+    @GetMapping(path = "/editOrganization/{organization_id}")
+    public String showEditOrganization(@PathVariable("organization_id") int organization_id, Model model) {
+        model.addAttribute("organization_id", organization_id);
+        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
+        model.addAttribute("organization", organization);
+        return "editOrganization";
+    }
+
+    @PostMapping(path = "/editOrganization/{organization_id}")
+    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name")  String organization_name, String password) {
+        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
+        organization.setOrganization_name(organization_name);
+        organization.setPassword(password);
+        repositoryDB.editOrganization(organization,organization_id);
+        return  "redirect:/home/"+ organization_id;
+    }
 
     //---------------------------------EMPLOYEE ENDPOINTS-------------------------------------//
 
@@ -103,34 +120,12 @@ public class Controller {
     //---------------------------------PROJECT ENDPOINTS--------------------------------------//
 
     //Get projects from org
-    //TODO:: Session timer from signin page doesn't translate over to projects. "session.setMaxInactiveInterval(10);"
     @GetMapping(path = "projects/{organization_id}")
     public String showProjects(Model model, @PathVariable int organization_id) {
-        List<Project> projects = repositoryDB.getProjectsByID(organization_id);
+        List<Project> projects = repositoryDB.getProjectsByOrgID(organization_id);
         model.addAttribute("projects", projects);
         return "projects";
     }
-
-    //edit org
-    @GetMapping(path = "/editOrganization/{organization_id}")
-    public String showEditOrganization(@PathVariable("organization_id") int organization_id, Model model) {
-        model.addAttribute("organization_id", organization_id);
-        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
-        model.addAttribute("organization", organization);
-        return "editOrganization";
-    }
-
-    @PostMapping(path = "/editOrganization/{organization_id}")
-    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name")  String organization_name, String password) {
-        Organization organization = repositoryDB.getOrganizationFromId(organization_id);
-        organization.setOrganization_name(organization_name);
-        organization.setPassword(password);
-        repositoryDB.editOrganization(organization,organization_id);
-        return  "redirect:/home/"+ organization_id;
-
-
-    }
-
 
     //edit project page
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency

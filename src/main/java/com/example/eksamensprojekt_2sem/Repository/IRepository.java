@@ -14,5 +14,5 @@ public interface IRepository {
     public void signUp(Organization organization);
 
     //Get projects from org
-    public List<Project> getProjectsByID(int organization_id);
+    public List<Project> getProjectsByOrgID(int organization_id);
 }
