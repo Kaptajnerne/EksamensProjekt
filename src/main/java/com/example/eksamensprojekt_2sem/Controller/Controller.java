@@ -65,16 +65,29 @@ public class Controller {
         repositoryDB.deleteProject(project_id);
         return "redirect:/projects/";
     }
-    @GetMapping("/tasks/delete/{taskId}")
-    public String showDeleteTaskPage(@PathVariable("taskId") int taskId, Model model) {
-        Task task = repositoryDB.getTask(taskId);
+    @GetMapping("/tasks/delete/{task_id}")
+    public String showDeleteTaskPage(@PathVariable("task_id") int task_id, Model model) {
+        Task task = repositoryDB.getTask(task_id);
         model.addAttribute("task", task);
         return "deleteTask";
     }
 
-    @PostMapping("/tasks/delete")
+    @PostMapping("/tasks/delete/{task_id}")
     public String deleteTask(@RequestParam("taskId") int taskId) {
         repositoryDB.deleteTask(taskId);
-        return "redirect:/tasks";
+        return "redirect:/projects";
+    }
+
+    @GetMapping(path = "/subtask/delete/{task_id}")
+    public String deleteSubtask (@PathVariable("task_id") int task_id, Model model){
+        Task task = repositoryDB.getTask(task_id);
+        model.addAttribute("task",task);
+        return "deleteSubtask";
+    }
+
+    @PostMapping(path = "/subtask/delete/{task_id}")
+    public String removeSubtask(@RequestParam("task_id") int task_id){
+        repositoryDB.deleteSubtask(task_id);
+        return "redirect:/projects";
     }
 }

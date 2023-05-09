@@ -150,19 +150,24 @@ public class RepositoryDB implements IRepository {
     }
 
     //Delete project
-    public void deleteProject(int id) {
+    /*public void deleteProject(int id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "DELETE from task where project_id = ?";
+            String deleteSub = "DELETE FROM subtask where task_id = ?";
+            String SQL = "DELETE FROM task where project_id = ?";
             String SQL1 = "DELETE FROM project where project_id = ?";
-            try (PreparedStatement stmt = con.prepareStatement(SQL);
-                 PreparedStatement stmt1 = con.prepareStatement(SQL1)) {
+            try (PreparedStatement stmt= con.prepareStatement(deleteSub);
+                    PreparedStatement stmt1 = con.prepareStatement(SQL);
+                 PreparedStatement stmt2 = con.prepareStatement(SQL1)) {
 
                 stmt.setInt(1, id);
                 stmt.executeUpdate();
 
                 stmt1.setInt(1, id);
                 stmt1.executeUpdate();
+
+                stmt2.setInt(1,id);
+                stmt2.executeUpdate();
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -171,6 +176,45 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+     */
+    public void deleteProject(int projectId) {
+        try (Connection connection = DriverManager.getConnection(db_url, uid, pwd);
+             PreparedStatement statement1 = connection.prepareStatement("DELETE FROM user_task WHERE task_id IN "
+                     + "(SELECT task_id FROM task WHERE project_id = ?)");
+             PreparedStatement statement2 = connection.prepareStatement("DELETE FROM user_subtask WHERE subtask_id IN "
+                     + "(SELECT subtask_id FROM subtask WHERE task_id IN "
+                     + "(SELECT task_id FROM task WHERE project_id = ?))");
+             PreparedStatement statement3 = connection.prepareStatement("DELETE FROM subtask WHERE task_id IN "
+                     + "(SELECT task_id FROM task WHERE project_id = ?)");
+             PreparedStatement statement4 = connection.prepareStatement("DELETE FROM task WHERE project_id = ?");
+             PreparedStatement statement5 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?")) {
+
+            connection.setAutoCommit(false);
+
+            statement1.setInt(1, projectId);
+            statement1.executeUpdate();
+
+            statement2.setInt(1, projectId);
+            statement2.executeUpdate();
+
+            statement3.setInt(1, projectId);
+            statement3.executeUpdate();
+
+            statement4.setInt(1, projectId);
+            statement4.executeUpdate();
+
+            statement5.setInt(1, projectId);
+            statement5.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
     public void deleteTask(int taskId) {
@@ -193,6 +237,7 @@ public class RepositoryDB implements IRepository {
             throw new RuntimeException(e);
         }
     }
+
     public Task getTask(int taskId) {
         try (Connection connection = DriverManager.getConnection(db_url, uid, pwd)) {
             String sql = "SELECT * FROM task WHERE task_id = ?";
@@ -215,6 +260,19 @@ public class RepositoryDB implements IRepository {
     }
 
     //---------------------------------SUBTASK JDBC METHODS--------------------------------------//
-
-
+    public void deleteSubtask(int task_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "DELETE from subtask WHERE task_id = ?";
+            try {
+                PreparedStatement stmt = con.prepareStatement(SQL);
+                stmt.setInt(1, task_id);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

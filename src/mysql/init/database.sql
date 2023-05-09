@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS user_subtask;
 DROP TABLE IF EXISTS user_task;
 DROP TABLE IF EXISTS subtask;
 DROP TABLE IF EXISTS task;
+DROP TABLE IF EXISTS project_employee;
 DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS organization;
@@ -27,11 +28,16 @@ CREATE TABLE project
 (project_id int not null auto_increment,
  project_name varchar(100) not null,
  estimated_time double,
- employee_id int,
  organization_id int not null,
  primary key(project_id),
- foreign key(employee_id) references employee (employee_id),
  foreign key(organization_id) references organization (organization_id));
+
+CREATE TABLE project_employee
+(project_id int,
+ employee_id int,
+ primary key(project_id, employee_id),
+ foreign key(project_id) references project (project_id),
+ foreign key(employee_id) references employee (employee_id));
 
 CREATE TABLE task
 (task_id int not null auto_increment,
@@ -56,11 +62,11 @@ CREATE TABLE user_task
  employee_id int,
  primary key(task_id, employee_id),
  foreign key(task_id) references task (task_id),
- foreign key(employee_id) references project (employee_id));
+ foreign key(employee_id) references employee (employee_id));
 
 CREATE TABLE user_subtask
 (subtask_id int,
  employee_id int,
  primary key (subtask_id, employee_id),
  foreign key(subtask_id) references subtask (subtask_id),
- foreign key(employee_id) references project (employee_id));
+ foreign key(employee_id) references employee (employee_id));
