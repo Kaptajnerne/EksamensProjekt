@@ -285,6 +285,7 @@ public class RepositoryDB implements IRepository {
     public List<Project> getProjectsByOrgID(int organization_id) {
         List<Project> projects = new ArrayList<>();
         try {
+            //Get project
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL1 = "SELECT * FROM project WHERE organization_id = ?;";
             PreparedStatement pstmt1 = con.prepareStatement(SQL1);
@@ -295,8 +296,6 @@ public class RepositoryDB implements IRepository {
                 int project_id = rs1.getInt("project_id");
                 String project_name = rs1.getString("project_name");
                 double estimated_time = rs1.getDouble("estimated_time");
-
-                //Create new project
                 Project project = new Project(project_id, project_name, estimated_time, new ArrayList<>(), organization_id);
 
                 //Employees to project
@@ -304,21 +303,21 @@ public class RepositoryDB implements IRepository {
                 PreparedStatement pstmt2 = con.prepareStatement(SQL2);
                 pstmt2.setInt(1, project_id);
                 ResultSet rs2 = pstmt2.executeQuery();
-                Set<Integer> addedEmployees = new HashSet<>(); // keep track of added employees
-
+                //added employees
+                Set<Integer> addedEmployees = new HashSet<>();
                 while (rs2.next()) {
                     int employee_id = rs2.getInt("employee_id");
-                    if (!addedEmployees.contains(employee_id)) { // check if employee has already been added
+                    if (!addedEmployees.contains(employee_id)) {
                         String first_name = rs2.getString("employee_firstname");
                         String last_name = rs2.getString("employee_lastname");
                         String email = rs2.getString("email");
 
                         Employee employee = new Employee(employee_id, first_name, last_name, email, organization_id);
                         project.addEmployee(employee);
-                        addedEmployees.add(employee_id); // add employee id to the set
+                        addedEmployees.add(employee_id);
                     }
                 }
-                projects.add(project); // add the project to the list
+                projects.add(project);
             }
             return projects;
         } catch (SQLException e) {
