@@ -3,6 +3,7 @@ package com.example.eksamensprojekt_2sem.Repository;
 import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Project;
+import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -322,6 +324,58 @@ public class RepositoryDB implements IRepository {
     //---------------------------------TASK JDBC METHODS-----------------------------------------//
 
     //---------------------------------SUBTASK JDBC METHODS--------------------------------------//
+    //Get subtasks from project_id
+    public List<Subtask> getSubtasksByProjectID(int project_id) {
+        List<Subtask> subtasks = new ArrayList<>();
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL1 = "SELECT * FROM subtask WHERE task_id IN (SELECT task_id FROM task WHERE project_id = ?);";
+            PreparedStatement pstmt1 = con.prepareStatement(SQL1);
+            pstmt1.setInt(1, project_id);
+            ResultSet rs1 = pstmt1.executeQuery();
+
+            while (rs1.next()) {
+                int subtask_id = rs1.getInt("subtask_id");
+                String subtask_name = rs1.getString("subtask_name");
+                LocalDate start_date = rs1.getObject("start_date", LocalDate.class);
+                LocalDate end_date = rs1.getObject("end_date", LocalDate.class);
+
+                subtasks.add(new Subtask(subtask_id, subtask_name, start_date, end_date, project_id));
+            }
+            return subtasks;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    //Create subtask to project
+    public Subtask createSubtask(Subtask subtask, int task_id) {
+        Subtask createdSubtask = null;
+        try {
+            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+
+            String SQL = "INSERT INTO subtask (subtask_name, start_date, end_date, task_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, subtask.getSubtask_name());
+            pstmt.setObject(2, subtask.getStart_date());
+            pstmt.setObject(3, subtask.getEnd_date());
+            pstmt.setInt(4, task_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                int subtask_id = rs.getInt(1);
+                createdSubtask = new Subtask(subtask_id, subtask.getSubtask_name(), subtask.getStart_date(), subtask.getEnd_date(), task_id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return createdSubtask;
+    }
+
+
 
 
 }

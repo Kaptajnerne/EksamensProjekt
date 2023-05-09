@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/subtasks/create/{task_id}(task_id=${task_id})}" method="POST" th:object="${subtask}">
+
+  <div class="createSubtaskForm">
+    <label class="createSubtaskForm">Subtask name:</label>
+    <input type="text" th:field="*{subtask.subtask_name}" placeholder="Subtask name" required>
+  </div>
+
+  <div class="createSubtaskForm">
+    <label class="createSubtaskForm">Start date:</label>
+    <input type="date" th:field="*{subtask.start_date}" required>
+  </div>
+
+  <div class="createSubtaskForm">
+    <label class="createSubtaskForm">End date:</label>
+    <input type="date" th:field="*{subtask.end_date}" required>
+  </div>
+
+  <br>
+
+  <div>
+    <input type="submit" value="Create Subtask" class="btn success"/>
+    <input type="reset" value="Reset" class="btn reset"/>
+  </div>
+
+  <br>
+
+  <a th:href="@{/tasks/{task_id}(task_id=${task_id})}">
+    <button type="button" class="btn go-back">Go Back</button>
+  </a>
+
+</form>
+
+
+</body>
+</html>

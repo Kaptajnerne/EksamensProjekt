@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Subtask {
@@ -16,6 +17,9 @@ public class Subtask {
         this.start_date = start_date;
         this.end_date = end_date;
         this.project_id = project_id;
+    }
+
+    public Subtask() {
     }
 
     public int getSubtask_id() {

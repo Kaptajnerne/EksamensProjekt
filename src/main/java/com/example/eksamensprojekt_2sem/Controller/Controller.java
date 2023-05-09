@@ -1,9 +1,7 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.Model.*;
 import com.example.eksamensprojekt_2sem.Model.Organization;
-import com.example.eksamensprojekt_2sem.Model.Employee;
-import com.example.eksamensprojekt_2sem.Model.Organization;
-import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -156,5 +154,29 @@ public class Controller {
     //---------------------------------TASK ENDPOINTS-----------------------------------------//
 
     //---------------------------------SUBTASK ENDPOINTS--------------------------------------//
+
+    @GetMapping(path = "subtasks/create/{task_id}")
+    public String showCreateSubtask(Model model, @PathVariable("task_id") int task_id, HttpSession session) {
+        Subtask subtask = new Subtask();
+        if(session.getAttribute("organization") != null) {
+            model.addAttribute("subtask", subtask);
+            model.addAttribute("task_id", task_id);
+            return "createSubtask";
+        } else {
+            return "redirect://";
+        }
+    }
+
+    @PostMapping(path = "subtasks/create/{task_id}")
+    public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id, HttpSession session) {
+        if(session.getAttribute("organization") != null) {
+            repositoryDB.createSubtask(subtask, task_id);
+            return "redirect:/tasks/" + task_id;
+        } else {
+            return "redirect://";
+        }
+    }
+
+
 
 }
