@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
+import com.example.eksamensprojekt_2sem.DTO.ProjectEmployeeForm;
 import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Project;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class RepositoryDB implements IRepository {
@@ -160,6 +163,32 @@ public class RepositoryDB implements IRepository {
 
     //---------------------------------EMPLOYEE JDBC METHODS-------------------------------------//
 
+    //Get employee by employee_id
+    public Employee getEmployee(int employee_id) {
+        Employee employee = null;
+        try {
+
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM employee WHERE employee_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, employee_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String employee_firstname = rs.getString("employee_firstname");
+                String employee_lastname = rs.getString("employee_lastname");
+                String email = rs.getString("email");
+                int organization_id = rs.getInt("organization_id");
+
+                employee = new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id);
+            }
+            return employee;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     //Get all employees from org
     public List<Employee> getEmployeesByOrgID(int organization_id) {
         List<Employee> employees = new ArrayList<>();
@@ -250,7 +279,6 @@ public class RepositoryDB implements IRepository {
         }
     }
 
-
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
     //Get projects from org_id
@@ -258,7 +286,7 @@ public class RepositoryDB implements IRepository {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL1 = "SELECT * FROM project INNER JOIN project_employee USING(project_id) WHERE organization_id = ?;";
+            String SQL1 = "SELECT * FROM project WHERE organization_id = ?;";
             PreparedStatement pstmt1 = con.prepareStatement(SQL1);
             pstmt1.setInt(1, organization_id);
             ResultSet rs1 = pstmt1.executeQuery();
@@ -268,23 +296,29 @@ public class RepositoryDB implements IRepository {
                 String project_name = rs1.getString("project_name");
                 double estimated_time = rs1.getDouble("estimated_time");
 
+                //Create new project
+                Project project = new Project(project_id, project_name, estimated_time, new ArrayList<>(), organization_id);
 
-                //List of employees
-                List<Employee> employees = new ArrayList<>();
+                //Employees to project
                 String SQL2 = "SELECT * FROM employee INNER JOIN project_employee USING(employee_id) WHERE project_id = ?;";
                 PreparedStatement pstmt2 = con.prepareStatement(SQL2);
                 pstmt2.setInt(1, project_id);
                 ResultSet rs2 = pstmt2.executeQuery();
+                Set<Integer> addedEmployees = new HashSet<>(); // keep track of added employees
 
                 while (rs2.next()) {
                     int employee_id = rs2.getInt("employee_id");
-                    String first_name = rs2.getString("employee_firstname");
-                    String last_name = rs2.getString("employee_lastname");
-                    String email = rs2.getString("email");
+                    if (!addedEmployees.contains(employee_id)) { // check if employee has already been added
+                        String first_name = rs2.getString("employee_firstname");
+                        String last_name = rs2.getString("employee_lastname");
+                        String email = rs2.getString("email");
 
-                    employees.add(new Employee(employee_id, first_name, last_name, email, organization_id));
+                        Employee employee = new Employee(employee_id, first_name, last_name, email, organization_id);
+                        project.addEmployee(employee);
+                        addedEmployees.add(employee_id); // add employee id to the set
+                    }
                 }
-                projects.add(new Project(project_id, project_name, estimated_time, employees, organization_id));
+                projects.add(project); // add the project to the list
             }
             return projects;
         } catch (SQLException e) {
@@ -292,7 +326,71 @@ public class RepositoryDB implements IRepository {
         }
     }
 
-   /* //Get project from project_id
+
+
+    //Create project
+    public void createProject(ProjectEmployeeForm form, int organization_id) {
+
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+
+            int project_id = 0;
+            //organization_id = 0;
+            List<Integer> employee_ids = new ArrayList<>();
+
+           /* //find organization_id
+            String SQL1 = "SELECT organization_id FROM organization WHERE organization_name = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL1);
+            pstmt.setString(1, form.getOrganization());
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                organization_id = rs.getInt("organization_id");
+            }*/
+
+            //insert row in project
+            String SQL2 = "INSERT INTO project (project_name, estimated_time, organization_id) VALUES (?, ?, ?);";
+            PreparedStatement pstmt = con.prepareStatement(SQL2, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, form.getProject_name());
+            pstmt.setDouble(2, form.getEstimated_time());
+            pstmt.setInt(3, organization_id);
+            int rows = pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                project_id = rs.getInt(1);
+            }
+
+            //find employee_ids
+            String SQL3 = "SELECT employee_id FROM employee WHERE employee_firstname = ?;";
+            pstmt = con.prepareStatement(SQL3);
+            for (String name : form.getEmployees()) {
+                pstmt.setString(1, name);
+                rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    employee_ids.add(rs.getInt("employee_id"));
+                }
+            }
+
+            //insert into project_employee table
+            String SQL4 = "INSERT INTO project_employee VALUES (?, ?);";
+            pstmt = con.prepareStatement(SQL4);
+            for (int i = 0; i < employee_ids.size(); i++) {
+                pstmt.setInt(1, project_id);
+                pstmt.setInt(1, employee_ids.get(i));
+                rows = pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+    /* //Get project from project_id
     //TODO:: Change to better descriptive names, to increase code consistency and readability
     public Project getProject(int project_id) {
         Project project = null;
@@ -326,25 +424,40 @@ public class RepositoryDB implements IRepository {
         }
     }*/
 
-
+    /*
     //Add projects to org
-    public Project addProject(Project project, int organization_id) {
+    public Project createProject(Project project, int organization_id, List<Integer> employee_ids) {
         Project project1 = null;
         try {
-            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
 
             //List of employees
             List<Employee> employees = project.getEmployees();
+            for (Integer employee_id  : employee_ids) {
+                String SQL1 ="SELECT * FROM employee WHERE employee_id = ?;";
+                PreparedStatement pstmt1 = con.prepareStatement(SQL1);
+                pstmt1.setInt(1, employee_id );
+                ResultSet rs1 = pstmt1.executeQuery();
 
-            //
-            String SQL = "INSERT INTO project (project_name, estimated_time organization_id) " +
+                if(rs1.next()) {
+                    employee_id = rs1.getInt("employee_id");
+                    String employee_firstname = rs1.getString("employee_firstname");
+                    String employee_lastname = rs1.getString("employee_lastname");
+                    String email = rs1.getString("email");
+
+                    employees.add(new Employee(employee_id, employee_firstname, employee_lastname, email, organization_id));
+                }
+            }
+
+            //Insert project
+            String SQL2 = "INSERT INTO project (project_name, estimated_time, organization_id) " +
                     "VALUES (?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, project.getProject_name());
-            pstmt.setDouble(2, project.getEstimated_time());
-            pstmt.setInt(3, organization_id);
-            pstmt.executeUpdate();
-            ResultSet rs = pstmt.getGeneratedKeys();
+            PreparedStatement pstmt2 = con.prepareStatement(SQL2, Statement.RETURN_GENERATED_KEYS);
+            pstmt2.setString(1, project.getProject_name());
+            pstmt2.setDouble(2, project.getEstimated_time());
+            pstmt2.setInt(3, organization_id);
+            pstmt2.executeUpdate();
+            ResultSet rs = pstmt2.getGeneratedKeys();
 
             if (rs.next()) {
                 int project_id = rs.getInt(1);
@@ -352,14 +465,14 @@ public class RepositoryDB implements IRepository {
 
                 //Project employees inserted into project_employee table
                 if (employees != null) {
-                    SQL = "INSERT INTO project_employee (project_id, employee_id) VALUES (?, ?)";
-                    pstmt = conn.prepareStatement(SQL);
+                    SQL2 = "INSERT INTO project_employee (project_id, employee_id) VALUES (?, ?)";
+                    pstmt2 = con.prepareStatement(SQL2);
                     for (Employee employee : employees) {
-                        pstmt.setInt(1, project_id);
-                        pstmt.setInt(2, employee.getEmployee_id());
-                        pstmt.addBatch();
+                        pstmt2.setInt(1, project_id);
+                        pstmt2.setInt(2, employee.getEmployee_id());
+                        pstmt2.addBatch();
                     }
-                    pstmt.executeBatch();
+                    pstmt2.executeBatch();
                     project1.setEmployees(employees);
                 }
             }
@@ -369,8 +482,20 @@ public class RepositoryDB implements IRepository {
         return project1;
     }
 
+    public void addProject(Project project, int organization_id) {
 
-    //Update project
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            //ID's
+            organization_id = 0;
+            int project_id = 0;
+            int employee_id = 0;
+            List<>
+
+        }
+    }*/
+
+    /*//Update project
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
     public void editProject(Project project, int project_ID) {
         try {
@@ -386,7 +511,7 @@ public class RepositoryDB implements IRepository {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 
     //---------------------------------TASK JDBC METHODS-----------------------------------------//

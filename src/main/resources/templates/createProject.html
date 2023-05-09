@@ -25,30 +25,27 @@
         </div>
 
         <div class="form-group">
-            <label for="employees">Employees</label>
-            <select multiple class="form-control" id="employees" name="employees">
-                <option th:each="employee : ${employees}" th:value="${employee.getEmployee_id()}"
-                        th:text="${employee.getFirst_name()}"></option>
-            </select>
+            <label class="col-createProject label">Employees</label>
+            <div th:each="employee : ${employees}" class="checkbox-container">
+                <label><input type="checkbox" th:field="*{employees}" th:value="${employee}"
+                              th:text="${employee.getFirst_name()} + ' ' + ${employee.getLast_name()}"/></label>
+            </div>
         </div>
 
-</div>
+        <br>
 
+        <div>
+            <input type="submit" value="Submit" class="btn btn-success"/>
+            <input type="reset" value="Reset" class="btn btn-danger"/>
+        </div>
 
-<br>
+        <br>
 
-<div>
-    <input type="submit" value="Submit" class="btn btn-success"/>
-    <input type="reset" value="Reset" class="btn btn-danger"/>
-</div>
+        <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
+            <button type="button" class="btn">Go Back</button>
+        </a>
 
-<br>
-
-<a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
-    <button type="button" class="btn">Go Back</button>
-</a>
-
-</form>
+    </form>
 </div>
 </body>
 </html>

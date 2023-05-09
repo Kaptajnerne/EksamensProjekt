@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.DTO.ProjectEmployeeForm;
 import com.example.eksamensprojekt_2sem.Model.Organization;
 import com.example.eksamensprojekt_2sem.Model.Employee;
 import com.example.eksamensprojekt_2sem.Model.Organization;
@@ -34,12 +35,12 @@ public class Controller {
     }
 
     @PostMapping(path = "/editOrganization/{organization_id}")
-    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name")  String organization_name, String password) {
+    public String editOrganization(@PathVariable("organization_id") int organization_id, @RequestParam("organization_name") String organization_name, String password) {
         Organization organization = repositoryDB.getOrganizationFromId(organization_id);
         organization.setOrganization_name(organization_name);
         organization.setPassword(password);
-        repositoryDB.editOrganization(organization,organization_id);
-        return  "redirect:/home/"+ organization_id;
+        repositoryDB.editOrganization(organization, organization_id);
+        return "redirect:/home/" + organization_id;
     }
 
     //---------------------------------EMPLOYEE ENDPOINTS-------------------------------------//
@@ -48,7 +49,7 @@ public class Controller {
     @GetMapping(path = "employees/{organization_id}")
     public String showEmployees(Model model, @PathVariable int organization_id, HttpSession session) {
 
-        if(session.getAttribute("organization") != null) {
+        if (session.getAttribute("organization") != null) {
             List<Employee> employees = repositoryDB.getEmployeesByOrgID(organization_id);
             model.addAttribute("employees", employees);
             return "employees";
@@ -62,7 +63,7 @@ public class Controller {
     public String showCreateEmployee(Model model, @PathVariable("organization_id") int organization_id, HttpSession session) {
         Employee employee = new Employee();
 
-        if(session.getAttribute("organization") != null) {
+        if (session.getAttribute("organization") != null) {
             model.addAttribute("emp", employee);
             model.addAttribute("organization_id", organization_id);
             Organization org = (Organization) session.getAttribute("organization");
@@ -77,7 +78,7 @@ public class Controller {
     @PostMapping(path = "employees/create/{organization_id}")
     public String createEmployee(@ModelAttribute("employee") Employee employee, @PathVariable("organization_id") int organization_id, HttpSession session) {
 
-        if(session.getAttribute("organization") != null) {
+        if (session.getAttribute("organization") != null) {
             repositoryDB.createEmployee(employee, organization_id);
             return "redirect:/employees/" + organization_id;
         } else {
@@ -116,9 +117,8 @@ public class Controller {
     }
 
 
-
-
     //---------------------------------PROJECT ENDPOINTS--------------------------------------//
+
 
     //Get projects from org
     @GetMapping(path = "projects/{organization_id}")
@@ -128,33 +128,64 @@ public class Controller {
         return "projects";
     }
 
-    //Show create project
-    //TODO:: Be able to write a employee to project
+
+    //Create Project page
     @GetMapping(path = "projects/{organization_id}/create")
     public String showCreateProject(Model model, @PathVariable("organization_id") int organization_id) {
         Project project = new Project();
         List<Employee> employees = repositoryDB.getEmployeesByOrgID(organization_id);
         model.addAttribute("project", project);
-        model.addAttribute("employees",employees);
+        model.addAttribute("employees", employees);
         model.addAttribute("organization_id", organization_id);
         return "createProject";
     }
 
     //Create Project
     @PostMapping(path = "projects/{organization_id}/create")
-    public String createProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
-        repositoryDB.addProject(project, organization_id);
+    public String createProject(@ModelAttribute("proejct") ProjectEmployeeForm form, @PathVariable("organization_id") int organization_id) {
+        repositoryDB.createProject(form, organization_id);
         return "redirect:/projects/" + organization_id;
     }
 
 
+
+    /*
+    //Create Project
+    @PostMapping(path = "projects/{organization_id}/create")
+    public String createProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
+        repositoryDB.createProject(project, organization_id);
+        return "redirect:/projects/" + organization_id;
+    }*/
+    /* //Show create project
+    @GetMapping(path = "projects/{organization_id}/create")
+
+    }
+
+    //Create Project
+    @PostMapping(path = "projects/{organization_id}/create")
+    public String createProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id, @RequestParam(value = "employees", required = false) List<Integer> employee_ids) {
+
+        List<Employee> employees = new ArrayList<>();
+        if (employee_ids != null) {
+            for (Integer employee_id : employee_ids) {
+                Employee employee = repositoryDB.getEmployee(employee_id);
+                if (employee != null) {
+                    employees.add(employee);
+                }
+            }
+        }
+
+        repositoryDB.createProject(project, organization_id, employee_ids);
+        return "redirect:/projects/" + organization_id;
+    }*/
     /*
     @PostMapping(path = "projects/{organization_id}/addProject")
     public String addProject(@ModelAttribute("project") Project project, @PathVariable("organization_id") int organization_id) {
-
+     repositoryDB.addProject(project, organization_id);
+        }
         List<Integer> employeeIds = Arrays.asList(project.getEmployee_id());  // Convert single employee ID to a list
         project.setEmployee_id(employeeIds);
-        repositoryDB.addProject(project, organization_id);
+
         */
 
 
@@ -182,5 +213,6 @@ public class Controller {
     //---------------------------------TASK ENDPOINTS-----------------------------------------//
 
     //---------------------------------SUBTASK ENDPOINTS--------------------------------------//
+
 
 }

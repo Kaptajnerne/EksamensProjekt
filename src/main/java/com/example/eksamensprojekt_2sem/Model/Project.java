@@ -18,6 +18,11 @@ public class Project {
         this.organization_id = organization_id;
     }
 
+    public Project(String project_name, double estimated_time) {
+        this.project_name = project_name;
+        this.estimated_time = estimated_time;
+    }
+
     public Project() {
     }
 
@@ -49,8 +54,8 @@ public class Project {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employee_id) {
-        this.employees = employee_id;
+    public void setEmployees(List<Employee> employee) {
+        this.employees = employee;
     }
 
     public int getOrganization_id() {
@@ -60,4 +65,9 @@ public class Project {
     public void setOrganization_id(int organization_id) {
         this.organization_id = organization_id;
     }
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+
 }
