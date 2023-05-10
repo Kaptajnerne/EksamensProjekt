@@ -155,10 +155,9 @@ public class Controller {
 
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
-
         if(session.getAttribute("project") != null) {
             List<Task> tasks = repositoryDB.getTaskByProID(project_id);
-            model.addAttribute("Tasks", tasks);
+            model.addAttribute("tasks", tasks);
             return "tasks";
         } else {
             return "redirect://";
