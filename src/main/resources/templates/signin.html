@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<form method="post" th:action="@{/signin}" th:object="${organization}">
 <header>
     <h2 class="logo">logo</h2>
     <nav class="navigation">
@@ -24,15 +25,16 @@
 
     <div class="form-box login">
         <h2>Login</h2>
-        <form action="#">
+        <form method="post" th:action="@{/signin}" th:object="${organization}">
             <div class="input-box">
                 <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
-                <input type="organization_name" required>
+                <input type="text"  th:field="*{organization_name}" required>
                 <label>Organization</label>
             </div>
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                <input type="password" required>
+                <input id="password" type="password"
+                       th:field="*{password}" required>
                 <label>Password</label>
             </div>
             <button type="submit" class="btn">Login</button>
@@ -42,28 +44,7 @@
         </form>
     </div>
 </div>
-<h2 align="center">Sign in</h2>
-
-<div align="center" class="sign-in">
-    <form method="post" th:action="@{/signin}" th:object="${organization}">
-    <pre>
-
-        <label for="organization_name">Organization Name:</label>
-        <input id="organization_name" type="text"
-               th:field="*{organization_name}"
-               placeholder="Organization name"
-               required="required"/>
-
-        <label for="password">Password:</label>
-        <input id="password" type="text"
-               th:field="*{password}"
-               placeholder="Password"
-               required="required"/>
-
-        <input type="submit" value="Log in">
-
-    </pre>
-    </form>
+</form>
 
 </div>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
