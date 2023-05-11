@@ -15,6 +15,7 @@ CREATE TABLE user
 CREATE TABLE project
 (project_id int not null auto_increment,
  project_name varchar(100) not null,
+ project_description varchar(1000),
  user_id int not null,
  primary key(project_id),
  foreign key(user_id) references user (user_id));
