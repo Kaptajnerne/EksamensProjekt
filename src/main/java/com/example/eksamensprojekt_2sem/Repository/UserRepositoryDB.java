@@ -9,7 +9,7 @@ import java.sql.*;
 
 @Repository
 public class UserRepositoryDB implements UserIRepository {
-    @Value("jdbc:mysql://localhost:3306/pct_db")
+    @Value("jdbc:mysql://localhost:3306/pct_db2")
     private String db_url;
 
     @Value("root")

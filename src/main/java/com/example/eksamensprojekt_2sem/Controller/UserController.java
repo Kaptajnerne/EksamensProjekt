@@ -2,6 +2,7 @@ package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.User;
 import com.example.eksamensprojekt_2sem.Repository.UserRepositoryDB;
+import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @org.springframework.stereotype.Controller
 public class UserController {
 
-    private UserRepositoryDB userRepositoryDB;
+    private UserService userService;
 
-    public UserController(UserRepositoryDB userRepositoryDB) {
-        this.userRepositoryDB = userRepositoryDB;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     //Index page shows sign in or sign up
@@ -23,7 +24,6 @@ public class UserController {
     }
 
     //Page users see when they sign in
-    //TODO:: Session timer doesn't translate over to org home page. "session.setMaxInactiveInterval(10);"
     @GetMapping(path ="/home/{organization_id}")
     public String homeOrg(Model model, @PathVariable int organization_id, HttpSession session) {
         model.addAttribute("organization_id", organization_id);
@@ -34,11 +34,11 @@ public class UserController {
     @GetMapping(path = "/signin")
     public String isUserConnected(HttpSession session, Model model) {
         //Organization object from session
-        User user = (User) session.getAttribute("organization");
+        User user = (User) session.getAttribute("user");
 
         //If not connected redirect to login page. if connected continue to home page
         if (user == null) {
-            model.addAttribute("organization", new User());
+            model.addAttribute("user", new User());
             return "signin";
         } else {
             return "redirect:/home/" + user.getUser_id();
@@ -49,14 +49,14 @@ public class UserController {
     //Sign in with user
     //TODO:: if wrong login input redirect to signin page and let user do it again
     @PostMapping(path = "/signin")
-    public String signIn(HttpSession session, @ModelAttribute("org") User org) {
+    public String signIn(HttpSession session, @ModelAttribute("user") User user) {
         try {
-            User orgLogin = userRepositoryDB.signIn(org.getUsername(), org.getPassword());
-            if (orgLogin != null) {
-                session.setAttribute("organization", orgLogin);
+            User userLogin = userService.signIn(user.getUsername(), user.getPassword());
+            if (userLogin != null) {
+                session.setAttribute("user", userLogin);
                 session.setMaxInactiveInterval(100);
 
-                return "redirect:/home/" + orgLogin.getUser_id();
+                return "redirect:/home/" + userLogin.getUser_id();
             } else {
                 return "signin";
             }
@@ -83,7 +83,7 @@ public class UserController {
     //Sign up
     @PostMapping(path = "/signup")
     public String signup(@ModelAttribute ("organization") User user){
-        userRepositoryDB.signUp(user);
+        userService.signUp(user);
         return "redirect:/signin";
     }
 
@@ -91,17 +91,17 @@ public class UserController {
     @GetMapping(path = "/editUser/{user_id}")
     public String showEditUser(@PathVariable("user_id") int user_id, Model model) {
         model.addAttribute("organization_id", user_id);
-        User user = userRepositoryDB.getUserFromId(user_id);
+        User user = userService.getUserFromId(user_id);
         model.addAttribute("organization", user);
         return "editOrganization";
     }
 
     @PostMapping(path = "/editUser/{user_id}")
     public String editUser(@PathVariable("user_id") int user_id, @RequestParam("user_name")  String user_name, String password) {
-        User user = userRepositoryDB.getUserFromId(user_id);
+        User user = userService.getUserFromId(user_id);
         user.setUsername(user_name);
         user.setPassword(password);
-        userRepositoryDB.editUser(user,user_id);
+        userService.editUser(user,user_id);
         return  "redirect:/home/"+ user_id;
 
 

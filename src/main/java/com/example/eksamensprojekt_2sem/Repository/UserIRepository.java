@@ -9,4 +9,10 @@ public interface UserIRepository {
 
     //Sign up
     public void signUp(User user);
+
+    //Edit user
+    public void editUser(User user, int user_id);
+
+    //Get user from id
+    public User getUserFromId(int user_id);
 }
