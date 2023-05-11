@@ -28,5 +28,15 @@ public class ProjectService {
         projectRepositoryDB.createProject(project, user_id);
     }
 
+    //Edit proejct
+    public void editProject(Project project, int project_id, int user_id) {
+        projectRepositoryDB.editProject(project, project_id, user_id);
+    }
+
+    //Get project by project_id
+    public Project getProjectByIDs(int project_id, int user_id) {
+        return projectRepositoryDB.getProjectByIDs(project_id, user_id);
+    }
+
 
 }

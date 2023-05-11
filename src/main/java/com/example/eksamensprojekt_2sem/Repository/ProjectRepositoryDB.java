@@ -46,6 +46,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+
     //Create projects
     public void createProject(Project project, int user_id) {
         try{
@@ -69,43 +70,52 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
-   /* //Get project from user_id
-    //TODO:: Change to better descriptive names, to increase code consistency and readability
-    public Project getProject(int id) {
+
+    //Update project
+    public void editProject(Project project, int project_id, int user_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM project WHERE project_id = ?;";
-            PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            Project project = null;
-            while (rs.next()) {
-                int project_id = rs.getInt("project_id");
-                String project_name = rs.getString("project_name");
+            String SQL = "UPDATE project SET project_name = ?, project_description = ? WHERE project_id = ? AND user_id = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
+                pstmt.setString(1, project.getProject_name());
+                pstmt.setString(2, project.getProject_description());
+                pstmt.setInt(3, project_id);
+                pstmt.setInt(4, user_id);
 
-                project = new Project(project_id, project_name);
-            }
-            return project;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-    /*//Update project
-    //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
-    public void editProject(Project project, int project_ID) {
-        try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE project SET project_name = ?, estimated_time = ?";
-            try (PreparedStatement stmt = con.prepareStatement(SQL)) {
-                stmt.setString(1, project.getProject_name());
-                stmt.setDouble(2, project.getEstimated_time());
-                stmt.executeUpdate();
+                pstmt.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }
+
+
+
+    //Get project from user_id and user_id
+    public Project getProjectByIDs(int project_id, int user_id) {
+        Project project = null;
+
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM project WHERE project_id = ? AND user_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, project_id);
+            pstmt.setInt(2, user_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String project_name = rs.getString("project_name");
+                String project_description = rs.getString("project_description");
+
+                project = new Project(project_id, project_name, project_description, user_id);
+            }
+            return project;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

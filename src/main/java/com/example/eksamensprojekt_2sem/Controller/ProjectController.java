@@ -47,22 +47,22 @@ public class ProjectController {
 
 
 
-   /* //edit project page
-    @GetMapping(path = "/editProject/{project_id}")
-    public String editProject(@PathVariable("project_ID") int project_ID, Model model) {
-        model.addAttribute("project_id", project_ID);
-        Project project = projectService.getProject(project_ID);
+    //Edit project page
+    @GetMapping(path = "/projects/{user_id}/edit/{project_id}")
+    public String showEditProject(Model model , @PathVariable int project_id, @PathVariable int user_id) {
+        Project project = projectService.getProjectByIDs(project_id, user_id);
         model.addAttribute("project", project);
+        model.addAttribute("project_id", project_id);
+        model.addAttribute("user_id", user_id);
         return "editProject";
     }
 
-    //edit project
-    @PostMapping(path = "/editProject/{project_ID}")
-    public String updateProject(@PathVariable("project_ID") int project_ID, @RequestParam("project_name") String project_name) {
-        Project project = projectService.getProject(project_ID);
-        project.setProject_name(project_name);
-        projectService.editProject(project, project_ID);
-        return "redirect:/projects/" + project_ID;
-    }*/
+    //Edit project
+    @PostMapping(path = "/projects/{user_id}/edit/{project_id}")
+    public String editProject(@PathVariable int project_id, @PathVariable int user_id, @ModelAttribute Project project) {
+        //Project project = projectService.getProjectByIDs(project_id, user_id);
+        projectService.editProject(project, project_id, user_id);
+        return "redirect:/projects/" + user_id;
+    }
 
 }

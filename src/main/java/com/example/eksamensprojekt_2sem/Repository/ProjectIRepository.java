@@ -9,6 +9,12 @@ public interface ProjectIRepository {
     //Get projects from org
     public List<Project> getProjectsByID(int organization_id);
 
-    //Create Project
+    //Create project
     public void createProject(Project project, int user_id);
+
+    //Edit project
+    public void editProject(Project project, int project_id, int user_id);
+
+    //Get project by project_id and user_id
+    public Project getProjectByIDs(int project_id, int user_id);
 }
