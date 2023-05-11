@@ -1,20 +1,19 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
-import com.example.eksamensprojekt_2sem.Model.Organization;
-import com.example.eksamensprojekt_2sem.Repository.RepositoryDB;
+import com.example.eksamensprojekt_2sem.Model.User;
+import com.example.eksamensprojekt_2sem.Repository.UserRepositoryDB;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(path = "")
-@Controller
-public class LoginController {
+@org.springframework.stereotype.Controller
+public class UserController {
 
-    private RepositoryDB repositoryDB;
+    private UserRepositoryDB userRepositoryDB;
 
-    public LoginController(RepositoryDB repositoryDB) {
-        this.repositoryDB = repositoryDB;
+    public UserController(UserRepositoryDB userRepositoryDB) {
+        this.userRepositoryDB = userRepositoryDB;
     }
 
     //Index page shows sign in or sign up
@@ -35,14 +34,14 @@ public class LoginController {
     @GetMapping(path = "/signin")
     public String isUserConnected(HttpSession session, Model model) {
         //Organization object from session
-        Organization organization = (Organization) session.getAttribute("organization");
+        User user = (User) session.getAttribute("organization");
 
         //If not connected redirect to login page. if connected continue to home page
-        if (organization == null) {
-            model.addAttribute("organization", new Organization());
+        if (user == null) {
+            model.addAttribute("organization", new User());
             return "signin";
         } else {
-            return "redirect:/home/" + organization.getOrganization_id();
+            return "redirect:/home/" + user.getUser_id();
         }
     }
 
@@ -50,14 +49,14 @@ public class LoginController {
     //Sign in with user
     //TODO:: if wrong login input redirect to signin page and let user do it again
     @PostMapping(path = "/signin")
-    public String signIn(HttpSession session, @ModelAttribute("org") Organization org) {
+    public String signIn(HttpSession session, @ModelAttribute("org") User org) {
         try {
-            Organization orgLogin = repositoryDB.signIn(org.getOrganization_name(), org.getPassword());
+            User orgLogin = userRepositoryDB.signIn(org.getUsername(), org.getPassword());
             if (orgLogin != null) {
                 session.setAttribute("organization", orgLogin);
                 session.setMaxInactiveInterval(100);
 
-                return "redirect:/home/" + orgLogin.getOrganization_id();
+                return "redirect:/home/" + orgLogin.getUser_id();
             } else {
                 return "signin";
             }
@@ -65,7 +64,6 @@ public class LoginController {
             throw new RuntimeException(e);
         }
     }
-
 
     //Sign out
     @GetMapping(path="/logout")
@@ -77,15 +75,35 @@ public class LoginController {
     //Sign up page
     @GetMapping(path = "/signup")
     public String showSignUp(Model model) {
-        Organization organization = new Organization();
-        model.addAttribute("organization", organization);
+        User user = new User();
+        model.addAttribute("organization", user);
         return "signup";
     }
 
     //Sign up
     @PostMapping(path = "/signup")
-    public String signup(@ModelAttribute ("organization") Organization organization){
-        repositoryDB.signUp(organization);
+    public String signup(@ModelAttribute ("organization") User user){
+        userRepositoryDB.signUp(user);
         return "redirect:/signin";
+    }
+
+    //edit org
+    @GetMapping(path = "/editUser/{user_id}")
+    public String showEditUser(@PathVariable("user_id") int user_id, Model model) {
+        model.addAttribute("organization_id", user_id);
+        User user = userRepositoryDB.getUserFromId(user_id);
+        model.addAttribute("organization", user);
+        return "editOrganization";
+    }
+
+    @PostMapping(path = "/editUser/{user_id}")
+    public String editUser(@PathVariable("user_id") int user_id, @RequestParam("user_name")  String user_name, String password) {
+        User user = userRepositoryDB.getUserFromId(user_id);
+        user.setUsername(user_name);
+        user.setPassword(password);
+        userRepositoryDB.editUser(user,user_id);
+        return  "redirect:/home/"+ user_id;
+
+
     }
 }
