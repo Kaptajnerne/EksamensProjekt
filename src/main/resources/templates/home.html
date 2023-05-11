@@ -14,17 +14,15 @@
         <button type="button" class ="btn">Logout</button>
     </a>
 
-    <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
+    <a th:href="@{/projects/{organization_id}(organization_id=${user_id})}">
         <button type="button" class ="btn">See current projects</button>
     </a>
 
-    <a th:href="@{/editOrganization/{organization_id}(organization_id=${organization_id})}">
-        <button type="button" class ="btn">Edit</button>
+    <a th:href="@{/editUser/{user_id}(user_id=${user_id})}">
+        <button type="button" class ="btn">Edit User</button>
     </a>
 
-
-
-    <a th:href="@{/employees/{organization_id}(organization_id=${organization_id})}">
+    <a th:href="@{/employees/{organization_id}(organization_id=${user_id})}">
         <button type="button" class ="btn">See Employees</button>
     </a>
 </div>

@@ -73,7 +73,7 @@ public class UserRepositoryDB implements UserIRepository {
     public void signUp(User user) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "INSERT INTO user (username, password) VALUES (?, ?)";
+            String SQL = "INSERT INTO user (username ,password) VALUES (?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
@@ -81,8 +81,8 @@ public class UserRepositoryDB implements UserIRepository {
             ResultSet rs = pstmt.getGeneratedKeys();
 
             if (rs.next()) {
-                int organization_id = rs.getInt(1);
-                user.setUser_id(organization_id);
+                int user_id = rs.getInt(1);
+                user.setUser_id(user_id);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -94,11 +94,11 @@ public class UserRepositoryDB implements UserIRepository {
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "UPDATE user SET username = ?, password = ? WHERE user_id = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(SQL)) {
-                stmt.setString(1, user.getUsername());
-                stmt.setString(2, user.getPassword());
-                stmt.setInt(3, user_id);
-                stmt.executeUpdate();
+            try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+                pstmt.setString(1, user.getUsername());
+                pstmt.setString(2, user.getPassword());
+                pstmt.setInt(3, user_id);
+                pstmt.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -115,13 +115,14 @@ public class UserRepositoryDB implements UserIRepository {
             PreparedStatement ps = conn.prepareStatement(SQL);
             ps.setInt(1, user_id);
             ResultSet rs = ps.executeQuery();
-            User user1 = null;
+            User user = null;
+
             if (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                user1 = new User(user_id,username, password);
+                user = new User(user_id, username, password);
             }
-            return user1;
+            return user;
         } catch (SQLException ex) {
             return null;
         }

@@ -1,7 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.User;
-import com.example.eksamensprojekt_2sem.Repository.UserRepositoryDB;
 import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -23,12 +22,14 @@ public class UserController {
         return "index";
     }
 
+
     //Page users see when they sign in
-    @GetMapping(path ="/home/{organization_id}")
-    public String homeOrg(Model model, @PathVariable int organization_id, HttpSession session) {
-        model.addAttribute("organization_id", organization_id);
+    @GetMapping(path ="/home/{user_id}")
+    public String homeOrg(Model model, @PathVariable int user_id) {
+        model.addAttribute("user_id", user_id);
         return "home";
     }
+
 
     //Checks if user is in current session
     @GetMapping(path = "/signin")
@@ -44,7 +45,6 @@ public class UserController {
             return "redirect:/home/" + user.getUser_id();
         }
     }
-
 
     //Sign in with user
     //TODO:: if wrong login input redirect to signin page and let user do it again
@@ -65,18 +65,12 @@ public class UserController {
         }
     }
 
-    //Sign out
-    @GetMapping(path="/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/signin";
-    }
 
     //Sign up page
     @GetMapping(path = "/signup")
     public String showSignUp(Model model) {
         User user = new User();
-        model.addAttribute("organization", user);
+        model.addAttribute("user", user);
         return "signup";
     }
 
@@ -87,17 +81,27 @@ public class UserController {
         return "redirect:/signin";
     }
 
-    //edit org
-    @GetMapping(path = "/editUser/{user_id}")
-    public String showEditUser(@PathVariable("user_id") int user_id, Model model) {
-        model.addAttribute("organization_id", user_id);
-        User user = userService.getUserFromId(user_id);
-        model.addAttribute("organization", user);
-        return "editOrganization";
+
+    //Sign out
+    @GetMapping(path="/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/signin";
     }
 
+
+    //Edit user page
+    @GetMapping(path = "/editUser/{user_id}")
+    public String showEditUser(@PathVariable("user_id") int user_id, Model model) {
+        model.addAttribute("user_id", user_id);
+        User user = userService.getUserFromId(user_id);
+        model.addAttribute("user", user);
+        return "editUser";
+    }
+
+    //Edit user
     @PostMapping(path = "/editUser/{user_id}")
-    public String editUser(@PathVariable("user_id") int user_id, @RequestParam("user_name")  String user_name, String password) {
+    public String editUser(@PathVariable("user_id") int user_id, @RequestParam("username")  String user_name, String password) {
         User user = userService.getUserFromId(user_id);
         user.setUsername(user_name);
         user.setPassword(password);

@@ -8,21 +8,20 @@
 
 <body>
 
-<form method="post" th:action="@{/editOrganization/{organization_id}(organization_id=${user.organization_id})}">
+<form method="post" th:action="@{/editUser/{user_id}(user_id=${user.user_id})}">
     <h1 class="loginh1">Edit user</h1>
 
-    <label for="organization_name">Organizion name:</label>
-    <input id="organization_name" type="text" th:name="organization_name" th:value="${user.organization_name}" required>
+    <label for="username">Username:</label>
+    <input id="username" type="text" th:name="username" th:value="${user.username}" required>
 
     <label for="password">Password:</label>
     <input id="password" type="text" th:name="password" th:value="${user.password}" required>
 
-    <input type="hidden" th:field="*{organization_id}">
+    <input type="hidden" th:field="*{user_id}">
 
     <button type="submit">Save</button>
 </form>
 
 
 </body>
-
 </html>
