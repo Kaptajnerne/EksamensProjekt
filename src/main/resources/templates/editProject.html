@@ -7,11 +7,26 @@
 </head>
 
 <body>
+
+<h1 align="center">Edit Project</h1>
+
 <div>
-    <form method="post" th:action="@{/editProject/{project_id}(project_id=${project_id})}">
-        <label for="project_name">Project_Name:</label>
-        <input id="project_name" type="text" th:name="project_name">
+    <form method="post" th:action="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project_id})}">
+
+        <label for="project_name">Project name:</label>
+        <input id="project_name" type="text" th:name="project_name" th:value="${project.project_name}">
+
+        <label for="project_description">Project description:</label>
+        <input id="project_description" type="text" th:name="project_description" th:value="${project.project_description}" >
+
+        <input type="hidden" th:field="*{project_id}" required>
+
+        <input type="hidden" th:name="organization" th:value="*{user_id}" required>
+
+
         <button type="submit">Save</button>
+
+
     </form>
 
 </div>

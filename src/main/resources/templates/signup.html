@@ -14,15 +14,15 @@
 
   <br>
 
-  <form th:action="@{/signup}" method="post" th:object="${organization}">
+  <form th:action="@{/signup}" method="post" th:object="${user}">
 
     <div class="signupForm">
-        <label class="col-sm-2 col-form-label"> Organization name:</label>
-        <input type="text" th:field="*{organization_name}" placeholder="Organization name" required>
+        <label class="col-sm-2 col-form-label"> Username:</label>
+        <input type="text" th:field="*{username}" placeholder="User name" required>
     </div>
     <div class="signupForm">
         <label class="col-sm-2 col-form-label"> Password:</label>
-        <input type="text" th:field="*{password}" placeholder="password" required>
+        <input type="text" th:field="*{password}" placeholder="Password" required>
     </div>
 
     <br>
@@ -34,11 +34,14 @@
 
     <br>
 
-    <a th:href="@{/}">
-      <button type="button" class="btn btn-secondary btn-lg">Go Back</button>
-    </a>
+      <a th:href="@{/signin}">Already got an account?</a>
 
   </form>
+
+    <a th:href="@{/}">
+        <button type="button" class="btn btn-secondary btn-lg">Go Back</button>
+    </a>
+
 </div>
 
 </body>

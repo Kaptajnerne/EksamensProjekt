@@ -9,28 +9,34 @@
 
 <h1 align="center">Manage Projects</h1>
 
-<table class="table table-dark" th:each="project : ${projects}">
+<table class="table table-dark">
     <thead>
     <tr>
         <th scope="col">Project Number</th>
         <th scope="col">Project Name</th>
-        <th scope="col">Estimated Time</th>
-        <th scope="col">Employee ID</th>
-        <th scope="col">Organization ID</th>
+        <th scope="col">Project Description</th>
+        <th scope="col">User ID</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr th:each="project : ${projects}">
         <td th:text="${project.project_id}"/>
         <td th:text="${project.project_name}"/>
-        <td th:text="${project.estimated_time}"/>
-        <td th:text="${project.employee_id}"/>
-        <td th:text="${project.organization_id}"/>
-        <td><a th:href="@{/editProject/{project_id}(project_id=${project.project_id})}">
+        <td th:text="${project.project_description}"/>
+        <td th:text="${project.user_id}"/>
+
+        <td><a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
             <button type="button" class="btn">Edit project</button>
         </a></td>
 
     </tr>
+
+    <div>
+        <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
+            <button type="button" class="btn">Create project</button>
+        </a>
+    </div>
+
     </tbody>
 </table>
 </body>
