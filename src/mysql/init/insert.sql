@@ -1,6 +1,6 @@
 USE pct_db2;
 
-INSERT INTO user (username, email, password) VALUES ('KEA', 'kea@gmail.com','1234');
+INSERT INTO user (username, password) VALUES ('KEA', '1234');
 
 INSERT INTO project (project_name, user_id) VALUES ('KEA Project', 1);
 
