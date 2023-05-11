@@ -15,6 +15,10 @@ public class Project {
 
     }
 
+    public Project() {
+
+    }
+
     public int getProject_id() {
         return project_id;
     }

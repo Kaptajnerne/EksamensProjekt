@@ -5,10 +5,7 @@ import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +42,29 @@ public class ProjectRepositoryDB implements ProjectIRepository {
             }
             return projects;
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Create projects
+    public void createProject(Project project, int user_id) {
+        try{
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+
+            String SQL = "INSERT INTO project (project_name, project_description, user_id) VALUES (?, ?, ?);";
+            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, project.getProject_name());
+            pstmt.setString(2, project.getProject_description());
+            pstmt.setInt(3, user_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if(rs.next()) {
+                int project_id = rs.getInt(1);
+                project.setProject_id(project_id);
+            }
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

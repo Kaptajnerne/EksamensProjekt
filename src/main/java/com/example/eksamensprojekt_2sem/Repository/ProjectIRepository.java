@@ -8,4 +8,7 @@ public interface ProjectIRepository {
 
     //Get projects from org
     public List<Project> getProjectsByID(int organization_id);
+
+    //Create Project
+    public void createProject(Project project, int user_id);
 }

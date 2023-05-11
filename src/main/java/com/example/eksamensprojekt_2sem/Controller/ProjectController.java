@@ -29,11 +29,26 @@ public class ProjectController {
         return "projects";
     }
 
+    //Create project page
+    @GetMapping(path = "projects/create/{user_id}")
+    public String showCreateProject(Model model, @PathVariable int user_id) {
+        Project project = new Project();
+        model.addAttribute("project", project);
+        model.addAttribute("user_id", user_id);
+        return "createProject";
+    }
+
+    //Create project
+    @PostMapping(path = "projects/create/{user_id}")
+    public String createProject(@ModelAttribute("project") Project project, @PathVariable int user_id) {
+        projectService.createProject(project, user_id);
+        return "redirect:/projects/" + user_id;
+    }
+
 
 
    /* //edit project page
-    //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
-    @GetMapping(path = "/editProject/{project_ID}")
+    @GetMapping(path = "/editProject/{project_id}")
     public String editProject(@PathVariable("project_ID") int project_ID, Model model) {
         model.addAttribute("project_id", project_ID);
         Project project = projectService.getProject(project_ID);
@@ -42,7 +57,6 @@ public class ProjectController {
     }
 
     //edit project
-    //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
     @PostMapping(path = "/editProject/{project_ID}")
     public String updateProject(@PathVariable("project_ID") int project_ID, @RequestParam("project_name") String project_name) {
         Project project = projectService.getProject(project_ID);

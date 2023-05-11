@@ -23,5 +23,10 @@ public class ProjectService {
         return projectRepositoryDB.getProjectsByID(user_id);
     }
 
+    //Create project
+    public void createProject(Project project, int user_id) {
+        projectRepositoryDB.createProject(project, user_id);
+    }
+
 
 }
