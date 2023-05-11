@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class ProjectRepositoryDB implements ProjectIRepository {
 
-    @Value("jdbc:mysql://localhost:3306/pct_db")
+    @Value("jdbc:mysql://localhost:3306/pct_db2")
     private String db_url;
 
     @Value("root")
@@ -26,23 +26,22 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
     //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
-    //Get projects from org id
-    public List<Project> getProjectsByID(int organization_id) {
+    //Get projects from user_id
+    public List<Project> getProjectsByID(int user_id) {
         List<Project> projects = new ArrayList<>();
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM project WHERE organization_id = ?;";
+            String SQL = "SELECT * FROM project WHERE user_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, organization_id);
+            pstmt.setInt(1, user_id);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
-                double estimated_time = rs.getDouble("estimated_time");
-                int employee_id = rs.getInt("employee_id");
+                String project_description = rs.getString("project_description");
 
-                projects.add(new Project(project_id, project_name, estimated_time, employee_id, organization_id));
+                projects.add(new Project(project_id, project_name, project_description, user_id));
             }
             return projects;
         } catch (SQLException e) {
@@ -50,7 +49,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
-    //Get project from org id
+   /* //Get project from user_id
     //TODO:: Change to better descriptive names, to increase code consistency and readability
     public Project getProject(int id) {
         try {
@@ -70,9 +69,9 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    //Update project
+    /*//Update project
     //TODO:: Why is project_ID in the parameter. Change names to lowercase, to increase code consistency
     public void editProject(Project project, int project_ID) {
         try {
@@ -88,5 +87,5 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }
