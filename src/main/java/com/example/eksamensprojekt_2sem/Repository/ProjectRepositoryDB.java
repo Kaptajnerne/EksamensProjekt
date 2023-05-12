@@ -49,7 +49,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
     //Create projects
     public void createProject(Project project, int user_id) {
-        try{
+        try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
 
             String SQL = "INSERT INTO project (project_name, project_description, user_id) VALUES (?, ?, ?);";
@@ -60,7 +60,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 int project_id = rs.getInt(1);
                 project.setProject_id(project_id);
             }
@@ -92,7 +92,6 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     }
 
 
-
     //Get project from user_id and user_id
     public Project getProjectByIDs(int project_id, int user_id) {
         Project project = null;
@@ -117,5 +116,49 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+    public Project getProjectByProjectID(int project_id) {
+        Project project = null;
+        try {
+            Connection con = DriverManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM project WHERE project_id = ?;";
+            PreparedStatement statement = con.prepareStatement(SQL);
+            statement.setInt(1, project_id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String project_name = resultSet.getString("project_name");
+                String project_description = resultSet.getString("project_description");
+                int user_id = resultSet.getInt("user_id");
+                project = new Project(project_id, project_name, project_description, user_id);
+            }
+            return project;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteProject(int projectId) {
+        try {
+            Connection connection = DriverManager.getConnection(db_url, uid, pwd);
+            PreparedStatement statement1 = connection.prepareStatement("DELETE FROM subtask WHERE task_id IN "
+                    + "(SELECT task_id FROM task WHERE project_id = ?)");
+            PreparedStatement statement2 = connection.prepareStatement("DELETE FROM task WHERE project_id = ?");
+            PreparedStatement statement3 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?");
+
+            connection.setAutoCommit(false);
+
+            statement1.setInt(1, projectId);
+            statement1.executeUpdate();
+
+            statement2.setInt(1, projectId);
+            statement2.executeUpdate();
+
+            statement3.setInt(1, projectId);
+            statement3.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
