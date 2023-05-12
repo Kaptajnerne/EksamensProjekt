@@ -26,14 +26,14 @@ public class TaskService {
         return taskRepositoryDB.getTaskByIDs(task_id, project_id);
     }
     public void deleteTask(int task_id) {
-        taskRepository.deleteTask(task_id);
+        taskRepositoryDB.deleteTask(task_id);
     }
 
     public Task getTaskById(int taskId) {
-       return taskRepository.getTaskbyTaskId(taskId);
+       return taskRepositoryDB.getTaskbyTaskId(taskId);
     }
 
     public int getProIDbyTaskID(int task_id) {
-        return taskRepository.getProIDbyTaskID(task_id);
+        return taskRepositoryDB.getProIDbyTaskID(task_id);
     }
 }

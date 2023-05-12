@@ -3,7 +3,6 @@ package com.example.eksamensprojekt_2sem.Controller;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Model.User;
-import com.example.eksamensprojekt_2sem.Repository.TaskRepository;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
