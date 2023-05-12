@@ -3,6 +3,7 @@ package com.example.eksamensprojekt_2sem.Controller;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Repository.TaskRepository;
+import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,9 @@ import java.util.List;
 @Controller
 public class TaskController {
     TaskService taskService;
-    public TaskController(TaskService taskService){
-        this.taskService=taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     //get task by project_id
@@ -60,6 +62,19 @@ public class TaskController {
         }*/
     }
 
+    @GetMapping(path = "task/delete/{task_id}")
+    public String deleteTask(@PathVariable("task_id") int task_id, Model model) {
+        model.addAttribute("task_id", task_id);
+        Task task = taskService.getTaskById(task_id);
+        model.addAttribute("task", task);
+        return "deleteTask";
+    }
 
+    @PostMapping(path = "task/delete/{task_id}")
+    public String removeTask(@PathVariable("task_id") int task_id, Model model) {
+       int projectID = taskService.getProIDbyTaskID(task_id);
+        taskService.deleteTask(task_id);
+        return "redirect:/tasks/" + projectID;
+    }
 
 }

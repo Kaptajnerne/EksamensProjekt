@@ -22,9 +22,17 @@
         <td th:text="${task.hours}"/>
         <td th:text="${task.project_id}"/>
 
+        <td>
         <a th:href="@{/projects/}">
             <button>Edit Task</button>
         </a>
+        </td>
+
+        <td>
+        <a th:href="@{/task/delete/{task_id}(task_id=${task.task_id})}">
+            <button>Delete Task</button>
+        </a>
+        </td>
 
 
     </tr>

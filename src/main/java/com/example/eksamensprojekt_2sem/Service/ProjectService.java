@@ -16,7 +16,7 @@ public class ProjectService {
     public ProjectService(ProjectRepositoryDB projectRepositoryDB) {
         this.projectRepositoryDB = projectRepositoryDB;
     }
-
+    //delete project
     public void deleteProject(int project_id) {
        projectRepositoryDB.deleteProject(project_id);
     }

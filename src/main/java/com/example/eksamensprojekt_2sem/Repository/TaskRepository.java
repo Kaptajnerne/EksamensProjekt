@@ -65,5 +65,59 @@ public class TaskRepository {
         }
     }
 
+    //Delete Task
+    public void deleteTask(int task_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "DELETE FROM subtask WHERE task_id = ?";
+            String SQL1 = "DELETE FROM task WHERE task_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            PreparedStatement pstmt1 = con.prepareStatement(SQL1);
+            pstmt.setInt(1, task_id);
+            pstmt.executeUpdate();
+            pstmt1.setInt(1, task_id);
+            pstmt1.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Task getTaskbyTaskId(int task_id) {
+        Task task = null;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM task WHERE task_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, task_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String task_name = rs.getString("task_name");
+                Double hours = rs.getDouble("hours");
+                int project_id = rs.getInt("project_id");
+                task = new Task(task_id,task_name, hours, project_id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+                return task;
+    }
+
+    public int getProIDbyTaskID(int task_id){
+        int project_id = 0;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT project_id FROM task WHERE task_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, task_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                project_id = rs.getInt("project_id");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return project_id;
+    }
+
 
 }
