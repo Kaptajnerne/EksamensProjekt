@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import jakarta.servlet.http.HttpSession;
@@ -56,6 +57,23 @@ public class TaskController {
         } else {
             return "redirect://";
         }*/
+    }
+    //Edit project page
+    @GetMapping(path = "/tasks/{project_id}/edit/{task_id}")
+    public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
+        Task task = taskService.getTaskByIDs(task_id, project_id);
+        model.addAttribute("task", task);
+        model.addAttribute("task_id", task_id);
+        model.addAttribute("project_id", project_id);
+        return "editTask";
+    }
+
+    //Edit project
+    @PostMapping(path = "/tasks/{project_id}/edit/{task_id}")
+    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
+        //Task task = taskService.getTaskByIDs(, task_id, project_id);
+        taskService.editTask(task, task_id, project_id);
+        return "redirect:/tasks/" + project_id;
     }
 
 
