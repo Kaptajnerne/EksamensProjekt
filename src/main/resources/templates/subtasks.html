@@ -24,11 +24,11 @@
         <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
                 <button type="button" class="btn">Delete Subtask</button>
         </a> </td>
-        <td>
-            <a th:href="@{/tasks/}">
-                <button type="button" class="btn">Edit Subtask</button>
-            </a>
-        </td>
+
+        <td> <a th:href="@{/subtask/{task_id}/edit/{subtask_id}(task_id=${task_id}, subtask_id=${subtask.subtask_id})}">
+            <button>Edit Subtask</button>
+        </a></td>
+
 
     </tr>
     </tbody>

@@ -37,13 +37,18 @@ public class ProjectService {
         projectRepositoryDB.editProject(project, project_id, user_id);
     }
 
-    //Get project by project_id
+    //Get project by IDs
     public Project getProjectByIDs(int project_id, int user_id) {
         return projectRepositoryDB.getProjectByIDs(project_id, user_id);
     }
 
+    //Get project by project_id
     public Project getProjectByProjectID(int project_id) {
         return projectRepositoryDB.getProjectByProjectID(project_id);
+    }
+
+    public int getProjectID (int task_id){
+        return projectRepositoryDB.getProjectID(task_id);
     }
 
 
