@@ -21,29 +21,8 @@ public class TaskRepository {
     @Value("1234")
     private String pwd;
 
-    public Task createTask(Task task, int project_id) {
-        Task tsk = null;
-        try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "INSERT INTO task (task_name, start_date, end_date, project_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, task.getTask_name());
-            pstmt.setDate(2, Date.valueOf(task.getStart_date()));
-            pstmt.setDate(3, Date.valueOf(task.getEnd_date()));
-            pstmt.setInt(4, project_id);
-            pstmt.executeUpdate();
-            ResultSet rs = pstmt.getGeneratedKeys();
 
-            if (rs.next()) {
-                int task_id = rs.getInt(1);
-                tsk = new Task(task_id, task.getTask_name(), task.getStart_date(), task.getEnd_date(), project_id);
-            }
-            return tsk;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    //Get Task by project_id
     public List<Task> getTaskByProID(int project_id) {
         List<Task> tasks = new ArrayList<>();
         try {
@@ -66,4 +45,28 @@ public class TaskRepository {
             throw new RuntimeException(e);
         }
     }
+
+    //Create Task
+    public void createTask(Task task, int project_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "INSERT INTO task (task_name, start_date, end_date, project_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, task.getTask_name());
+            pstmt.setDate(2, Date.valueOf(task.getStart_date()));
+            pstmt.setDate(3, Date.valueOf(task.getEnd_date()));
+            pstmt.setInt(4, project_id);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                int task_id = rs.getInt(1);
+                task.setTask_id(task_id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

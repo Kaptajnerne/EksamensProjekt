@@ -12,8 +12,8 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository){
        this.taskRepository=taskRepository;
     }
-    public Task createTask(Task task, int project_id) {
-        return taskRepository.createTask(task,project_id);
+    public void createTask(Task task, int project_id)  {
+        taskRepository.createTask(task, project_id);
     }
     public List<Task> getTaskByProID(int project_id) {
         return taskRepository.getTaskByProID(project_id);

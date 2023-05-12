@@ -34,20 +34,20 @@ public class TaskController {
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
         Task task = new Task();
-        if(session.getAttribute("project") != null) {
-            model.addAttribute("tsk", task);
-            model.addAttribute("project_id", project_id);
-            Project project = (Project) session.getAttribute("project");
-            return "createTask";
+        model.addAttribute("task", task);
+        model.addAttribute("project_id", project_id);
+        return "createTask";
 
+        /*if(session.getAttribute("project") != null) {
+            Project project = (Project) session.getAttribute("project");
         } else {
             return "redirect://";
-        }
+        }*/
     }
 
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
-        if(session.getAttribute("organization") != null) {
+        if(session.getAttribute("user") != null) {
             taskService.createTask(task, project_id);
             return "redirect:/task/" + project_id;
         } else {

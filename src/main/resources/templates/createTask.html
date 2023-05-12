@@ -10,7 +10,7 @@
 
     <h1>Create Task</h1>
 
-    <form th:action="@{/task/create/{project_id}(project_id=${project_id})}" method="POST" th:object="${tsk}">
+    <form th:action="@{/task/create/{project_id}(project_id=${project_id})}" method="POST" th:object="${task}">
 
         <div class="createTaskForm">
             <label class="createTaskForm">Task name:</label>
