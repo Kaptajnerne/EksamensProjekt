@@ -35,10 +35,8 @@ public class TaskRepository {
             while (rs.next()) {
                 int task_id = rs.getInt("task_id");
                 String task_name = rs.getString("task_name");
-                LocalDate start_date = rs.getDate("start_date").toLocalDate();
-                LocalDate end_date = rs.getDate("end_date").toLocalDate();
-
-                tasks.add(new Task(task_id, task_name, start_date, end_date, project_id));
+                Double hours = rs.getDouble("hours");
+                tasks.add(new Task(task_id, task_name, hours, project_id));
             }
             return tasks;
         } catch (SQLException e) {
@@ -50,12 +48,11 @@ public class TaskRepository {
     public void createTask(Task task, int project_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "INSERT INTO task (task_name, start_date, end_date, project_id) VALUES (?, ?, ?, ?)";
+            String SQL = "INSERT INTO task (task_name, hours, project_id) VALUES (?, ?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, task.getTask_name());
-            pstmt.setDate(2, Date.valueOf(task.getStart_date()));
-            pstmt.setDate(3, Date.valueOf(task.getEnd_date()));
-            pstmt.setInt(4, project_id);
+            pstmt.setDouble(2, task.getHours());
+            pstmt.setInt(3, project_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 

@@ -12,16 +12,14 @@
     <thead>
     <tr>
         <th scope="col">Task name</th>
-        <th scope="col">Task start date</th>
-        <th scope="col">Task end date</th>
+        <th scope="col">Task hours</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="task : ${tasks}">
         <td th:text="${task.task_id}"/>
         <td th:text="${task.task_name}"/>
-        <td th:text="${task.start_date}"/>
-        <td th:text="${task.end_date}"/>
+        <td th:text="${task.hours}"/>
         <td th:text="${task.project_id}"/>
 
         <a th:href="@{/projects/}">

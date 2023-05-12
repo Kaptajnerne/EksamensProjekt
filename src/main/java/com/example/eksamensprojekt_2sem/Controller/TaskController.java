@@ -20,6 +20,8 @@ public class TaskController {
     public TaskController(TaskService taskService){
         this.taskService=taskService;
     }
+
+    //get task by project_id
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
         List<Task> tasks = taskService.getTaskByProID(project_id);
@@ -31,6 +33,7 @@ public class TaskController {
         }*/
     }
 
+    //create task page
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
         Task task = new Task();
@@ -47,12 +50,14 @@ public class TaskController {
 
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
-        if(session.getAttribute("user") != null) {
-            taskService.createTask(task, project_id);
-            return "redirect:/task/" + project_id;
+        taskService.createTask(task, project_id);
+        return "redirect:/tasks/" + project_id;
+
+       /* if(session.getAttribute("user") != null) {
+
         } else {
             return "redirect://";
-        }
+        }*/
     }
 
 
