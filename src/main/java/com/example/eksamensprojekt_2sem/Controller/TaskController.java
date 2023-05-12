@@ -1,8 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
-import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
-import com.example.eksamensprojekt_2sem.Repository.TaskRepository;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;

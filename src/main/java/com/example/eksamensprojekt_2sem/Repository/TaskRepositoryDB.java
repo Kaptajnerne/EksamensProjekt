@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TaskRepository {
+public class TaskRepositoryDB implements TaskIRepository {
     @Value("jdbc:mysql://localhost:3306/pct_db2")
     private String db_url;
 
