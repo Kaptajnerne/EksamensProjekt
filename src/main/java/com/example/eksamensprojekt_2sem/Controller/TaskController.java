@@ -1,7 +1,10 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
+import com.example.eksamensprojekt_2sem.Model.User;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
+import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +17,23 @@ import java.util.List;
 
 @Controller
 public class TaskController {
+
     TaskService taskService;
-    public TaskController(TaskService taskService){
+
+    UserService userService;
+
+    public TaskController(TaskService taskService, UserService userService){
         this.taskService=taskService;
+        this.userService = userService;
     }
 
     //get task by project_id
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
         List<Task> tasks = taskService.getTaskByProID(project_id);
+        int user_id = userService.getUserID(project_id);
         model.addAttribute("tasks", tasks);
+        model.addAttribute("user_id", user_id);
         return "tasks";
        /* if(session.getAttribute("project") != null) {
         } else {
@@ -56,6 +66,23 @@ public class TaskController {
         } else {
             return "redirect://";
         }*/
+    }
+    //Edit project page
+    @GetMapping(path = "/task/{project_id}/edit/{task_id}")
+    public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
+        Task task = taskService.getTaskByIDs(task_id, project_id);
+        model.addAttribute("task", task);
+        model.addAttribute("task_id", task_id);
+        model.addAttribute("project_id", project_id);
+        return "editTask";
+    }
+
+    //Edit project
+    @PostMapping(path = "/task/{project_id}/edit/{task_id}")
+    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
+        //Task task = taskService.getTaskByIDs(, task_id, project_id);
+        taskService.editTask(task, task_id, project_id);
+        return "redirect:/tasks/" + project_id;
     }
 
 

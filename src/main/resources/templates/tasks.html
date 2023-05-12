@@ -11,8 +11,10 @@
 <table class="table table-dark">
     <thead>
     <tr>
+        <th scope="col">Task id</th>
         <th scope="col">Task name</th>
         <th scope="col">Task hours</th>
+        <th scope="col">Project id</th>
     </tr>
     </thead>
     <tbody>
@@ -22,9 +24,9 @@
         <td th:text="${task.hours}"/>
         <td th:text="${task.project_id}"/>
 
-        <a th:href="@{/projects/}">
+        <td> <a th:href="@{/task/{project_id}/edit/{task_id}(project_id=${project_id}, task_id=${task.task_id})}">
             <button>Edit Task</button>
-        </a>
+        </a></td>
 
         <td>
             <a th:href="@{/subtasks/{task_id}(task_id=${task.task_id})}">
@@ -39,6 +41,10 @@
 <div>
     <a th:href="@{/task/create/{project_id}(project_id=${project_id})}">
         <button type="button" class="btn">Create Task</button>
+    </a>
+
+    <a th:href="@{/projects/{user_id}(user_id=${user_id})}">
+        <button type="button" class="btn go-back">Go Back</button>
     </a>
 </div>
 
