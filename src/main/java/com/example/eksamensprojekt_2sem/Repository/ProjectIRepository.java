@@ -17,4 +17,6 @@ public interface ProjectIRepository {
 
     //Get project by project_id and user_id
     public Project getProjectByIDs(int project_id, int user_id);
+
+    public int getProjectID (int task_id);
 }

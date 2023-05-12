@@ -22,9 +22,9 @@
         <td th:text="${subtask.hours}"/>
         <td th:text="${subtask.task_id}"/>
 
-        <a th:href="@{/tasks/}">
+        <td> <a th:href="@{/subtask/{task_id}/edit/{subtask_id}(task_id=${task_id}, subtask_id=${subtask.subtask_id})}">
             <button>Edit Subtask</button>
-        </a>
+        </a></td>
 
 
     </tr>
