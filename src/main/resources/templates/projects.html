@@ -31,6 +31,9 @@
         <td><a th:href="@{/deleteProject/{project_id}(project_id=${project.project_id})}">
             <button type="button" class="btn">Delete project</button>
         </a> </td>
+        <td><a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
+            <button type="button" class="btn">View tasks</button>
+        </a></td>
 
     </tr>
 
@@ -38,7 +41,12 @@
         <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
             <button type="button" class="btn">Create project</button>
         </a>
+
+        <a th:href="@{/home/{user_id}(user_id=${user_id})}">
+            <button type="button" class="btn">Home</button>
+        </a>
     </div>
+
 
     </tbody>
 </table>
