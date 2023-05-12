@@ -1,25 +1,22 @@
 package com.example.eksamensprojekt_2sem.Model;
 
-import java.util.List;
-
 public class Project {
 
     private int project_id;
     private String project_name;
-    private double estimated_time;
-    private List<Integer> employee_id;
-    private int organization_id;
+    private String project_description;
+    private int user_id;
 
-    public Project(int project_id, String project_name, double estimated_time, List<Integer> employee_id, int organization_id) {
+    public Project(int project_id , String project_name, String project_description, int user_id) {
         this.project_id = project_id;
         this.project_name = project_name;
-        this.estimated_time = estimated_time;
-        this.employee_id = employee_id;
-        this.organization_id = organization_id;
+        this.project_description = project_description;
+        this.user_id = user_id;
 
     }
 
     public Project() {
+
     }
 
     public int getProject_id() {
@@ -38,27 +35,20 @@ public class Project {
         this.project_name = project_name;
     }
 
-    public double getEstimated_time() {
-        return estimated_time;
+
+    public String getProject_description() {
+        return project_description;
     }
 
-    public void setEstimated_time(double estimated_time) {
-        this.estimated_time = estimated_time;
+    public void setProject_description(String project_description) {
+        this.project_description = project_description;
     }
 
-    public List<Integer> getEmployee_id() {
-        return employee_id;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setEmployee_id(List<Integer> employee_id) {
-        this.employee_id = employee_id;
-    }
-
-    public int getOrganization_id() {
-        return organization_id;
-    }
-
-    public void setOrganization_id(int organization_id) {
-        this.organization_id = organization_id;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

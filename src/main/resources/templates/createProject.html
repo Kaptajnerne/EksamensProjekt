@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Create Project</title>
 </head>
 <body>
+
 <div align="center">
 
     <h1>Create Project</h1>
 
     <br>
 
-    <form th:action="@{/projects/{organization_id}/create(organization_id=${organization_id})}" method="post" th:object="${project}">
+    <form th:action="@{/projects/create/{user_id}(user_id=${user_id})}" method="post"
+          th:object="${project}">
 
-    <div class="createProject">
-                <label class="col-createProject label">Project name:</label>
-                <input type="text" th:field="${project.project_name}" placeholder="Faxxax Hanukkah" required>
+        <div class="createProject">
+            <label class="col-createProject label">Project name:</label>
+            <input type="text" th:field="${project.project_name}" placeholder="Project name" required>
         </div>
 
         <div class="createProject">
-                <label class="col-createProject label">Estimated Time:</label>
-                <input type="number" th:field="${project.estimated_time}" placeholder="30" required>
+            <label class="col-createProject label">Project Description:</label>
+            <input type="text" th:field="${project.project_description}" placeholder="Describe the project">
         </div>
-
-        <div class="createProject">
-            <label class="col-col-createProject label">Assign employees to project</label>
-                    <div th:each="employee : ${employees}" class="checkbox-container">
-                        <label><input type="checkbox" th:field="*{employees}" th:value="${employee}" th:text="${employee}"/></label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
 
         <br>
 
@@ -42,13 +32,11 @@
             <input type="reset" value="Reset" class="btn btn-danger"/>
         </div>
 
-        <br>
-
-        <a th:href="@{/projects/{organization_id}(organization_id=${organization_id})}">
-            <button type="button" class="btn">Go Back</button>
+        <a th:href="@{/projects/{user_id}(user_id=${user_id})}">
+            <button type="button" class="btn">View Projects</button>
         </a>
 
     </form>
-</div>
+
 </body>
 </html>

@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link th:href="@{/theme2.css}" rel="stylesheet">
 </head>
 <body>
 
 <h2 align="center">Sign in</h2>
 
 <div align="center" class="sign-in">
-    <form method="post" th:action="@{/signin}" th:object="${organization}">
+    <form method="post" th:action="@{/signin}" th:object="${user}">
     <pre>
 
-        <label for="organization_name">Organization Name:</label>
-        <input id="organization_name" type="text"
-               th:field="*{organization_name}"
-               placeholder="Organization name"
+        <label for="user_name">Organization Name:</label>
+        <input id="user_name" type="text"
+               th:field="*{username}"
+               placeholder="Username"
                required="required"/>
 
         <label for="password">Password:</label>
@@ -25,6 +26,10 @@
                required="required"/>
 
         <input type="submit" value="Log in">
+
+        <a th:href="@{/signup}">
+            <button type="button">Create new account</button>
+        </a>
 
     </pre>
     </form>

@@ -6,16 +6,17 @@ public class Employee {
     private String first_name;
     private String last_name;
     private String email;
-    private String phone_number;
     private int organization_id;
 
-    public Employee(int employee_id, String first_name, String last_name, String email, String phone_number, int organization_id) {
+    public Employee(int employee_id, String first_name, String last_name, String email, int organization_id) {
         this.employee_id = employee_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
-        this.phone_number = phone_number;
         this.organization_id = organization_id;
+    }
+
+    public Employee() {
     }
 
     public int getEmployee_id() {
@@ -48,14 +49,6 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone_number() {
-        return phone_number;
-    }
-
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
     }
 
     public int getOrganization_id() {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link th:href="@{/theme2.css}" rel="stylesheet">
+</head>
+<body>
+
+
+<div align="center">
+
+  <h1>Sign up Organization</h1>
+
+  <br>
+
+  <form th:action="@{/signup}" method="post" th:object="${user}">
+
+    <div class="signupForm">
+        <label class="col-sm-2 col-form-label"> Username:</label>
+        <input type="text" th:field="*{username}" placeholder="User name" required>
+    </div>
+    <div class="signupForm">
+        <label class="col-sm-2 col-form-label"> Password:</label>
+        <input type="text" th:field="*{password}" placeholder="Password" required>
+    </div>
+
+    <br>
+
+    <div>
+      <input type="submit" value="Sign up" class="btn-success"/>
+      <input type="reset" value="Reset" class="btn-reset"/>
+    </div>
+
+    <br>
+
+      <a th:href="@{/signin}">Already got an account?</a>
+
+  </form>
+
+    <a th:href="@{/}">
+        <button type="button" class="btn btn-secondary btn-lg">Go Back</button>
+    </a>
+
+</div>
+
+</body>
+</html>
