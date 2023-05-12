@@ -59,7 +59,7 @@ public class TaskController {
         }*/
     }
     //Edit project page
-    @GetMapping(path = "/tasks/{project_id}/edit/{task_id}")
+    @GetMapping(path = "/task/{project_id}/edit/{task_id}")
     public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
         Task task = taskService.getTaskByIDs(task_id, project_id);
         model.addAttribute("task", task);
@@ -69,7 +69,7 @@ public class TaskController {
     }
 
     //Edit project
-    @PostMapping(path = "/tasks/{project_id}/edit/{task_id}")
+    @PostMapping(path = "/task/{project_id}/edit/{task_id}")
     public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
         //Task task = taskService.getTaskByIDs(, task_id, project_id);
         taskService.editTask(task, task_id, project_id);

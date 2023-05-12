@@ -25,7 +25,7 @@
         <td th:text="${project.project_description}"/>
         <td th:text="${project.user_id}"/>
 
-        <td><a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
+        <td><a th:href="@{/projects.html/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
             <button type="button" class="btn">Edit project</button>
         </a></td>
         <td><a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
