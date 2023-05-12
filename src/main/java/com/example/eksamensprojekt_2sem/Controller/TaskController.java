@@ -22,13 +22,13 @@ public class TaskController {
     }
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
-        if(session.getAttribute("project") != null) {
-            List<Task> tasks = taskService.getTaskByProID(project_id);
-            model.addAttribute("tasks", tasks);
-            return "tasks";
+        List<Task> tasks = taskService.getTaskByProID(project_id);
+        model.addAttribute("tasks", tasks);
+        return "tasks";
+       /* if(session.getAttribute("project") != null) {
         } else {
             return "redirect://";
-        }
+        }*/
     }
 
     @GetMapping(path = "task/create/{project_id}")
@@ -45,7 +45,6 @@ public class TaskController {
         }
     }
 
-    //Add employee
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
         if(session.getAttribute("organization") != null) {
