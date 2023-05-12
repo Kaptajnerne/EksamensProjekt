@@ -23,8 +23,7 @@ CREATE TABLE project
 CREATE TABLE task
 (task_id int not null auto_increment,
  task_name varchar(100),
- start_date date,
- end_date date,
+ hours double,
  project_id int not null,
  primary key(task_id),
  foreign key(project_id) references project (project_id));
@@ -32,8 +31,7 @@ CREATE TABLE task
 CREATE TABLE subtask
 (subtask_id int not null auto_increment,
  subtask_name varchar(100),
- start_date date,
- end_date date,
+ hours double,
  task_id int not null,
  primary key(subtask_id),
  foreign key(task_id) references task (task_id));
