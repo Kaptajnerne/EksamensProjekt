@@ -13,8 +13,8 @@ public class UserService {
         this.userRepositoryDB = userRepositoryDB;
     }
 
-    public int getUserID(int username) {
-        return userRepositoryDB.getUserID(username);
+    public int getUserID(int user_id) {
+        return userRepositoryDB.getUserID(user_id);
     }
     //Sign in
     public User signIn(String username, String password){

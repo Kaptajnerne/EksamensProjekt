@@ -37,10 +37,12 @@
     <a th:href="@{/task/create/{project_id}(project_id=${project_id})}">
         <button type="button" class="btn">Create Task</button>
     </a>
+
+    <a th:href="@{/projects/{user_id}(user_id=${user_id})}">
+        <button type="button" class="btn go-back">Go Back</button>
+    </a>
 </div>
-<a th:href="@{/projects/{project_id}(project_id=${project_id})}">
-    <button type="button" class="btn go-back">Go Back</button>
-</a>
+
 
 </body>
 </html>
