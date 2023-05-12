@@ -108,6 +108,7 @@ public class UserRepositoryDB implements UserIRepository {
     }
 
 
+    //get user from id
     public User getUserFromId(int user_id) {
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
@@ -129,7 +130,7 @@ public class UserRepositoryDB implements UserIRepository {
     }
 
 
-
+    //Get user id from project id
     public int getUserID (int project_id){
         int user_id = 0;
         try {
@@ -147,24 +148,4 @@ public class UserRepositoryDB implements UserIRepository {
         }
 
     }
-// TODO: 11/05/2023 Ændre ud fra id
-    /*
-    public int findUserID(int employee_id) {
-        int user_id = 0;
-        try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT user_id from user WHERE employee_id = ?;";
-            PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setInt(1, employee_id);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                user_id = rs.getInt("user_id");
-            }
-            return user_id;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-     */
 }

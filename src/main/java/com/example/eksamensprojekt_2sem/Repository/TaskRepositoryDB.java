@@ -128,6 +128,7 @@ public class TaskRepositoryDB implements TaskIRepository {
         }
     }
 
+    //Get Task from task_id
     public Task getTaskbyTaskId(int task_id) {
         Task task = null;
         try {
@@ -148,6 +149,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 return task;
     }
 
+    //Get project_id by task_id
     public int getProIDbyTaskID(int task_id){
         int project_id = 0;
         try {

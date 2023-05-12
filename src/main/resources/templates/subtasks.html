@@ -21,11 +21,14 @@
         <td th:text="${subtask.subtask_name}"/>
         <td th:text="${subtask.hours}"/>
         <td th:text="${subtask.task_id}"/>
-
-        <a th:href="@{/tasks/}">
-            <button>Edit Subtask</button>
-        </a>
-
+        <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
+                <button type="button" class="btn">Delete Subtask</button>
+        </a> </td>
+        <td>
+            <a th:href="@{/tasks/}">
+                <button type="button" class="btn">Edit Subtask</button>
+            </a>
+        </td>
 
     </tr>
     </tbody>

@@ -42,4 +42,19 @@ public class SubtaskController {
         return "redirect:/subtasks/" + task_id;
 
     }
+
+    @GetMapping(path = "subtasks/delete/{subtask_id}")
+    public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id) {
+        Subtask subtask = subtaskService.getSubtaskByID(subtask_id);
+        model.addAttribute("subtask", subtask);
+        return "deleteSubtask";
+    }
+
+    @PostMapping(path = "subtasks/delete/{subtask_id}")
+    public String deleteSubtask(@PathVariable("subtask_id") int subtask_id) {
+        int task_id = subtaskService.getSubtaskByID(subtask_id).getTask_id();
+        subtaskService.deleteSubtask(subtask_id);
+        return "redirect:/subtasks/" + task_id;
+    }
+
 }

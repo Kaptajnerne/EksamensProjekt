@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete subtask</title>
+</head>
+<body>
+
+<form th:action="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask_id})}" method="post">
+  <input type="hidden" name="subtask_id" value="${subtask_id}">
+  <button type="submit">Delete subtask</button>
+</form>
+
+</body>
+</html>

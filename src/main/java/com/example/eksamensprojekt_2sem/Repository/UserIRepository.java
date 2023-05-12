@@ -16,6 +16,7 @@ public interface UserIRepository {
     //Get user from id
     public User getUserFromId(int user_id);
 
+    //Get user id from project id
     public int getUserID(int project_id);
 
 }

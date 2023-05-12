@@ -44,7 +44,6 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     }
 
 
-
     //Create subtask to project
     public Subtask createSubtask(Subtask subtask, int task_id) {
         Subtask createdSubtask = null;
@@ -68,5 +67,41 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
         }
         return createdSubtask;
     }
+
+    //Delete subtask
+    public void deleteSubtask(int subtask_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "DELETE FROM subtask WHERE subtask_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, subtask_id);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Get subtask by id
+    public Subtask getSubtaskByID(int subtask_id) {
+        Subtask subtask = null;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM subtask WHERE subtask_id = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, subtask_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String subtask_name = rs.getString("subtask_name");
+                double hours = rs.getDouble("hours");
+                int task_id = rs.getInt("task_id");
+                subtask = new Subtask(subtask_id, subtask_name, hours, task_id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return subtask;
+    }
+
 
 }

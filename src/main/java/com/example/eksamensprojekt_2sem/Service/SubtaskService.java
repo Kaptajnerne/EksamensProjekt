@@ -24,4 +24,15 @@ public class SubtaskService {
     public List<Subtask> getSubtasksByTaskID(int task_id) {
        return subtaskRepositoryDB.getSubtasksByTaskID(task_id);
     }
+
+    //Delete subtask
+    public void deleteSubtask(int subtask_id) {
+        subtaskRepositoryDB.deleteSubtask(subtask_id);
+    }
+
+    //Get subtask from subtask_id
+    public Subtask getSubtaskByID(int subtask_id) {
+        return subtaskRepositoryDB.getSubtaskByID(subtask_id);
+    }
+
 }
