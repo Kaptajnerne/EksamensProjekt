@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Subtasks</title>
+</head>
+<body>
+
+<h1 align="center">Subtasks</h1>
+
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">Subtask name</th>
+        <th scope="col">Subtask hours</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="subtask : ${subtasks}">
+        <td th:text="${subtask.subtask_id}"/>
+        <td th:text="${subtask.subtask_name}"/>
+        <td th:text="${subtask.hours}"/>
+        <td th:text="${subtask.task_id}"/>
+
+        <a th:href="@{/tasks/}">
+            <button>Edit Subtask</button>
+        </a>
+
+
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">
+        <button type="button" class="btn">Create Subtask</button>
+    </a>
+</div>
+
+<a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
+    <button type="button" class="btn go-back">Go Back</button>
+</a>
+
+</body>
+</html>

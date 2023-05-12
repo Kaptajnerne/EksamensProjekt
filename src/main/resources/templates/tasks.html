@@ -26,6 +26,11 @@
             <button>Edit Task</button>
         </a>
 
+        <td>
+            <a th:href="@{/subtasks/{task_id}(task_id=${task.task_id})}">
+                <button type="button" class="btn">View subtasks</button>
+            </a>
+        </td>
 
     </tr>
     </tbody>
@@ -36,6 +41,7 @@
         <button type="button" class="btn">Create Task</button>
     </a>
 </div>
+
 
 </body>
 </html>

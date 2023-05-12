@@ -1,22 +1,17 @@
 package com.example.eksamensprojekt_2sem.Model;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 public class Subtask {
 
     private int subtask_id;
     private String subtask_name;
-    private LocalDate start_date;
-    private LocalDate end_date;
-    private int project_id;
+    private double hours;
+    private int task_id;
 
-    public Subtask(int subtask_id, String subtask_name, LocalDate start_date, LocalDate end_date, int project_id) {
+    public Subtask(int subtask_id, String subtask_name, double hours, int task_id) {
         this.subtask_id = subtask_id;
         this.subtask_name = subtask_name;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.project_id = project_id;
+        this.hours=hours;
+        this.task_id = task_id;
     }
 
     public Subtask() {
@@ -38,28 +33,19 @@ public class Subtask {
         this.subtask_name = subtask_name;
     }
 
-    public LocalDate getStart_date() {
-        return start_date;
+    public int getTask_id() {
+        return task_id;
     }
 
-    public void setStart_date(LocalDate start_date) {
-        this.start_date = start_date;
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
     }
 
-    public LocalDate getEnd_date() {
-        return end_date;
+    public double getHours() {
+        return hours;
     }
 
-    public void setEnd_date(LocalDate end_date) {
-        this.end_date = end_date;
+    public void setHours(double hours) {
+        this.hours = hours;
     }
-
-    public int getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
-    }
-
 }
