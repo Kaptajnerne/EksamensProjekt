@@ -161,4 +161,22 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+    public int getProjectID (int task_id){
+        int project_id = 0;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT project_id from task WHERE task_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, task_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                project_id = rs.getInt("project_id");
+            }
+            return project_id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

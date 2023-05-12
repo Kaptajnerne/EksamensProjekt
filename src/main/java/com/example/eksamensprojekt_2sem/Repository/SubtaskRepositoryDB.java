@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
 import com.example.eksamensprojekt_2sem.Model.Subtask;
+import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -67,6 +68,50 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
             ex.printStackTrace();
         }
         return createdSubtask;
+    }
+
+    //Edit subtask
+    public void editSubtask(Subtask subtask, int subtask_id, int task_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "UPDATE subtask SET subtask_name = ?, hours = ? WHERE subtask_id = ? AND task_id = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
+                pstmt.setString(1, subtask.getSubtask_name());
+                pstmt.setDouble(2, subtask.getHours());
+                pstmt.setInt(3, subtask_id);
+                pstmt.setInt(4, task_id);
+
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Get project from user_id and user_id
+    public Subtask getSubtaskByIDs(int subtask_id, int task_id) {
+        Subtask subtask = null;
+
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT * FROM subtask WHERE subtask_id = ? AND task_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, subtask_id);
+            pstmt.setInt(2, task_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String subtask_name = rs.getString("subtask_name");
+                Double hours = rs.getDouble("hours");
+
+                subtask = new Subtask(subtask_id,subtask_name,hours,task_id);
+            }
+            return subtask;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

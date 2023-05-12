@@ -67,7 +67,8 @@ public class TaskController {
             return "redirect://";
         }*/
     }
-    //Edit project page
+
+    //Edit task page
     @GetMapping(path = "/task/{project_id}/edit/{task_id}")
     public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
         Task task = taskService.getTaskByIDs(task_id, project_id);
@@ -77,7 +78,7 @@ public class TaskController {
         return "editTask";
     }
 
-    //Edit project
+    //Edit task
     @PostMapping(path = "/task/{project_id}/edit/{task_id}")
     public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
         //Task task = taskService.getTaskByIDs(, task_id, project_id);
