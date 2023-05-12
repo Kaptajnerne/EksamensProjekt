@@ -129,7 +129,25 @@ public class UserRepositoryDB implements UserIRepository {
     }
 
 
-    // TODO: 11/05/2023 Ændre ud fra id
+
+    public int getUserID (int project_id){
+        int user_id = 0;
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT user_id from project WHERE project_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, project_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                user_id = rs.getInt("user_id");
+            }
+            return user_id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+// TODO: 11/05/2023 Ændre ud fra id
     /*
     public int findUserID(int employee_id) {
         int user_id = 0;

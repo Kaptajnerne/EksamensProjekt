@@ -13,7 +13,9 @@ public class UserService {
         this.userRepositoryDB = userRepositoryDB;
     }
 
-
+    public int getUserID(int username) {
+        return userRepositoryDB.getUserID(username);
+    }
     //Sign in
     public User signIn(String username, String password){
         return userRepositoryDB.signIn(username, password);

@@ -28,6 +28,9 @@
         <td><a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
             <button type="button" class="btn">Edit project</button>
         </a></td>
+        <td><a th:href="@{/deleteProject/{project_id}(project_id=${project.project_id})}">
+            <button type="button" class="btn">Delete project</button>
+        </a> </td>
 
     </tr>
 
