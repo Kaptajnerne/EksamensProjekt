@@ -176,7 +176,26 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+
+    public Double getProjectCalculatedTime (int project_id) {
+        double estimatedTime = 0;
+        try{
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
+                    "LEFT JOIN subtask AS s USING(task_id)\n" +
+                    "WHERE t.project_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, project_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                estimatedTime = rs.getDouble("totalTime");
+            }
+            return estimatedTime;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

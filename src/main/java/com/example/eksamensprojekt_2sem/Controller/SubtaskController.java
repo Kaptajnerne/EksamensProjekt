@@ -44,7 +44,7 @@ public class SubtaskController {
     @PostMapping(path = "subtasks/create/{task_id}")
     public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id) {
         subtaskService.createSubtask(subtask, task_id);
-        return "redirect:/Subtask/subtasks/" + task_id;
+        return "redirect:/subtasks/" + task_id;
 
     }
 
@@ -63,7 +63,7 @@ public class SubtaskController {
     public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask subtask) {
         //Task task = taskService.getTaskByIDs(, task_id, project_id);
         subtaskService.editSubtask(subtask, subtask_id, task_id);
-        return "redirect:/Subtask/subtasks/" + task_id;
+        return "redirect:/subtasks/" + task_id;
     }
 
     @GetMapping(path = "subtasks/delete/{subtask_id}")
@@ -77,7 +77,7 @@ public class SubtaskController {
     public String deleteSubtask(@PathVariable("subtask_id") int subtask_id) {
         int task_id = subtaskService.getSubtaskByID(subtask_id).getTask_id();
         subtaskService.deleteSubtask(subtask_id);
-        return "redirect:/Subtask/subtasks/" + task_id;
+        return "redirect:/subtasks/" + task_id;
     }
 
 }

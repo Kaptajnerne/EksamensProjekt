@@ -44,7 +44,7 @@ public class ProjectController {
     @PostMapping(path = "projects/create/{user_id}")
     public String createProject(@ModelAttribute("project") Project project, @PathVariable int user_id) {
         projectService.createProject(project, user_id);
-        return "redirect:/Project/projects/" + user_id;
+        return "redirect:/projects/" + user_id;
     }
 
 
@@ -63,7 +63,7 @@ public class ProjectController {
     public String editProject(@PathVariable int project_id, @PathVariable int user_id, @ModelAttribute Project project) {
         //Project project = projectService.getProjectByIDs(project_id, user_id);
         projectService.editProject(project, project_id, user_id);
-        return "redirect:/Project/projects/" + user_id;
+        return "redirect:/projects/" + user_id;
     }
 
     //delete project
@@ -79,7 +79,7 @@ public class ProjectController {
     public String removeProject(@PathVariable("project_id") int project_id, Model model) {
         int user_id = userService.getUserID(project_id);
         projectService.deleteProject(project_id);
-        return "redirect:/Project/projects/" + user_id;
+        return "redirect:/projects/" + user_id;
     }
 }
 /*

@@ -47,8 +47,14 @@ public class ProjectService {
         return projectRepositoryDB.getProjectByProjectID(project_id);
     }
 
+    //Get project_id from task_id
     public int getProjectID (int task_id){
         return projectRepositoryDB.getProjectID(task_id);
+    }
+
+    //Projects calcualted estimated time
+    public Double getProjectCalculatedTime (int project_id) {
+        return projectRepositoryDB.getProjectCalculatedTime(project_id);
     }
 
 
