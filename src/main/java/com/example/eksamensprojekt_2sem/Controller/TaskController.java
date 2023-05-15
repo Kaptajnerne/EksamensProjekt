@@ -1,9 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
-import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
-import com.example.eksamensprojekt_2sem.Model.User;
-import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -35,7 +32,7 @@ public class TaskController {
         int user_id = userService.getUserID(project_id);
         model.addAttribute("tasks", tasks);
         model.addAttribute("user_id", user_id);
-        return "tasks";
+        return "Task/tasks";
        /* if(session.getAttribute("project") != null) {
         } else {
             return "redirect://";
@@ -48,7 +45,7 @@ public class TaskController {
         Task task = new Task();
         model.addAttribute("task", task);
         model.addAttribute("project_id", project_id);
-        return "createTask";
+        return "Task/createTask";
 
         /*if(session.getAttribute("project") != null) {
             Project project = (Project) session.getAttribute("project");
@@ -60,7 +57,7 @@ public class TaskController {
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
         taskService.createTask(task, project_id);
-        return "redirect:/tasks/" + project_id;
+        return "redirect:/Task/tasks/" + project_id;
 
        /* if(session.getAttribute("user") != null) {
 
@@ -76,7 +73,7 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("task_id", task_id);
         model.addAttribute("project_id", project_id);
-        return "editTask";
+        return "Task/editTask";
     }
 
     //Edit task
@@ -84,7 +81,7 @@ public class TaskController {
     public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
         //Task task = taskService.getTaskByIDs(, task_id, project_id);
         taskService.editTask(task, task_id, project_id);
-        return "redirect:/tasks/" + project_id;
+        return "redirect:Task/tasks/" + project_id;
     }
 
     @GetMapping(path = "task/delete/{task_id}")
@@ -92,14 +89,14 @@ public class TaskController {
         model.addAttribute("task_id", task_id);
         Task task = taskService.getTaskById(task_id);
         model.addAttribute("task", task);
-        return "deleteTask";
+        return "Task/deleteTask";
     }
 
     @PostMapping(path = "task/delete/{task_id}")
     public String removeTask(@PathVariable("task_id") int task_id, Model model) {
        int projectID = taskService.getProIDbyTaskID(task_id);
         taskService.deleteTask(task_id);
-        return "redirect:/tasks/" + projectID;
+        return "redirect:/Task/tasks/" + projectID;
     }
 
 }

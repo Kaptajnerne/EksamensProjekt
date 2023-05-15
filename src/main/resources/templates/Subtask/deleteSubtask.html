@@ -6,9 +6,16 @@
 </head>
 <body>
 
+<h2>Are you sure to delete the Subtask?</h2>
+
 <form th:action="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask_id})}" method="post">
   <input type="hidden" name="subtask_id" value="${subtask_id}">
   <button type="submit">Delete subtask</button>
+
+    <a th:href="@{/subtasks/{task_id}(task_id=${subtask.task_id})}">
+        <button type="button" class="btn go-back">Return to subtask</button>
+    </a>
+
 </form>
 
 </body>

@@ -26,6 +26,9 @@
 
     <button type="submit">Save</button>
 
+    <a th:href="@{/subtasks/{task_id}(task_id=${task_id})}">
+      <button type="button" class="btn go-back">Return to subtask</button>
+    </a>
 
   </form>
 

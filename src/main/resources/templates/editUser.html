@@ -20,6 +20,11 @@
     <input type="hidden" th:field="*{user_id}">
 
     <button type="submit">Save</button>
+
+    <a th:href="@{/home/{user_id}(user_id=${user_id})}">
+        <button type="button" class="btn go-back">Go Back</button>
+    </a>
+
 </form>
 
 </body>

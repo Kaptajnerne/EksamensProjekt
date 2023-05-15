@@ -23,11 +23,19 @@
 
         <input type="hidden" th:name="user" th:value="*{user_id}" required>
 
-
         <button type="submit">Save</button>
 
+        <br>
+
+        <a th:href="@{/projects/{user_id}(user_id=${user_id})}">
+            <button type="button" class="btn">Go back</button>
+        </a>
 
     </form>
+
+
+
+
 
 </div>
 </body>

@@ -1,7 +1,6 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.Subtask;
-import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.SubtaskService;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,7 @@ public class SubtaskController {
         int project_id = projectService.getProjectID(task_id);
         model.addAttribute("subtasks", subtasks);
         model.addAttribute("project_id", project_id);
-        return "subtasks";
+        return "Subtask/subtasks";
     }
 
     @GetMapping(path = "subtasks/create/{task_id}")
@@ -39,13 +38,13 @@ public class SubtaskController {
         Subtask subtask = new Subtask();
         model.addAttribute("subtask", subtask);
         model.addAttribute("task_id", task_id);
-        return "createSubtask";
+        return "Subtask/createSubtask";
     }
 
     @PostMapping(path = "subtasks/create/{task_id}")
     public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id) {
         subtaskService.createSubtask(subtask, task_id);
-        return "redirect:/subtasks/" + task_id;
+        return "redirect:/Subtask/subtasks/" + task_id;
 
     }
 
@@ -56,7 +55,7 @@ public class SubtaskController {
         model.addAttribute("subtask", subtask);
         model.addAttribute("subtask_id", subtask_id);
         model.addAttribute("task_id", task_id);
-        return "editSubtask";
+        return "Subtask/editSubtask";
     }
 
     //Edit subtask
@@ -64,21 +63,21 @@ public class SubtaskController {
     public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask subtask) {
         //Task task = taskService.getTaskByIDs(, task_id, project_id);
         subtaskService.editSubtask(subtask, subtask_id, task_id);
-        return "redirect:/subtasks/" + task_id;
+        return "redirect:/Subtask/subtasks/" + task_id;
     }
 
     @GetMapping(path = "subtasks/delete/{subtask_id}")
     public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id) {
         Subtask subtask = subtaskService.getSubtaskByID(subtask_id);
         model.addAttribute("subtask", subtask);
-        return "deleteSubtask";
+        return "Subtask/deleteSubtask";
     }
 
     @PostMapping(path = "subtasks/delete/{subtask_id}")
     public String deleteSubtask(@PathVariable("subtask_id") int subtask_id) {
         int task_id = subtaskService.getSubtaskByID(subtask_id).getTask_id();
         subtaskService.deleteSubtask(subtask_id);
-        return "redirect:/subtasks/" + task_id;
+        return "redirect:/Subtask/subtasks/" + task_id;
     }
 
 }
