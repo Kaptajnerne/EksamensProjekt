@@ -6,19 +6,17 @@ public class Task {
 
     private int task_id;
     private String task_name;
-
-    public double getHours() {
-        return hours;
-    }
-
-    public void setHours(double hours) {
-        this.hours = hours;
-    }
-
     private double hours;
-    /*private LocalDate start_date;
-    private LocalDate end_date;*/
     private int project_id;
+    private double calculatedTime;
+
+    public Task(int task_id, String task_name, double hours, int project_id, double calculatedTime) {
+        this.task_id = task_id;
+        this.task_name = task_name;
+        this.hours = hours;
+        this.project_id = project_id;
+        this.calculatedTime = calculatedTime;
+    }
 
     public Task(int task_id, String task_name, double hours, int project_id) {
         this.task_id = task_id;
@@ -46,11 +44,30 @@ public class Task {
         this.task_name = task_name;
     }
 
+
+    public double getHours() {
+        return hours;
+    }
+
+    public void setHours(double hours) {
+        this.hours = hours;
+    }
+
+
+
     public int getProject_id() {
         return project_id;
     }
 
     public void setProject_id(int project_id) {
         this.project_id = project_id;
+    }
+
+    public double getCalculatedTime() {
+        return calculatedTime;
+    }
+
+    public void setCalculatedTime(double calculatedTime) {
+        this.calculatedTime = calculatedTime;
     }
 }

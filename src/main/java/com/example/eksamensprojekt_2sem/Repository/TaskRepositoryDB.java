@@ -167,5 +167,27 @@ public class TaskRepositoryDB implements TaskIRepository {
         return project_id;
     }
 
+    //Calculated time for task and subtask
+    public Double getTaskCalculatedTime (int task_id) {
+        double estimatedTime = 0;
+        try{
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
+                    "LEFT JOIN subtask AS s USING(task_id)\n" +
+                    "WHERE t.task_id = ?;";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setInt(1, task_id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                estimatedTime = rs.getDouble("totalTime");
+            }
+
+            return estimatedTime;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }
