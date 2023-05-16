@@ -19,8 +19,25 @@ header {
     align-items: center;
     z-index: 99;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-dark {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 body {
+
     display: flex;
     justify-content: center;
     align-items: center;

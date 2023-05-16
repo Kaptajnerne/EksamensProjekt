@@ -19,6 +19,23 @@ h2 {
     width: 300px;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-dark {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 form {
     text-align: center;
 }
