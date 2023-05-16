@@ -17,10 +17,8 @@
     </thead>
     <tbody>
     <tr th:each="subtask : ${subtasks}">
-        <td th:text="${subtask.subtask_id}"/>
         <td th:text="${subtask.subtask_name}"/>
         <td th:text="${subtask.hours}"/>
-        <td th:text="${subtask.task_id}"/>
         <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
                 <button type="button" class="btn">Delete Subtask</button>
         </a> </td>
