@@ -19,6 +19,12 @@
     <label for="hours">Subtask hours:</label>
     <input id="hours" type="text" th:name="hours" th:value="${subtask.hours}" >
 
+    <label for="task_start_date">Start Date</label>
+    <input id="task_start_date" type="date" th:field="${subtask.start_date}">
+
+    <label for="task_end_date">Start Date</label>
+    <input id="task_end_date" type="date" th:field="${subtask.end_date}">
+
     <input type="hidden" th:field="*{subtask_id}" required>
 
     <input type="hidden" th:name="task" th:value="*{task_id}" required>

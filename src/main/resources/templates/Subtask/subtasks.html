@@ -11,8 +11,12 @@
 <table class="table table-dark">
     <thead>
     <tr>
+        <th scope="col">Subtask id</th>
         <th scope="col">Subtask name</th>
         <th scope="col">Subtask hours</th>
+        <th scope="col">Task id</th>
+        <th scope="col">Start date</th>
+        <th scope="col">End date</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +25,9 @@
         <td th:text="${subtask.subtask_name}"/>
         <td th:text="${subtask.hours}"/>
         <td th:text="${subtask.task_id}"/>
+        <td th:text="${subtask.start_date}"/>
+        <td th:text="${subtask.end_date}"/>
+
         <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
                 <button type="button" class="btn">Delete Subtask</button>
         </a> </td>
