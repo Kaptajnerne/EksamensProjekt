@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Projects</title>
     <link rel="stylesheet" th:href="@{/theme2.css}">
-</head>
+</head>W
 <body>
 
 <h1 align="center">Manage Projects</h1>
@@ -15,7 +15,6 @@
         <th scope="col">Project Number</th>
         <th scope="col">Project Name</th>
         <th scope="col">Project Description</th>
-        <th scope="col">User ID</th>
         <th scope="col">Start date</th>
         <th scope="col">End date</th>
 
@@ -25,10 +24,8 @@
     <tbody>
 
     <tr th:each="project : ${projects}">
-        <td th:text="${project.project_id}"/>
         <td th:text="${project.project_name}"/>
         <td th:text="${project.project_description}"/>
-        <td th:text="${project.user_id}"/>
         <td th:text="${project.start_date}"/>
         <td th:text="${project.end_date}"/>
 

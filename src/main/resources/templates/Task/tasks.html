@@ -11,10 +11,8 @@
 <table class="table table-dark">
     <thead>
     <tr>
-        <th scope="col">Task id</th>
         <th scope="col">Task name</th>
         <th scope="col">Task hours</th>
-        <th scope="col">Project id</th>
         <th scope="col">Start date</th>
         <th scope="col">End date</th>
         <th scope="col">Task estimated time</th>
@@ -22,10 +20,8 @@
     </thead>
     <tbody>
     <tr th:each="task : ${tasks}">
-        <td th:text="${task.task_id}"/>
         <td th:text="${task.task_name}"/>
         <td th:text="${task.hours}"/>
-        <td th:text="${task.project_id}"/>
         <td th:text="${task.start_date}"/>
         <td th:text="${task.end_date}"/>
 
