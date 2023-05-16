@@ -38,8 +38,9 @@ public class TaskRepositoryDB implements TaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                tasks.add(new Task(task_id, task_name, hours, start_date, end_date, project_id));
+                tasks.add(new Task(task_id, task_name, hours, start_date, end_date, status, project_id));
             }
             return tasks;
         } catch (SQLException e) {
@@ -51,13 +52,14 @@ public class TaskRepositoryDB implements TaskIRepository {
     public void createTask(Task task, int project_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "INSERT INTO task (task_name, hours, start_date, end_date, project_id) VALUES (?, ?, ?, ? ,?)";
+            String SQL = "INSERT INTO task (task_name, hours, start_date, end_date, status, project_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, task.getTask_name());
             pstmt.setDouble(2, task.getHours());
             pstmt.setObject(3, Date.valueOf(task.getStart_date()));
             pstmt.setObject(4, Date.valueOf(task.getEnd_date()));
-            pstmt.setInt(5, project_id);
+            pstmt.setString(5, task.getStatus());
+            pstmt.setInt(6, project_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
@@ -75,14 +77,15 @@ public class TaskRepositoryDB implements TaskIRepository {
     public void editTask(Task task, int task_id, int project_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE task SET task_name = ?, hours = ?, start_date = ?, end_date = ? WHERE task_id = ? AND project_id = ?";
+            String SQL = "UPDATE task SET task_name = ?, hours = ?, start_date = ?, end_date = ?, status = ? WHERE task_id = ? AND project_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, task.getTask_name());
                 pstmt.setDouble(2, task.getHours());
                 pstmt.setObject(3, Date.valueOf(task.getStart_date()));
                 pstmt.setObject(4, Date.valueOf(task.getEnd_date()));
-                pstmt.setInt(5, task_id);
-                pstmt.setInt(6,project_id);
+                pstmt.setString(5, task.getStatus());
+                pstmt.setInt(6, task_id);
+                pstmt.setInt(7,project_id);
 
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -112,8 +115,9 @@ public class TaskRepositoryDB implements TaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                task = new Task(task_id,task_name,hours, start_date, end_date, project_id);
+                task = new Task(task_id,task_name,hours, start_date, end_date, status, project_id);
             }
             return task;
         } catch (SQLException e) {
@@ -154,8 +158,9 @@ public class TaskRepositoryDB implements TaskIRepository {
                 int project_id = rs.getInt("project_id");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                task = new Task(task_id,task_name, hours, start_date, end_date, project_id);
+                task = new Task(task_id,task_name, hours, start_date, end_date, status, project_id);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

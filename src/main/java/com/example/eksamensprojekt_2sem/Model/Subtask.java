@@ -9,14 +9,16 @@ public class Subtask {
     private double hours;
     private LocalDate start_date;
     private LocalDate end_date;
+    private String status;
     private int task_id;
 
-    public Subtask(int subtask_id, String subtask_name, double hours, LocalDate start_date, LocalDate end_date, int task_id) {
+    public Subtask(int subtask_id, String subtask_name, double hours, LocalDate start_date, LocalDate end_date, String status, int task_id) {
         this.subtask_id = subtask_id;
         this.subtask_name = subtask_name;
         this.hours=hours;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.status = status;
         this.task_id = task_id;
     }
 
@@ -61,6 +63,14 @@ public class Subtask {
 
     public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getTask_id() {

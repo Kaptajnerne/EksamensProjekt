@@ -38,8 +38,9 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
                 double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                subtasks.add(new Subtask(subtask_id, subtask_name, hours, start_date, end_date, task_id));
+                subtasks.add(new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id));
             }
             return subtasks;
         } catch (SQLException e) {
@@ -55,13 +56,14 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
 
-            String SQL = "INSERT INTO subtask (subtask_name, hours, start_date, end_date, task_id) VALUES (?, ?, ?, ?, ?)";
+            String SQL = "INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, subtask.getSubtask_name());
             pstmt.setDouble(2, subtask.getHours());
             pstmt.setObject(3, Date.valueOf(subtask.getStart_date()));
             pstmt.setObject(4, Date.valueOf(subtask.getEnd_date()));
-            pstmt.setInt(5, task_id);
+            pstmt.setString(5, subtask.getStatus());
+            pstmt.setInt(6, task_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
@@ -79,14 +81,15 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     public void editSubtask(Subtask subtask, int subtask_id, int task_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE subtask SET subtask_name = ?, hours = ?, start_date = ?, end_date = ? WHERE subtask_id = ? AND task_id = ?";
+            String SQL = "UPDATE subtask SET subtask_name = ?, hours = ?, start_date = ?, end_date = ?, status = ? WHERE subtask_id = ? AND task_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, subtask.getSubtask_name());
                 pstmt.setDouble(2, subtask.getHours());
                 pstmt.setObject(3, Date.valueOf(subtask.getStart_date()));
                 pstmt.setObject(4, Date.valueOf(subtask.getEnd_date()));
-                pstmt.setInt(5, subtask_id);
-                pstmt.setInt(6, task_id);
+                pstmt.setString(5, subtask.getStatus());
+                pstmt.setInt(6, subtask_id);
+                pstmt.setInt(7, task_id);
 
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -114,8 +117,9 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, task_id);
+                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id);
             }
             return subtask;
         } catch (SQLException e) {
@@ -152,8 +156,9 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
                 int task_id = rs.getInt("task_id");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, task_id);
+                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
