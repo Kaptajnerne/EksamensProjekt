@@ -19,6 +19,12 @@
         <label for="project_description">Project description:</label>
         <input id="project_description" type="text" th:name="project_description" th:value="${project.project_description}" >
 
+        <label for="task_start_date">Start Date</label>
+        <input id="task_start_date" type="date" th:field="${project.start_date}">
+
+        <label for="task_end_date">Start Date</label>
+        <input id="task_end_date" type="date" th:field="${project.end_date}">
+
         <input type="hidden" th:field="*{project_id}" required>
 
         <input type="hidden" th:name="user" th:value="*{user_id}" required>

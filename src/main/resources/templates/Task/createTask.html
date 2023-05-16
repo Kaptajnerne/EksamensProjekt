@@ -18,9 +18,20 @@
         </div>
 
         <div class="createTaskForm">
-            <label class="createEmployeeForm">Hours:</label>
+            <label class="createTaskForm">Hours:</label>
             <input type="text" th:field="*{hours}" placeholder="hours" required>
         </div>
+
+        <div>
+            <label class="createTaskForm">Start Date</label>
+            <input type="date" th:field="*{start_date}">
+        </div>
+
+        <div>
+            <label class="createTaskForm">End Date</label>
+            <input type="date" th:field="*{end_date}">
+        </div>
+
         <br>
 
         <div>

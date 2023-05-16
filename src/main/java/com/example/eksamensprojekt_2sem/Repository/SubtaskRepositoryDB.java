@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +30,17 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
             String SQL1 = "SELECT * FROM subtask WHERE task_id = ?;";
             PreparedStatement pstmt1 = con.prepareStatement(SQL1);
             pstmt1.setInt(1, task_id);
-            ResultSet rs1 = pstmt1.executeQuery();
+            ResultSet rs = pstmt1.executeQuery();
 
-            while (rs1.next()) {
-                int subtask_id = rs1.getInt("subtask_id");
-                String subtask_name = rs1.getString("subtask_name");
-                double hours = rs1.getDouble("hours");
+            while (rs.next()) {
+                int subtask_id = rs.getInt("subtask_id");
+                String subtask_name = rs.getString("subtask_name");
+                double hours = rs.getDouble("hours");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                subtasks.add(new Subtask(subtask_id, subtask_name, hours, task_id));
+                subtasks.add(new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id));
             }
             return subtasks;
         } catch (SQLException e) {
@@ -52,17 +56,20 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
         try {
             Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
 
-            String SQL = "INSERT INTO subtask (subtask_name, hours, task_id) VALUES (?, ?, ?)";
+            String SQL = "INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, subtask.getSubtask_name());
             pstmt.setDouble(2, subtask.getHours());
-            pstmt.setInt(3, task_id);
+            pstmt.setObject(3, Date.valueOf(subtask.getStart_date()));
+            pstmt.setObject(4, Date.valueOf(subtask.getEnd_date()));
+            pstmt.setString(5, subtask.getStatus());
+            pstmt.setInt(6, task_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
             if (rs.next()) {
                 int subtask_id = rs.getInt(1);
-                createdSubtask = new Subtask(subtask_id, subtask.getSubtask_name(), subtask.getHours(), task_id);
+                subtask.setSubtask_id(subtask_id);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -74,12 +81,15 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     public void editSubtask(Subtask subtask, int subtask_id, int task_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE subtask SET subtask_name = ?, hours = ? WHERE subtask_id = ? AND task_id = ?";
+            String SQL = "UPDATE subtask SET subtask_name = ?, hours = ?, start_date = ?, end_date = ?, status = ? WHERE subtask_id = ? AND task_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, subtask.getSubtask_name());
                 pstmt.setDouble(2, subtask.getHours());
-                pstmt.setInt(3, subtask_id);
-                pstmt.setInt(4, task_id);
+                pstmt.setObject(3, Date.valueOf(subtask.getStart_date()));
+                pstmt.setObject(4, Date.valueOf(subtask.getEnd_date()));
+                pstmt.setString(5, subtask.getStatus());
+                pstmt.setInt(6, subtask_id);
+                pstmt.setInt(7, task_id);
 
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -105,8 +115,11 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
             while (rs.next()) {
                 String subtask_name = rs.getString("subtask_name");
                 Double hours = rs.getDouble("hours");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
 
-                subtask = new Subtask(subtask_id,subtask_name,hours,task_id);
+                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id);
             }
             return subtask;
         } catch (SQLException e) {
@@ -141,7 +154,11 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
                 String subtask_name = rs.getString("subtask_name");
                 double hours = rs.getDouble("hours");
                 int task_id = rs.getInt("task_id");
-                subtask = new Subtask(subtask_id, subtask_name, hours, task_id);
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
+                String status = rs.getString("status");
+
+                subtask = new Subtask(subtask_id, subtask_name, hours, start_date, end_date, status, task_id);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
