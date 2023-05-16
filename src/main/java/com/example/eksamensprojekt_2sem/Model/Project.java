@@ -1,18 +1,23 @@
 package com.example.eksamensprojekt_2sem.Model;
 
+import java.time.LocalDate;
+
 public class Project {
 
     private int project_id;
     private String project_name;
     private String project_description;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private int user_id;
 
-    public Project(int project_id , String project_name, String project_description, int user_id) {
+    public Project(int project_id , String project_name, String project_description, LocalDate start_date, LocalDate end_date, int user_id) {
         this.project_id = project_id;
         this.project_name = project_name;
         this.project_description = project_description;
         this.user_id = user_id;
-
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     public Project() {
@@ -42,6 +47,22 @@ public class Project {
 
     public void setProject_description(String project_description) {
         this.project_description = project_description;
+    }
+
+    public LocalDate getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(LocalDate start_date) {
+        this.start_date = start_date;
+    }
+
+    public LocalDate getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(LocalDate end_date) {
+        this.end_date = end_date;
     }
 
     public int getUser_id() {

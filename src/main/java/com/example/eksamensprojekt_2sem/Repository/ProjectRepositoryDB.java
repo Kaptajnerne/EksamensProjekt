@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,10 @@ public class ProjectRepositoryDB implements ProjectIRepository {
                 int project_id = rs.getInt("project_id");
                 String project_name = rs.getString("project_name");
                 String project_description = rs.getString("project_description");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
 
-                projects.add(new Project(project_id, project_name, project_description, user_id));
+                projects.add(new Project(project_id, project_name, project_description, start_date, end_date, user_id));
             }
             return projects;
         } catch (SQLException e) {
@@ -52,11 +55,13 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
 
-            String SQL = "INSERT INTO project (project_name, project_description, user_id) VALUES (?, ?, ?);";
+            String SQL = "INSERT INTO project (project_name, project_description, start_date, end_date, user_id) VALUES (?, ?, ?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, project.getProject_name());
             pstmt.setString(2, project.getProject_description());
-            pstmt.setInt(3, user_id);
+            pstmt.setObject(3, Date.valueOf(project.getStart_date()));
+            pstmt.setObject(4, Date.valueOf(project.getEnd_date()));
+            pstmt.setInt(5, user_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
@@ -75,12 +80,14 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     public void editProject(Project project, int project_id, int user_id) {
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE project SET project_name = ?, project_description = ? WHERE project_id = ? AND user_id = ?";
+            String SQL = "UPDATE project SET project_name = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ? AND user_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, project.getProject_name());
                 pstmt.setString(2, project.getProject_description());
-                pstmt.setInt(3, project_id);
-                pstmt.setInt(4, user_id);
+                pstmt.setObject(3, Date.valueOf(project.getStart_date()));
+                pstmt.setObject(4, Date.valueOf(project.getEnd_date()));
+                pstmt.setInt(5, project_id);
+                pstmt.setInt(6, user_id);
 
                 pstmt.executeUpdate();
             } catch (SQLException e) {
@@ -107,8 +114,10 @@ public class ProjectRepositoryDB implements ProjectIRepository {
             while (rs.next()) {
                 String project_name = rs.getString("project_name");
                 String project_description = rs.getString("project_description");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
 
-                project = new Project(project_id, project_name, project_description, user_id);
+                project = new Project(project_id, project_name, project_description, start_date, end_date, user_id);
             }
             return project;
         } catch (SQLException e) {
@@ -123,12 +132,16 @@ public class ProjectRepositoryDB implements ProjectIRepository {
             String SQL = "SELECT * FROM project WHERE project_id = ?;";
             PreparedStatement statement = con.prepareStatement(SQL);
             statement.setInt(1, project_id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String project_name = resultSet.getString("project_name");
-                String project_description = resultSet.getString("project_description");
-                int user_id = resultSet.getInt("user_id");
-                project = new Project(project_id, project_name, project_description, user_id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                String project_name = rs.getString("project_name");
+                String project_description = rs.getString("project_description");
+                int user_id = rs.getInt("user_id");
+                LocalDate start_date = rs.getDate("start_date").toLocalDate();
+                LocalDate end_date = rs.getDate("end_date").toLocalDate();
+
+                project = new Project(project_id, project_name, project_description, start_date, end_date, user_id);
             }
             return project;
         } catch (SQLException e) {
@@ -161,7 +174,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
-    public int getProjectID (int task_id){
+    public int getProjectID(int task_id) {
         int project_id = 0;
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
@@ -179,9 +192,9 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     }
 
 
-    public Double getProjectCalculatedTime (int project_id) {
+    public Double getProjectCalculatedTime(int project_id) {
         double estimatedTime = 0;
-        try{
+        try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
                     "LEFT JOIN subtask AS s USING(task_id)\n" +
