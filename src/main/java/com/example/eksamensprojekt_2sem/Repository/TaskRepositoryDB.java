@@ -38,6 +38,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
+
                 tasks.add(new Task(task_id, task_name, hours, start_date, end_date, project_id));
             }
             return tasks;
