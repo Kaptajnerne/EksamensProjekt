@@ -32,6 +32,7 @@ public class TaskController {
         List<Task> tasks = taskService.getTaskByProID(project_id);
         int user_id = userService.getUserID(project_id);
         double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+
         //Set calculated time for each task and its subtask
         for (Task task : tasks) {
             double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
@@ -53,24 +54,12 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("project_id", project_id);
         return "Task/createTask";
-
-        /*if(session.getAttribute("project") != null) {
-            Project project = (Project) session.getAttribute("project");
-        } else {
-            return "redirect://";
-        }*/
     }
 
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
         taskService.createTask(task, project_id);
         return "redirect:/tasks/" + project_id;
-
-       /* if(session.getAttribute("user") != null) {
-
-        } else {
-            return "redirect://";
-        }*/
     }
 
     //Edit task page

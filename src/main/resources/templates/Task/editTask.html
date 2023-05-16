@@ -19,6 +19,12 @@
         <label for="hours">Task hours:</label>
         <input id="hours" type="text" th:name="hours" th:value="${task.hours}" >
 
+        <label for="task_start_date">Start Date</label>
+        <input id="task_start_date" type="date" th:field="${task.start_date}">
+
+        <label for="task_end_date">Start Date</label>
+        <input id="task_end_date" type="date" th:field="${task.end_date}">
+
         <input type="hidden" th:field="*{task_id}" required>
 
         <input type="hidden" th:name="project" th:value="*{project_id}" required>
