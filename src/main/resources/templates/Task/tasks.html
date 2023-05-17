@@ -25,7 +25,7 @@
         <td th:text="${task.start_date}"/>
         <td th:text="${task.end_date}"/>
 
-        <td th:text="${task.calculatedTime}"/>
+      <td th:text="${task.calculatedTime}"/>
 
         <td><a th:href="@{/task/{project_id}/edit/{task_id}(project_id=${project_id}, task_id=${task.task_id})}">
             <button>Edit Task</button>
@@ -49,11 +49,6 @@
     </tr>
     </tbody>
 </table>
-
-<div>
-    <h3>Projects estimated time</h3>
-    <span th:text="${projectCalculatedTime}"></span>
-</div>
 
 
 <div>

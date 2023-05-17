@@ -1,7 +1,9 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.Project;
+import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
+import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,12 @@ public class ProjectController {
 
     private ProjectService projectService;
     private UserService userService;
+    TaskService taskService;
 
-    public ProjectController(ProjectService projectService, UserService userService) {
+    public ProjectController(ProjectService projectService, UserService userService, TaskService taskService) {
         this.projectService = projectService;
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     //---------------------------------PROJECT ENDPOINTS--------------------------------------//
@@ -27,9 +31,33 @@ public class ProjectController {
     @GetMapping(path = "projects/{user_id}")
     public String showProjects(Model model, @PathVariable int user_id) {
         List<Project> projects = projectService.getProjectsByID(user_id);
+
+        for (Project project : projects) {
+            int project_id = project.getProject_id();
+
+            List<Task> tasks = taskService.getTaskByProID(project_id);
+
+            double projectCalculatedTime = 0; // Initialize the calculated time for each project
+
+            for (Task task : tasks) {
+                double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
+                task.setCalculatedTime(taskCalculatedTime);
+
+                projectCalculatedTime += taskCalculatedTime; // Accumulate the calculated time for each task
+            }
+
+            project.setTasks(tasks);
+            project.setProjectCalculatedTime(projectCalculatedTime);
+        }
+
         model.addAttribute("projects", projects);
+
+
         return "Project/projects";
     }
+
+
+
 
     //Create project page
     @GetMapping(path = "projects/create/{user_id}")

@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt_2sem.Model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Project {
 
@@ -10,6 +11,8 @@ public class Project {
     private LocalDate start_date;
     private LocalDate end_date;
     private int user_id;
+
+    private double projectCalculatedTime;
 
     public Project(int project_id , String project_name, String project_description, LocalDate start_date, LocalDate end_date, int user_id) {
         this.project_id = project_id;
@@ -53,6 +56,10 @@ public class Project {
         return start_date;
     }
 
+    public double getProjectCalculatedTime() {
+        return projectCalculatedTime;
+    }
+
     public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
@@ -71,5 +78,12 @@ public class Project {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public void setTasks(List<Task> tasks) {
+    }
+
+    public void setProjectCalculatedTime(double projectCalculatedTime) {
+        this.projectCalculatedTime = projectCalculatedTime;
     }
 }
