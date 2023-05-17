@@ -19,7 +19,7 @@ public class UserController {
     //Index page shows sign in or sign up
     @GetMapping(path = "/")
     public String index() {
-        return "index";
+        return "User/index";
     }
 
 
@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping(path ="/home/{user_id}")
     public String homeOrg(Model model, @PathVariable int user_id) {
         model.addAttribute("user_id", user_id);
-        return "home";
+        return "User/home";
     }
 
 
@@ -40,7 +40,7 @@ public class UserController {
         //If not connected redirect to login page. if connected continue to home page
         if (user == null) {
             model.addAttribute("user", new User());
-            return "signin";
+            return "User/signin";
         } else {
             return "redirect:/home/" + user.getUser_id();
         }
@@ -58,7 +58,7 @@ public class UserController {
 
                 return "redirect:/home/" + userLogin.getUser_id();
             } else {
-                return "signin";
+                return "User/signin";
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -71,7 +71,7 @@ public class UserController {
     public String showSignUp(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "signup";
+        return "User/signup";
     }
 
     //Sign up

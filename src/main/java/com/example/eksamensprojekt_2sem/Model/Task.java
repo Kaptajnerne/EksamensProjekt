@@ -11,10 +11,10 @@ public class Task {
     private double calculatedTime;
     private LocalDate start_date;
     private LocalDate end_date;
-    private String status;
+    private int status;
     private int project_id;
 
-    public Task(int task_id, String task_name, double hours, double calculatedTime, LocalDate start_date, LocalDate end_date, String status) {
+    public Task(int task_id, String task_name, double hours, double calculatedTime, LocalDate start_date, LocalDate end_date, int status) {
         this.task_id = task_id;
         this.task_name = task_name;
         this.hours = hours;
@@ -32,7 +32,7 @@ public class Task {
         this.calculatedTime = calculatedTime;
     }
 
-    public Task(int task_id, String task_name, double hours, LocalDate start_date, LocalDate end_date, String status, int project_id) {
+    public Task(int task_id, String task_name, double hours, LocalDate start_date, LocalDate end_date, int status, int project_id) {
         this.task_id = task_id;
         this.task_name = task_name;
         this.hours = hours;
@@ -95,11 +95,11 @@ public class Task {
         this.end_date = end_date;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
