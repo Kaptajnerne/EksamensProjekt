@@ -9,5 +9,3 @@ INSERT INTO task (task_name, hours, start_date, end_date, status, project_id) VA
 INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES ('KEA Subtask', '5', '2023-05-17', '2023-05-20', 'Done', 1);
 INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES ('KEA Subtask 2', '4', '2023-05-20', '2023-05-24', 'In progress', 1);
 INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES ('KEA Subtask 3', '2', '2023-05-24', '2023-05-27', 'TODO', 1);
-
-
