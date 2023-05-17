@@ -3,49 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Subtasks</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<h1 align="center">Subtasks</h1>
+<h1>Subtasks</h1>
 
-<table class="table table-dark">
-    <thead>
-    <tr>
-        <th scope="col">Subtask name</th>
-        <th scope="col">Subtask hours</th>
-        <th scope="col">Start date</th>
-        <th scope="col">End date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="subtask : ${subtasks}">
-        <td th:text="${subtask.subtask_name}"/>
-        <td th:text="${subtask.hours}"/>
-        <td th:text="${subtask.start_date}"/>
-        <td th:text="${subtask.end_date}"/>
-
-        <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
-                <button type="button" class="btn">Delete Subtask</button>
-        </a> </td>
-
-        <td> <a th:href="@{/subtask/{task_id}/edit/{subtask_id}(task_id=${task_id}, subtask_id=${subtask.subtask_id})}">
-            <button>Edit Subtask</button>
-        </a></td>
-
-
-    </tr>
-    </tbody>
-</table>
-
-<div>
+<div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
     <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">
         <button type="button" class="btn">Create Subtask</button>
     </a>
+
+    <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
+        <button type="button" class="btn go-back">Go Back</button>
+    </a>
 </div>
 
-<a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
-    <button type="button" class="btn go-back">Go Back</button>
-</a>
+<br>
+<br>
+
+<main class="table">
+    <section class="table_body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Subtask name</th>
+                <th scope="col">Subtask hours</th>
+                <th scope="col">Start date</th>
+                <th scope="col">End date</th>
+                <th scope="col">Delete Subtask</th>
+                <th scope="col">Edit Subtask</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subtask : ${subtasks}">
+                <td th:text="${subtask.subtask_name}"></td>
+                <td th:text="${subtask.hours}"></td>
+                <td th:text="${subtask.start_date}"></td>
+                <td th:text="${subtask.end_date}"></td>
+                <td>
+                    <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
+                        <button type="button" class="btn">Delete Subtask</button>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/subtask/{task_id}/edit/{subtask_id}(task_id=${task_id}, subtask_id=${subtask.subtask_id})}">
+                        <button type="button" class="btn">Edit Subtask</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
 
 </body>
 </html>
