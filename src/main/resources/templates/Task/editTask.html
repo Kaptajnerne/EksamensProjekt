@@ -22,12 +22,22 @@
         <label for="task_start_date">Start Date</label>
         <input id="task_start_date" type="date" th:field="${task.start_date}">
 
-        <label for="task_end_date">Start Date</label>
+        <label for="task_end_date">End Date</label>
         <input id="task_end_date" type="date" th:field="${task.end_date}">
+
 
         <input type="hidden" th:field="*{task_id}" required>
 
         <input type="hidden" th:name="project" th:value="*{project_id}" required>
+
+        <label for="status">Status</label>
+        <label>
+            <select th:field="${task.status}" id="status">
+                <option value="1">TODO</option>
+                <option value="2">In Progress</option>
+                <option value="3">Done</option>
+            </select>
+        </label>
 
 
         <button type="submit">Save</button>

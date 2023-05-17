@@ -38,7 +38,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
-                String status = rs.getString("status");
+                int status = rs.getInt("status");
 
                 tasks.add(new Task(task_id, task_name, hours, start_date, end_date, status, project_id));
             }
@@ -58,7 +58,7 @@ public class TaskRepositoryDB implements TaskIRepository {
             pstmt.setDouble(2, task.getHours());
             pstmt.setObject(3, Date.valueOf(task.getStart_date()));
             pstmt.setObject(4, Date.valueOf(task.getEnd_date()));
-            pstmt.setString(5, task.getStatus());
+            pstmt.setInt(5, task.getStatus());
             pstmt.setInt(6, project_id);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
@@ -83,7 +83,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 pstmt.setDouble(2, task.getHours());
                 pstmt.setObject(3, Date.valueOf(task.getStart_date()));
                 pstmt.setObject(4, Date.valueOf(task.getEnd_date()));
-                pstmt.setString(5, task.getStatus());
+                pstmt.setInt(5, task.getStatus());
                 pstmt.setInt(6, task_id);
                 pstmt.setInt(7,project_id);
 
@@ -115,7 +115,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 Double hours = rs.getDouble("hours");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
-                String status = rs.getString("status");
+                int status = rs.getInt("status");
 
                 task = new Task(task_id,task_name,hours, start_date, end_date, status, project_id);
             }
@@ -158,7 +158,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                 int project_id = rs.getInt("project_id");
                 LocalDate start_date = rs.getDate("start_date").toLocalDate();
                 LocalDate end_date = rs.getDate("end_date").toLocalDate();
-                String status = rs.getString("status");
+                int status = rs.getInt("status");
 
                 task = new Task(task_id,task_name, hours, start_date, end_date, status, project_id);
             }
