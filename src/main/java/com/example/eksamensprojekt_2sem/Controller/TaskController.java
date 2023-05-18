@@ -1,7 +1,10 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
+import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
+import com.example.eksamensprojekt_2sem.Service.SubtaskService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -99,7 +102,7 @@ public class TaskController {
     }
 
 
-
+    //Delete task page
     @GetMapping(path = "task/delete/{task_id}")
     public String deleteTask(@PathVariable("task_id") int task_id, Model model) {
         model.addAttribute("task_id", task_id);
@@ -108,11 +111,23 @@ public class TaskController {
         return "Task/deleteTask";
     }
 
+    //Delete task
     @PostMapping(path = "task/delete/{task_id}")
     public String removeTask(@PathVariable("task_id") int task_id, Model model) {
        int projectID = taskService.getProIDbyTaskID(task_id);
         taskService.deleteTask(task_id);
         return "redirect:/tasks/" + projectID;
     }
+
+    //Get task and subtask by project_id
+    @GetMapping(path = "gantt/{project_id}")
+    public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
+        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+
+        model.addAttribute("taskSubtasks", taskSubtasks);
+        return "Task/ganttChart";
+    }
+
+
 
 }

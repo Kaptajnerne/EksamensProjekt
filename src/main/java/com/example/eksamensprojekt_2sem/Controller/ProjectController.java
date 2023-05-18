@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.Project;
+import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
@@ -32,19 +33,17 @@ public class ProjectController {
     @GetMapping(path = "projects/{user_id}")
     public String showProjects(Model model, @PathVariable int user_id) {
         List<Project> projects = projectService.getProjectsByID(user_id);
+        double projectCalculatedTime = 0;
 
         for (Project project : projects) {
             int project_id = project.getProject_id();
-
             List<Task> tasks = taskService.getTaskByProID(project_id);
-
-            double projectCalculatedTime = 0; // Initialize the calculated time for each project
 
             for (Task task : tasks) {
                 double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
                 task.setCalculatedTime(taskCalculatedTime);
 
-                projectCalculatedTime += taskCalculatedTime; // Accumulate the calculated time for each task
+                projectCalculatedTime += taskCalculatedTime;
             }
 
             project.setTasks(tasks);
@@ -127,7 +126,19 @@ public class ProjectController {
         projectService.deleteProject(project_id);
         return "redirect:/projects/" + user_id;
     }
+
+    //Get gantt chart
+    @GetMapping(path = "tasks/{project_id}/gantt/")
+    public String showGanttChart(@PathVariable("project_id") int project_id, @PathVariable("task_id") int task_id, Model model) {
+
+        return "Task/ganttChart";
+    }
+
 }
+
+
+
+
 /*
     @GetMapping("/tasks/delete/{task_id}")
     public String showDeleteTaskPage(@PathVariable("task_id") int task_id, Model model) {

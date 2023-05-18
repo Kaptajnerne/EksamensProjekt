@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['gantt']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Task ID');
+            data.addColumn('date', 'Task Name');
+            data.addColumn('number', 'Start Date');
+            data.addColumn('number', 'End Date'); // Change column type to 'number'
+            data.addColumn('string', 'Status');
+
+            // Retrieve task and subtask data from the model
+            var taskSubtasks = /*[[${taskSubtasks}]]*/ [];
+
+            // Iterate over task and subtask data
+            taskSubtasks.forEach(function(task) {
+                var statusColor = getStatusColor(task.status);
+
+                data.addRow([
+                    task.task_id.toString(),
+                    task.task_name,
+                    new Date(task.task_start_date),
+                    new Date(task.task_end_date),
+                    statusColor
+                ]);
+
+                // Iterate over subtasks for the current task
+                task.subtasks.forEach(function(subtask) {
+                    var subtaskStatusColor = getStatusColor(subtask.subtask_status);
+
+                    data.addRow([
+                        subtask.subtask_id.toString(),
+                        subtask.subtask_name,
+                        new Date(subtask.subtask_start_date),
+                        new Date(subtask.subtask_end_date),
+                        subtaskStatusColor
+                    ]);
+                });
+            });
+
+            var options = {
+                height: 275
+            };
+
+            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        // Helper function to get the status color based on the status value
+        function getStatusColor(status) {
+            if (status === 1) {
+                return '#0050ff'; // TODO color
+            } else if (status === 2) {
+                return '#ffdc0c'; // In Progress color
+            } else if (status === 3) {
+                return '#14cb2e'; // Done color
+            }
+            return '';
+        }
+    </script>
+</head>
+
+<body>
+<div id="chart_div"></div>
+</body>
+
+</html>
+
+
+
+
+
+
