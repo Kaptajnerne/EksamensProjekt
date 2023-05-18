@@ -4,22 +4,23 @@
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['gantt']});
+        google.charts.load('current', {'packages': ['gantt']});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
             var data = new google.visualization.DataTable();
+            //TODO:: Column values make no sense. Keep saying #3 an #4 needs to be number and #2 date and #1 string.
             data.addColumn('string', 'Task ID');
-            data.addColumn('date', 'Task Name');
-            data.addColumn('number', 'Start Date');
-            data.addColumn('number', 'End Date'); // Change column type to 'number'
+            data.addColumn('string', 'Task Name');
+            data.addColumn('date', 'Start Date');
+            data.addColumn('date', 'End Date');
             data.addColumn('string', 'Status');
 
             // Retrieve task and subtask data from the model
             var taskSubtasks = /*[[${taskSubtasks}]]*/ [];
 
-            // Iterate over task and subtask data
-            taskSubtasks.forEach(function(task) {
+            // Loop over task and subtask
+            taskSubtasks.forEach(function (task) {
                 var statusColor = getStatusColor(task.status);
 
                 data.addRow([
@@ -30,8 +31,8 @@
                     statusColor
                 ]);
 
-                // Iterate over subtasks for the current task
-                task.subtasks.forEach(function(subtask) {
+                // Loop over subtask
+                task.subtasks.forEach(function (subtask) {
                     var subtaskStatusColor = getStatusColor(subtask.subtask_status);
 
                     data.addRow([
@@ -52,7 +53,7 @@
             chart.draw(data, options);
         }
 
-        // Helper function to get the status color based on the status value
+        //Se color based on status
         function getStatusColor(status) {
             if (status === 1) {
                 return '#0050ff'; // TODO color
