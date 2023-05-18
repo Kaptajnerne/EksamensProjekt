@@ -8,6 +8,7 @@ import com.example.eksamensprojekt_2sem.Service.UserService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping(path = "")
@@ -88,11 +89,28 @@ public class ProjectController {
 
     //Edit project
     @PostMapping(path = "/projects/{user_id}/edit/{project_id}")
-    public String editProject(@PathVariable int project_id, @PathVariable int user_id, @ModelAttribute Project project) {
-        //Project project = projectService.getProjectByIDs(project_id, user_id);
-        projectService.editProject(project, project_id, user_id);
+    public String editProject(@PathVariable int project_id, @PathVariable int user_id, @ModelAttribute Project updatedProject) {
+        Project existingProject = projectService.getProjectByIDs(project_id, user_id);
+
+        existingProject.setProject_name(updatedProject.getProject_name());
+        existingProject.setProject_description(updatedProject.getProject_description());
+
+        // Check and update start_date if not null
+        LocalDate updatedStartDate = updatedProject.getStart_date();
+        if (updatedStartDate != null) {
+            existingProject.setStart_date(updatedStartDate);
+        }
+
+        // Check and update end_date if not null
+        LocalDate updatedEndDate = updatedProject.getEnd_date();
+        if (updatedEndDate != null) {
+            existingProject.setEnd_date(updatedEndDate);
+        }
+
+        projectService.editProject(existingProject, project_id, user_id);
         return "redirect:/projects/" + user_id;
     }
+
 
     //delete project
     @GetMapping(path = "/deleteProject/{project_id}")
