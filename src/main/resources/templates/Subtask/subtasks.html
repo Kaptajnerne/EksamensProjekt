@@ -15,6 +15,8 @@
         <th scope="col">Subtask hours</th>
         <th scope="col">Start date</th>
         <th scope="col">End date</th>
+        <th scope="col">Status</th>
+
     </tr>
     </thead>
     <tbody>
@@ -23,6 +25,10 @@
         <td th:text="${subtask.hours}"/>
         <td th:text="${subtask.start_date}"/>
         <td th:text="${subtask.end_date}"/>
+
+        <td th:if="${subtask.status}==1"><a style="color: #0050ff;">TODO</a></td>
+        <td th:if="${subtask.status}==2"><a style="color: #ffdc0c;">In Progress</a></td>
+        <td th:if="${subtask.status}==3"><a style="color: #14cb2e;">Done</a></td>
 
         <td> <a th:href="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask.subtask_id})}">
                 <button type="button" class="btn">Delete Subtask</button>
