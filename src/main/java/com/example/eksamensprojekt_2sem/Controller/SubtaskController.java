@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -60,11 +61,29 @@ public class SubtaskController {
 
     //Edit subtask
     @PostMapping(path = "/subtask/{task_id}/edit/{subtask_id}")
-    public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask subtask) {
-        //Task task = taskService.getTaskByIDs(, task_id, project_id);
-        subtaskService.editSubtask(subtask, subtask_id, task_id);
+    public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask updatedSubtask) {
+        Subtask existingSubtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
+
+        existingSubtask.setSubtask_name(updatedSubtask.getSubtask_name());
+        existingSubtask.setHours(updatedSubtask.getHours());
+        existingSubtask.setStatus(updatedSubtask.getStatus());
+
+        // Check and update start_date if not null
+        LocalDate updatedStartDate = updatedSubtask.getStart_date();
+        if (updatedStartDate != null) {
+            existingSubtask.setStart_date(updatedStartDate);
+        }
+
+        // Check and update end_date if not null
+        LocalDate updatedEndDate = updatedSubtask.getEnd_date();
+        if (updatedEndDate != null) {
+            existingSubtask.setEnd_date(updatedEndDate);
+        }
+
+        subtaskService.editSubtask(existingSubtask, subtask_id, task_id);
         return "redirect:/subtasks/" + task_id;
     }
+
 
     @GetMapping(path = "subtasks/delete/{subtask_id}")
     public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id) {
