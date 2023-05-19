@@ -96,7 +96,7 @@ public class UserController {
         model.addAttribute("user_id", user_id);
         User user = userService.getUserFromId(user_id);
         model.addAttribute("user", user);
-        return "editUser";
+        return "User/editUser";
     }
 
     //Edit user
