@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
+import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.User;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -148,4 +149,27 @@ public class UserRepositoryDB implements UserIRepository {
         }
 
     }
+
+    //edit deadline
+    /*public void editDeadline(Project project, int project_id, int user_id) {
+        try {
+            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            String SQL = "UPDATE project SET project_name = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ? AND user_id = ?";
+            try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
+                pstmt.setString(1, project.getProject_name());
+                pstmt.setString(2, project.getProject_description());
+                pstmt.setObject(3, Date.valueOf(project.getStart_date()));
+                pstmt.setObject(4, Date.valueOf(project.getEnd_date()));
+                pstmt.setInt(5, project_id);
+                pstmt.setInt(6, user_id);
+
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
 }

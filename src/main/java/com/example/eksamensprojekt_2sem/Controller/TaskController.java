@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,7 @@ public class TaskController {
         int user_id = userService.getUserID(project_id);
         double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
 
-        //Set calculated time for each task and its subtask
+
         for (Task task : tasks) {
             double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
             task.setCalculatedTime(taskCalculatedTime);
@@ -74,11 +75,30 @@ public class TaskController {
 
     //Edit task
     @PostMapping(path = "/task/{project_id}/edit/{task_id}")
-    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task task) {
-        //Task task = taskService.getTaskByIDs(, task_id, project_id);
-        taskService.editTask(task, task_id, project_id);
+    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task updatedTask) {
+        Task existingTask = taskService.getTaskByIDs(task_id, project_id);
+
+        existingTask.setTask_name(updatedTask.getTask_name());
+        existingTask.setHours(updatedTask.getHours());
+        existingTask.setStatus(updatedTask.getStatus());
+
+        // Check and update start_date if not null
+        LocalDate updatedStartDate = updatedTask.getStart_date();
+        if (updatedStartDate != null) {
+            existingTask.setStart_date(updatedStartDate);
+        }
+
+        // Check and update end_date if not null
+        LocalDate updatedEndDate = updatedTask.getEnd_date();
+        if (updatedEndDate != null) {
+            existingTask.setEnd_date(updatedEndDate);
+        }
+
+        taskService.editTask(existingTask, task_id, project_id);
         return "redirect:/tasks/" + project_id;
     }
+
+
 
     @GetMapping(path = "task/delete/{task_id}")
     public String deleteTask(@PathVariable("task_id") int task_id, Model model) {

@@ -28,7 +28,7 @@ CREATE TABLE task
  hours double,
  start_date date,
  end_date date,
- status varchar(255),
+ status int,
  project_id int not null,
  primary key(task_id),
  foreign key(project_id) references project (project_id));
@@ -39,7 +39,7 @@ CREATE TABLE subtask
  hours double,
  start_date date,
  end_date date,
- status varchar(255),
+ status int,
  task_id int not null,
  primary key(subtask_id),
  foreign key(task_id) references task (task_id));

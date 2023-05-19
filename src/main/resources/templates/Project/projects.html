@@ -27,11 +27,11 @@
         <table>
             <thead>
             <tr>
-                <th scope="col">Project Number</th>
                 <th scope="col">Project Name</th>
                 <th scope="col">Project Description</th>
                 <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Projects estimated time</th>
                 <th scope="col">Edit Project</th>
                 <th scope="col">Delete Project</th>
                 <th scope="col">View Tasks</th>
@@ -43,6 +43,8 @@
                 <td th:text="${project.project_description}"></td>
                 <td th:text="${project.start_date}"></td>
                 <td th:text="${project.end_date}"></td>
+                <td th:text="${project.projectCalculatedTime}"/>
+
                 <td>
                     <a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
                         <button type="button" class="btn">Edit Project</button>

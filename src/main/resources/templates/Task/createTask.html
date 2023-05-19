@@ -25,12 +25,23 @@
 
         <div>
             <label class="createTaskForm">Start Date</label>
-            <input type="date" th:field="*{start_date}">
+            <input type="date" th:field="*{start_date}"required>
         </div>
 
         <div>
             <label class="createTaskForm">End Date</label>
-            <input type="date" th:field="*{end_date}">
+            <input type="date" th:field="*{end_date}"required>
+        </div>
+
+        <div>
+            <label class="createTaskForm">Status</label>
+            <label>
+                <select name="status" id="status">
+                    <option value="1">TODO</option>
+                    <option value="2">In Progress</option>
+                    <option value="3">Done</option>
+                </select>
+            </label>
         </div>
 
         <br>
