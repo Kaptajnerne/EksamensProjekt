@@ -6,8 +6,17 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<header>
+    <h2 class="logo">logo</h2>
+    <nav class="navigation">
+        <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">Create subtask</a>
+        <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">Go back</a>
+        <button class="btnlogin-popup">Log out</button>
 
-<h1>Subtasks</h1>
+    </nav>
+</header>
+
+    <h1>Subtasks</h1>
 
 <div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
     <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">
