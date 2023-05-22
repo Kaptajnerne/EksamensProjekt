@@ -33,10 +33,11 @@
                 <th scope="col">Project Description</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">Deadline</th>
-                <th scope="col">Projects estimated time</th>
-                <th scope="col">Edit project</th>
-                <th scope="col">Delete project</th>
-                <th scope="col">View tasks</th>
+                <th scope="col">Projects Estimated Time</th>
+                <th scope="col">Edit Project</th>
+                <th scope="col">Delete Project</th>
+                <th scope="col">View Tasks</th>
+                <th scope="col">Show Project</th>
             </tr>
             </thead>
             <tbody>
@@ -60,6 +61,11 @@
                 <td>
                     <a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
                         <button type="button" class="btn">View Tasks</button>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/project/{project_id}(project_id=${project.project_id})}">
+                        <button type="button" class="btn">Show Project</button>
                     </a>
                 </td>
             </tr>
