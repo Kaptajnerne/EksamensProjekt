@@ -65,6 +65,12 @@
                         <button type="button" class="btn">View subtasks</button>
                     </a>
                 </td>
+                <td>
+                    <a th:href="@{/gantt/{project_id}(project_id=${project_id})}">
+                        <button type="button" class="btn">Gantt Chart</button>
+                    </a>
+
+                </td>
             </tr>
             </tbody>
 
@@ -73,8 +79,16 @@
     </section>
 
 
+<div>
+    <a th:href="@{/task/create/{project_id}(project_id=${project_id})}">
+        <button type="button" class="btn">Create Task</button>
+    </a>
+
+    <a th:href="@{/projects/{user_id}(user_id=${user_id})}">
+        <button type="button" class="btn go-back">Go Back</button>
+    </a>
+</div>
+
 </main>
-
-
 </body>
 </html>
