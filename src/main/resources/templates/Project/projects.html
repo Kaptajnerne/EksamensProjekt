@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Projects</title>
-    <link rel="stylesheet" th:href="@{/theme2.css}">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<header>
+    <h2 class="logo">logo</h2>
+    <nav class="navigation">
+            <a th:href="@{/home/{user_id}(user_id=${user_id})}">Home</a>
+            <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
+    </nav>
+</header>
+<h1>Manage Projects</h1>
 
-<h1 align="center">Manage Projects</h1>
+<div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
+    <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
+        <button type="button" class="btn">Create Project</button>
+    </a>
+</div>
 
-<table>
-    <thead>
-    <tr>
-        <th scope="col">Project Name</th>
-        <th scope="col">Project Description</th>
-        <th scope="col">Start date</th>
-        <th scope="col">Deadline</th>
-        <th scope="col"> Projects estimated time </th>
+<br>
+<br>
 
-    </tr>
+<main class="table">
+    <section class="table_body">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Project Name</th>
+                <th scope="col">Project Description</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Projects estimated time</th>
+                <th scope="col">Edit project</th>
+                <th scope="col">Delete project</th>
+                <th scope="col">View tasks</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${projects}">
+                <td th:text="${project.project_name}"></td>
+                <td th:text="${project.project_description}"></td>
+                <td th:text="${project.start_date}"></td>
+                <td th:text="${project.end_date}"></td>
+                <td th:text="${project.projectCalculatedTime}"/>
 
-    </thead>
-    <tbody>
+                <td>
+                    <a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
+                        <button type="button" class="btn">Edit Project</button>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/deleteProject/{project_id}(project_id=${project.project_id})}">
+                        <button type="button" class="btn">Delete Project</button>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
+                        <button type="button" class="btn">View Tasks</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
 
-    <tr th:each="project : ${projects}">
-        <td th:text="${project.project_name}"/>
-        <td th:text="${project.project_description}"/>
-        <td th:text="${project.start_date}"/>
-        <td th:text="${project.end_date}"/>
-        <td th:text="${project.projectCalculatedTime}"/>
-
-        <td><a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
-            <button type="button" class="btn">Edit project</button>
-        </a></td>
-
-        <td><a th:href="@{/deleteProject/{project_id}(project_id=${project.project_id})}">
-            <button type="button" class="btn">Delete project</button>
-        </a> </td>
-
-        <td><a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
-            <button type="button" class="btn">View tasks</button>
-        </a></td>
-
-    </tr>
-
-    <div>
-        <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
-            <button type="button" class="btn">Create project</button>
-        </a>
-
-        <a th:href="@{/home/{user_id}(user_id=${user_id})}">
-            <button type="button" class="btn">Home</button>
-        </a>
-    </div>
-
-
-    </tbody>
-</table>
 </body>
 </html>

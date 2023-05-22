@@ -3,29 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>WELCOME</title>
-    <link th:href="@{/theme2.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-<h1>YOU SIGNED IN</h1>
-
-<div>
-    <a th:href="@{/logout}">
-        <button type="button" class ="btn">Logout</button>
-    </a>
-
+<header>
+    <h2 class="logo">logo</h2>
+    <nav class="navigation">
+        <a th:href="@{/editUser/{user_id}(user_id=${user_id})}">Edit Profile</a>
+        <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
+    </nav>
+</header>
+<h1>Sign in successful</h1>
+<h3>
     <a th:href="@{/projects/{organization_id}(organization_id=${user_id})}">
-        <button type="button" class ="btn">See current projects</button>
+        <button type="button" class="btn">See current projects</button>
     </a>
-
-    <a th:href="@{/editUser/{user_id}(user_id=${user_id})}">
-        <button type="button" class ="btn">Edit User</button>
-    </a>
-
-  <!--  <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
-        <button type="button" class ="btn">See Employees</button>
-    </a>-->
-</div>
+    <!--  <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
+          <button type="button" class ="btn">See Employees</button>
+      </a>-->
+</h3>
 
 </body>
 </html>
