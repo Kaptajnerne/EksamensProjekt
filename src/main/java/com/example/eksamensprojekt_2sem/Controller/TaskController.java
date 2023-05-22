@@ -123,7 +123,7 @@ public class TaskController {
         return "redirect:/tasks/" + projectID;
     }
 
-    //Gantt chart with  task and subtask by project_id
+  /*  //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
     public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
         //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
@@ -136,7 +136,7 @@ public class TaskController {
 
         return "Task/ganttChart";
     }
-
+*/
 
 
     @GetMapping(path="project/{project_id}")
