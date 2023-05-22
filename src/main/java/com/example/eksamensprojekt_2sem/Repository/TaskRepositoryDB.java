@@ -261,7 +261,7 @@ public class TaskRepositoryDB implements TaskIRepository {
         }
     }
 
-
+    /*
     public List<String> generateGanttChart(List<TaskSubtaskDTO> taskSubtaskList) {
         List<String> chartData = new ArrayList<>();
         chartData.add("['Task ID', 'Task Name', 'Resource', 'Start Date', 'End Date', 'Duration', 'Percent Complete', 'Dependencies']");
@@ -290,6 +290,7 @@ public class TaskRepositoryDB implements TaskIRepository {
         }
         return chartData;
     }
+    */
 
 
 

@@ -126,13 +126,13 @@ public class TaskController {
     //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
     public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
-        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
         //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
+        //model.addAttribute("chartData", chartData);
 
+        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
         String taskSubtasksJson = new Gson().toJson(taskSubtasks);
 
         model.addAttribute("taskSubtasksJson", taskSubtasksJson);
-        //model.addAttribute("chartData", chartData);
 
         return "Task/ganttChart";
     }
