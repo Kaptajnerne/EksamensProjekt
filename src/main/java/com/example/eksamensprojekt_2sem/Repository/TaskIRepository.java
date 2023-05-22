@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
+import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
 import com.example.eksamensprojekt_2sem.Model.Task;
 
 import java.util.List;
@@ -26,5 +27,8 @@ public interface TaskIRepository {
 
     //Get project_id from task_id
     public int getProIDbyTaskID(int task_id);
+
+    //Get task and subtask from project_id
+    public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id);
 
 }

@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt_2sem.Service;
 
+import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Repository.TaskRepositoryDB;
@@ -53,6 +54,16 @@ public class TaskService {
     //Calculated time for task and subtask
     public Double getTaskCalculatedTime (int task_id) {
         return taskRepositoryDB.getTaskCalculatedTime(task_id);
+    }
+
+    //Get task and subtask by project_id
+    public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id) {
+        return taskRepositoryDB.getTaskSubtasksByProID(project_id);
+    }
+
+    //Get Gantt chart
+    public List<String> generateGanttChart(List<TaskSubtaskDTO> taskSubtaskList) {
+        return taskRepositoryDB.generateGanttChart(taskSubtaskList);
     }
 
 }
