@@ -9,27 +9,18 @@
 <header>
     <h2 class="logo">logo</h2>
     <nav class="navigation">
-        <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">Create subtask</a>
-        <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">Go back</a>
-        <button class="btnlogin-popup">Log out</button>
-
+        <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">Tasks</a>
+        <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
     </nav>
 </header>
 
     <h1>Subtasks</h1>
 
-<div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
+<div style="position: fixed; top: 30%; left: 16%; transform: translate(-50%, -50%);">
     <a th:href="@{/subtasks/create/{task_id}(task_id=${task_id})}">
         <button type="button" class="btn">Create Subtask</button>
     </a>
-
-    <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
-        <button type="button" class="btn go-back">Go Back</button>
-    </a>
 </div>
-
-<br>
-<br>
 
 <main class="table">
     <section class="table_body">

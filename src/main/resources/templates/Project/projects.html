@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
+<header>
+    <h2 class="logo">logo</h2>
+    <nav class="navigation">
+            <a th:href="@{/home/{user_id}(user_id=${user_id})}">Home</a>
+            <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
+    </nav>
+</header>
 <h1>Manage Projects</h1>
 
 <div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
     <a th:href="@{/projects/create/{user_id}(user_id=${user_id})}">
         <button type="button" class="btn">Create Project</button>
-    </a>
-
-    <a th:href="@{/home/{user_id}(user_id=${user_id})}">
-        <button type="button" class="btn">Home</button>
     </a>
 </div>
 
@@ -32,9 +34,9 @@
                 <th scope="col">Start Date</th>
                 <th scope="col">Deadline</th>
                 <th scope="col">Projects estimated time</th>
-                <th scope="col">Edit Project</th>
-                <th scope="col">Delete Project</th>
-                <th scope="col">View Tasks</th>
+                <th scope="col">Edit project</th>
+                <th scope="col">Delete project</th>
+                <th scope="col">View tasks</th>
             </tr>
             </thead>
             <tbody>
