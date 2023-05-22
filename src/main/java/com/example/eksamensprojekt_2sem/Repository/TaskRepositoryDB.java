@@ -262,5 +262,35 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
 
+    public List<String> generateGanttChart(List<TaskSubtaskDTO> taskSubtaskList) {
+        List<String> chartData = new ArrayList<>();
+        chartData.add("['Task ID', 'Task Name', 'Resource', 'Start Date', 'End Date', 'Duration', 'Percent Complete', 'Dependencies']");
+
+        for (TaskSubtaskDTO taskSubtaskDTO : taskSubtaskList) {
+            int task_id = taskSubtaskDTO.getId();
+            String task_name = taskSubtaskDTO.getName();
+            LocalDate task_start_date = taskSubtaskDTO.getStart_date();
+            LocalDate task_end_date = taskSubtaskDTO.getEnd_date();
+
+            chartData.add("['" + task_id + "', '" + task_name + "', 'Task', " +
+                    "new Date(" + task_start_date.getYear() + ", " + (task_start_date.getMonthValue() - 1) + ", " + task_start_date.getDayOfMonth() + "), " +
+                    "new Date(" + task_end_date.getYear() + ", " + (task_end_date.getMonthValue() - 1) + ", " + task_end_date.getDayOfMonth() + "), null, 100, null]");
+
+            List<Subtask> subtasks = taskSubtaskDTO.getSubtasks();
+            for (Subtask subtask : subtasks) {
+                int subtask_id = subtask.getSubtask_id();
+                String subtask_name = subtask.getSubtask_name();
+                LocalDate subtask_start_date = subtask.getStart_date();
+                LocalDate subtask_end_date = subtask.getEnd_date();
+
+                chartData.add("['" + subtask_id + "', '" + subtask_name + "', 'Subtask', " +
+                        "new Date(" + subtask_start_date.getYear() + ", " + (subtask_start_date.getMonthValue() - 1) + ", " + subtask_start_date.getDayOfMonth() + "), " +
+                        "new Date(" + subtask_end_date.getYear() + ", " + (subtask_end_date.getMonthValue() - 1) + ", " + subtask_end_date.getDayOfMonth() + "), null, 100, '" + task_id + "']");
+            }
+        }
+        return chartData;
+    }
+
+
 
 }

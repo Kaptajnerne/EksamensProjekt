@@ -55,6 +55,7 @@ public class TaskController {
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
         Task task = new Task();
+
         model.addAttribute("task", task);
         model.addAttribute("project_id", project_id);
         return "Task/createTask";
@@ -70,6 +71,7 @@ public class TaskController {
     @GetMapping(path = "/task/{project_id}/edit/{task_id}")
     public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
         Task task = taskService.getTaskByIDs(task_id, project_id);
+
         model.addAttribute("task", task);
         model.addAttribute("task_id", task_id);
         model.addAttribute("project_id", project_id);
@@ -105,8 +107,9 @@ public class TaskController {
     //Delete task page
     @GetMapping(path = "task/delete/{task_id}")
     public String deleteTask(@PathVariable("task_id") int task_id, Model model) {
-        model.addAttribute("task_id", task_id);
         Task task = taskService.getTaskById(task_id);
+
+        model.addAttribute("task_id", task_id);
         model.addAttribute("task", task);
         return "Task/deleteTask";
     }
@@ -119,14 +122,17 @@ public class TaskController {
         return "redirect:/tasks/" + projectID;
     }
 
-    //Get task and subtask by project_id
+    //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
     public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
         List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+        List<String> chartData = taskService.generateGanttChart(taskSubtasks);
 
         model.addAttribute("taskSubtasks", taskSubtasks);
+        model.addAttribute("chartData", chartData);
         return "Task/ganttChart";
     }
+
 
 
 

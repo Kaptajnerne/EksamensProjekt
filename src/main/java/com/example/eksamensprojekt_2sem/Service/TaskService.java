@@ -61,4 +61,9 @@ public class TaskService {
         return taskRepositoryDB.getTaskSubtasksByProID(project_id);
     }
 
+    //Get Gantt chart
+    public List<String> generateGanttChart(List<TaskSubtaskDTO> taskSubtaskList) {
+        return taskRepositoryDB.generateGanttChart(taskSubtaskList);
+    }
+
 }
