@@ -245,7 +245,7 @@ public class TaskRepositoryDB implements TaskIRepository {
                     currentTaskId = task_id;
                 }
 
-                //Create subtask and add to task's subtask list
+                //Create subtask and add to subtask list
                 int subtask_id = rs.getInt("subtask_id");
                 if (subtask_id >= 0) {
                     String subtask_name = rs.getString("subtask_name");

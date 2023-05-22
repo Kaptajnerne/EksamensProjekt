@@ -140,7 +140,7 @@ public class TaskController {
 
 
     //get project with task and subtasks
-    //TODO:: Can only see project from project_id 1
+    //TODO:: Insert buttons, and figure out how you should add, edit delete insert.
     @GetMapping(path="project/{project_id}")
     public String showProject(Model model, @PathVariable int project_id) {
         List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
