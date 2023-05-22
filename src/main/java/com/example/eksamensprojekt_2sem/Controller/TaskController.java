@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -126,10 +127,13 @@ public class TaskController {
     @GetMapping(path = "gantt/{project_id}")
     public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
         List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-        List<String> chartData = taskService.generateGanttChart(taskSubtasks);
+        //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
 
-        model.addAttribute("taskSubtasks", taskSubtasks);
-        model.addAttribute("chartData", chartData);
+        String taskSubtasksJson = new Gson().toJson(taskSubtasks);
+
+        model.addAttribute("taskSubtasksJson", taskSubtasksJson);
+        //model.addAttribute("chartData", chartData);
+
         return "Task/ganttChart";
     }
 
