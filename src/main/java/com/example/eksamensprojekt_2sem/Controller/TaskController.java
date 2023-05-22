@@ -139,5 +139,12 @@ public class TaskController {
 
 
 
+    @GetMapping(path="project/{project_id}")
+    public String showProject(Model model, @PathVariable int project_id) {
+        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+        model.addAttribute("taskSubtask", taskSubtasks);
+
+        return "Task/taskSubtask";
+    }
 
 }

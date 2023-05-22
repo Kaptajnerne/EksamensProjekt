@@ -214,15 +214,17 @@ public class TaskRepositoryDB implements TaskIRepository {
 
     public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id) {
         List<TaskSubtaskDTO> taskSubtaskList = new ArrayList<>();
-        Map<Integer, List<Subtask>> subtasksMap = new HashMap<>();
+        int currentTaskId = -1;
+        TaskSubtaskDTO currentTask = null;
 
         try {
             Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
             String SQL = "SELECT t.task_id, t.task_name, t.hours AS task_hours, t.start_date AS task_start_date, t.end_date AS task_end_date, t.status AS task_status, t.project_id AS task_project_id, " +
                     "s.subtask_id, s.subtask_name, s.hours AS subtask_hours, s.start_date AS subtask_start_date, s.end_date AS subtask_end_date, s.status AS subtask_status, s.task_id AS subtask_task_id " +
                     "FROM task AS t " +
-                    "INNER JOIN subtask AS s ON t.task_id = s.task_id " +
-                    "WHERE t.project_id = ?;";
+                    "LEFT JOIN subtask AS s ON t.task_id = s.task_id " +
+                    "WHERE t.project_id = ? " +
+                    "ORDER BY t.task_id, s.subtask_id;";
 
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, project_id);
@@ -230,18 +232,20 @@ public class TaskRepositoryDB implements TaskIRepository {
 
             while (rs.next()) {
                 int task_id = rs.getInt("task_id");
-                if (task_id >= 0) {
+                if (task_id != currentTaskId) {
+                    // Create a new TaskSubtaskDTO object for the task
                     String task_name = rs.getString("task_name");
                     Double task_hours = rs.getDouble("task_hours");
                     LocalDate task_start_date = rs.getDate("task_start_date").toLocalDate();
                     LocalDate task_end_date = rs.getDate("task_end_date").toLocalDate();
                     int task_status = rs.getInt("task_status");
 
-                    TaskSubtaskDTO taskSubtaskDTO = new TaskSubtaskDTO(task_id, task_name, task_hours, task_start_date, task_end_date, task_status, project_id, new ArrayList<>());
-                    taskSubtaskList.add(taskSubtaskDTO);
-                    subtasksMap.put(task_id, taskSubtaskDTO.getSubtasks());
+                    currentTask = new TaskSubtaskDTO(task_id, task_name, task_hours, task_start_date, task_end_date, task_status, project_id, new ArrayList<>());
+                    taskSubtaskList.add(currentTask);
+                    currentTaskId = task_id;
                 }
 
+                //Create subtask and add to task's subtask list
                 int subtask_id = rs.getInt("subtask_id");
                 if (subtask_id >= 0) {
                     String subtask_name = rs.getString("subtask_name");
@@ -251,8 +255,10 @@ public class TaskRepositoryDB implements TaskIRepository {
                     int subtask_status = rs.getInt("subtask_status");
                     int subtask_task_id = rs.getInt("subtask_task_id");
 
-                    List<Subtask> subtasks = subtasksMap.get(subtask_task_id);
-                    subtasks.add(new Subtask(subtask_id, subtask_name, subtask_hours, subtask_start_date, subtask_end_date, subtask_status, subtask_task_id));
+                    if (currentTask != null) {
+                        List<Subtask> subtasks = currentTask.getSubtasks();
+                        subtasks.add(new Subtask(subtask_id, subtask_name, subtask_hours, subtask_start_date, subtask_end_date, subtask_status, subtask_task_id));
+                    }
                 }
             }
             return taskSubtaskList;
@@ -260,6 +266,7 @@ public class TaskRepositoryDB implements TaskIRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     /*
     public List<String> generateGanttChart(List<TaskSubtaskDTO> taskSubtaskList) {
