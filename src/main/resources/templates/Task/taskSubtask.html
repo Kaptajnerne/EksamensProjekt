@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Project</title>
     <style>
-        /* Add CSS styling for indentation */
         .subtask {
+            padding-left: 20px;
+        }
+
+        .task {
             padding-left: 20px;
         }
     </style>
@@ -22,6 +25,7 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Hours</th>
+                <th scope="col">EST. time</th>
                 <th scope="col">Start date</th>
                 <th scope="col">End date</th>
                 <th scope="col">Status</th>
@@ -31,10 +35,11 @@
             <th:block th:each="task : ${taskSubtask}">
                 <tr>
                     <td th:text="${task.name}"></td>
-                    <td th:text="${task.hours}"></td>
-                    <td th:text="${task.start_date}"></td>
-                    <td th:text="${task.end_date}"></td>
-                    <td>
+                    <td class="task"  th:text="${task.hours}"></td>
+                    <td class="task" th:text="${task.calculatedTime}"></td>
+                    <td class="task" th:text="${task.start_date}"></td>
+                    <td class="task" th:text="${task.end_date}"></td>
+                    <td class="task">
                         <span th:if="${task.status}==1" style="color: #0050ff;">TODO</span>
                         <span th:if="${task.status}==2" style="color: #ffdc0c;">In Progress</span>
                         <span th:if="${task.status}==3" style="color: #14cb2e;">Done</span>
@@ -44,6 +49,7 @@
                     <tr>
                         <td class="subtask" th:text="${subtask.subtask_name}"></td>
                         <td class="subtask" th:text="${subtask.hours}"></td>
+                        <td class="subtask"></td>
                         <td class="subtask" th:text="${subtask.start_date}"></td>
                         <td class="subtask" th:text="${subtask.end_date}"></td>
                         <td class="subtask">
@@ -54,13 +60,24 @@
                         <td class="subtask"></td>
                         <td class="subtask"></td>
                     </tr>
+
                 </th:block>
             </th:block>
             </tbody>
         </table>
-    </section>
 
+        <br>
+
+        <div>
+            <h4 style="display: inline;">Projects Estimated time: </h4>
+            <a th:text="${projectCalculatedTime}" style="display: inline;"></a>
+        </div>
+
+    </section>
 </main>
+
+<p></p>
+
 </body>
 </html>
 

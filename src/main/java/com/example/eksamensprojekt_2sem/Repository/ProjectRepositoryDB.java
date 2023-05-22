@@ -192,6 +192,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     }
 
 
+    //Get time for all tasks and subtasks
     public Double getProjectCalculatedTime(int project_id) {
         double estimatedTime = 0;
         try {

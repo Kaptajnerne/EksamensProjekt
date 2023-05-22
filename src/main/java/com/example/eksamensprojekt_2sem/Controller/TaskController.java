@@ -142,7 +142,17 @@ public class TaskController {
     @GetMapping(path="project/{project_id}")
     public String showProject(Model model, @PathVariable int project_id) {
         List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+        double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+
+        double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
+        for (TaskSubtaskDTO task : taskSubtasks) {
+            double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
+            task.setCalculatedTime(taskCalculatedTime2);
+        }
+
         model.addAttribute("taskSubtask", taskSubtasks);
+        model.addAttribute("projectCalculatedTime", projectCalculatedTime);
+        model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
 
         return "Task/taskSubtask";
     }

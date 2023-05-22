@@ -13,6 +13,7 @@ public class TaskSubtaskDTO {
     private LocalDate start_date;
     private LocalDate end_date;
     private int status;
+    private double calculatedTime;
     private int project_id;
     private List<Subtask> subtasks;
 
@@ -23,6 +24,18 @@ public class TaskSubtaskDTO {
         this.start_date = start_date;
         this.end_date = end_date;
         this.status = status;
+        this.project_id = project_id;
+        this.subtasks = subtasks;
+    }
+
+    public TaskSubtaskDTO(int id, String name, double hours, LocalDate start_date, LocalDate end_date, int status, double calculatedTime, int project_id, List<Subtask> subtasks) {
+        this.id = id;
+        this.name = name;
+        this.hours = hours;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.calculatedTime = calculatedTime;
         this.project_id = project_id;
         this.subtasks = subtasks;
     }
@@ -76,6 +89,14 @@ public class TaskSubtaskDTO {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public double getCalculatedTime() {
+        return calculatedTime;
+    }
+
+    public void setCalculatedTime(double calculatedTime) {
+        this.calculatedTime = calculatedTime;
     }
 
     public int getProject_id() {
