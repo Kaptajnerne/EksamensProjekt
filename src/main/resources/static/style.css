@@ -131,18 +131,14 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url("white-texture.jpg") no-repeat;
+    background: url("images/white-texture.jpg") no-repeat;
     background-size: cover;
     background-position: center;
 
 
 }
 
-.logo {
-    font-size: 2em;
-    color: rgba(29,29,29,0.8);
-    user-select: none;
-}
+
 
 .navigation a {
     position: relative;
@@ -312,6 +308,15 @@ body {
     font-size: 1.2em;
     color: rgba(29,29,29,0.8);
     line-height: 57px;
+}
+
+.logo {
+    width: 180px;
+    height: 60px;
+    background-image: url("images/Logo.png");
+    background-size: cover;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .btn {
