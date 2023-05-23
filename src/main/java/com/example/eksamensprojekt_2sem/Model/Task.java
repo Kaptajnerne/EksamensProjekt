@@ -1,21 +1,49 @@
 package com.example.eksamensprojekt_2sem.Model;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Task {
 
     private int task_id;
     private String task_name;
+    private double hours;
+    private double calculatedTime;
     private LocalDate start_date;
     private LocalDate end_date;
+    private int status;
     private int project_id;
 
-    public Task(int task_id, String task_name, LocalDate start_date, LocalDate end_date, int project_id) {
+    public Task(int task_id, String task_name, double hours, double calculatedTime, LocalDate start_date, LocalDate end_date, int status) {
         this.task_id = task_id;
         this.task_name = task_name;
+        this.hours = hours;
+        this.calculatedTime = calculatedTime;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.status = status;
+    }
+
+    public Task(int task_id, String task_name, double hours, int project_id, double calculatedTime) {
+        this.task_id = task_id;
+        this.task_name = task_name;
+        this.hours = hours;
         this.project_id = project_id;
+        this.calculatedTime = calculatedTime;
+    }
+
+    public Task(int task_id, String task_name, double hours, LocalDate start_date, LocalDate end_date, int status, int project_id) {
+        this.task_id = task_id;
+        this.task_name = task_name;
+        this.hours = hours;
+        this.project_id = project_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+    }
+
+
+    public Task() {
     }
 
     public int getTask_id() {
@@ -34,6 +62,23 @@ public class Task {
         this.task_name = task_name;
     }
 
+
+    public double getHours() {
+        return hours;
+    }
+
+    public void setHours(double hours) {
+        this.hours = hours;
+    }
+
+    public double getCalculatedTime() {
+        return calculatedTime;
+    }
+
+    public void setCalculatedTime(double calculatedTime) {
+        this.calculatedTime = calculatedTime;
+    }
+
     public LocalDate getStart_date() {
         return start_date;
     }
@@ -48,6 +93,14 @@ public class Task {
 
     public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getProject_id() {

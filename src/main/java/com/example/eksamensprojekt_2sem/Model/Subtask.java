@@ -6,16 +6,23 @@ public class Subtask {
 
     private int subtask_id;
     private String subtask_name;
+    private double hours;
     private LocalDate start_date;
     private LocalDate end_date;
-    private int project_id;
+    private int status;
+    private int task_id;
 
-    public Subtask(int subtask_id, String subtask_name, LocalDate start_date, LocalDate end_date, int project_id) {
+    public Subtask(int subtask_id, String subtask_name, double hours, LocalDate start_date, LocalDate end_date, int status, int task_id) {
         this.subtask_id = subtask_id;
         this.subtask_name = subtask_name;
+        this.hours=hours;
         this.start_date = start_date;
         this.end_date = end_date;
-        this.project_id = project_id;
+        this.status = status;
+        this.task_id = task_id;
+    }
+
+    public Subtask() {
     }
 
     public int getSubtask_id() {
@@ -34,6 +41,14 @@ public class Subtask {
         this.subtask_name = subtask_name;
     }
 
+    public double getHours() {
+        return hours;
+    }
+
+    public void setHours(double hours) {
+        this.hours = hours;
+    }
+
     public LocalDate getStart_date() {
         return start_date;
     }
@@ -50,12 +65,21 @@ public class Subtask {
         this.end_date = end_date;
     }
 
-    public int getProject_id() {
-        return project_id;
+    public int getStatus() {
+        return status;
     }
 
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
+    public void setStatus(int status) {
+        this.status = status;
     }
+
+    public int getTask_id() {
+        return task_id;
+    }
+
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
+
 
 }

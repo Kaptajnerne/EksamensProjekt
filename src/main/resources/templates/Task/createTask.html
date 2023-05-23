@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Task</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div align="center">
+
+    <h1>Create Task</h1>
+
+    <form th:action="@{/task/create/{project_id}(project_id=${project_id})}" method="POST" th:object="${task}">
+
+        <div class="createTaskForm">
+            <label class="createTaskForm">Task name:</label>
+            <input type="text" th:field="*{task_name}" placeholder="Task name" required>
+        </div>
+
+        <div class="createTaskForm">
+            <label class="createTaskForm">Hours:</label>
+            <input type="text" th:field="*{hours}" placeholder="hours" required>
+        </div>
+
+        <div>
+            <label class="createTaskForm">Start Date</label>
+            <input type="date" th:field="*{start_date}"required>
+        </div>
+
+        <div>
+            <label class="createTaskForm">End Date</label>
+            <input type="date" th:field="*{end_date}"required>
+        </div>
+
+        <div>
+            <label class="createTaskForm">Status</label>
+            <label>
+                <select name="status" id="status">
+                    <option value="1">TODO</option>
+                    <option value="2">In Progress</option>
+                    <option value="3">Done</option>
+                </select>
+            </label>
+        </div>
+
+        <br>
+
+        <div>
+            <input type="submit" value="Create Task" class="btn success"/>
+            <input type="reset" value="Reset" class="btn reset"/>
+        </div>
+
+        <br>
+
+        <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
+            <button type="button" class="btn go-back">Go Back</button>
+        </a>
+
+    </form>
+
+
+</div>
+
+</body>
+</html>

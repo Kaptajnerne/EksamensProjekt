@@ -1,23 +1,30 @@
 package com.example.eksamensprojekt_2sem.Model;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class Project {
 
     private int project_id;
     private String project_name;
-    private double estimated_time;
-    private int employee_id;
-    private int organization_id;
+    private String project_description;
+    private LocalDate start_date;
+    private LocalDate end_date;
+    private int user_id;
 
-    public Project(int project_id , String project_name, double estimated_time, int employee_id, int organization_id) {
+    private double projectCalculatedTime;
+
+    public Project(int project_id , String project_name, String project_description, LocalDate start_date, LocalDate end_date, int user_id) {
         this.project_id = project_id;
         this.project_name = project_name;
-        this.estimated_time = estimated_time;
-        this.employee_id = employee_id;
-        this.organization_id = organization_id;
-
+        this.project_description = project_description;
+        this.user_id = user_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
-    public Project(int projectId, String projectName) {
+    public Project() {
+
     }
 
     public int getProject_id() {
@@ -36,28 +43,47 @@ public class Project {
         this.project_name = project_name;
     }
 
-    public double getEstimated_time() {
-        return estimated_time;
+
+    public String getProject_description() {
+        return project_description;
     }
 
-    public void setEstimated_time(double estimated_time) {
-        this.estimated_time = estimated_time;
+    public void setProject_description(String project_description) {
+        this.project_description = project_description;
     }
 
-
-    public int getEmployee_id() {
-        return employee_id;
+    public LocalDate getStart_date() {
+        return start_date;
     }
 
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
+    public double getProjectCalculatedTime() {
+        return projectCalculatedTime;
     }
 
-    public int getOrganization_id() {
-        return organization_id;
+    public void setStart_date(LocalDate start_date) {
+        this.start_date = start_date;
     }
 
-    public void setOrganization_id(int organization_id) {
-        this.organization_id = organization_id;
+    public LocalDate getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(LocalDate end_date) {
+        this.end_date = end_date;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setTasks(List<Task> tasks) {
+    }
+
+    public void setProjectCalculatedTime(double projectCalculatedTime) {
+        this.projectCalculatedTime = projectCalculatedTime;
     }
 }

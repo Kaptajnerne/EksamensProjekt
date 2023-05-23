@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete project</title>
+</head>
+<body>
+
+<h2>Are you sure to delete the project?</h2>
+<form th:action="@{/deleteProject/{project_id}(project_id=${project_id})}" method="post">
+  <input type="hidden" name="project_id" value="${project_id}">
+  <button type="submit">Delete project</button>
+
+    <a th:href="@{/projects/{user_id}(user_id=${project.user_id})}">
+        <button type="button" class="btn">Return to Projects</button>
+    </a>
+</form>
+</body>
+</html>
