@@ -16,15 +16,24 @@ public class UserController {
         this.userService = userService;
     }
 
+    public boolean isSignedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
+    }
+
     //Index page shows sign in or sign up
     @GetMapping(path = "/")
     public String index() {
         return "User/index";
     }
 
+    @GetMapping(path = "/sessionTimeout")
+    public String sessionTimeout() {
+        return "User/sessionTimeout";
+    }
+
 
     //Page users see when they sign in
-    @GetMapping(path ="/home/{user_id}")
+    @GetMapping(path = "/home/{user_id}")
     public String homeOrg(Model model, @PathVariable int user_id) {
         model.addAttribute("user_id", user_id);
         return "User/home";
@@ -54,7 +63,7 @@ public class UserController {
             User userLogin = userService.signIn(user.getUsername(), user.getPassword());
             if (userLogin != null) {
                 session.setAttribute("user", userLogin);
-                session.setMaxInactiveInterval(100);
+                session.setMaxInactiveInterval(120);
 
                 return "redirect:/home/" + userLogin.getUser_id();
             } else {
@@ -76,14 +85,14 @@ public class UserController {
 
     //Sign up
     @PostMapping(path = "/signup")
-    public String signup(@ModelAttribute ("organization") User user){
+    public String signup(@ModelAttribute("organization") User user) {
         userService.signUp(user);
         return "redirect:/signin";
     }
 
 
     //Sign out
-    @GetMapping(path="/logout")
+    @GetMapping(path = "/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/signin";
@@ -92,22 +101,27 @@ public class UserController {
 
     //Edit user page
     @GetMapping(path = "/editUser/{user_id}")
-    public String showEditUser(@PathVariable("user_id") int user_id, Model model) {
-        model.addAttribute("user_id", user_id);
-        User user = userService.getUserFromId(user_id);
-        model.addAttribute("user", user);
-        return "User/editUser";
+    public String showEditUser(@PathVariable("user_id") int user_id, Model model, HttpSession session) {
+
+        if (isSignedIn(session)) {
+            model.addAttribute("user_id", user_id);
+            User user = userService.getUserFromId(user_id);
+            model.addAttribute("user", user);
+            return "User/editUser";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Edit user
     @PostMapping(path = "/editUser/{user_id}")
-    public String editUser(@PathVariable("user_id") int user_id, @RequestParam("username")  String user_name, String password) {
-        User user = userService.getUserFromId(user_id);
-        user.setUsername(user_name);
-        user.setPassword(password);
-        userService.editUser(user,user_id);
-        return  "redirect:/home/"+ user_id;
-
-
+    public String editUser(@PathVariable("user_id") int user_id, @RequestParam("username") String user_name, String password, HttpSession session) {
+        if (isSignedIn(session)) {
+            User user = userService.getUserFromId(user_id);
+            user.setUsername(user_name);
+            user.setPassword(password);
+            userService.editUser(user, user_id);
+            return "redirect:/home/" + user_id;
+        }
+        return "redirect:/sessionTimeout";
     }
 }

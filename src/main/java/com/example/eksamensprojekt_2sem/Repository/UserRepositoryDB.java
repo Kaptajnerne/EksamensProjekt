@@ -19,34 +19,6 @@ public class UserRepositoryDB implements UserIRepository {
     @Value("1234")
     private String pwd;
 
-     /* //Login 2
-    public void signIn2(HttpServletRequest request, HttpServletResponse response) {
-
-        String organization_name = request.getParameter("organization_name");
-        String password = request.getParameter("password");
-        HttpSession session = request.getSession();
-        RequestDispatcher dispatcher = null;
-
-        try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "SELECT * FROM organization WHERE organization_name = ? AND password = ?;";
-            PreparedStatement pstmt = con.prepareStatement(SQL);
-            pstmt.setString(1, organization_name);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                session.setAttribute("organization_id", rs.getInt("organization_id"));
-                dispatcher = request.getRequestDispatcher("home");
-            } else {
-                request.setAttribute("status", "failed");
-                dispatcher = request.getRequestDispatcher("index");
-            }
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }*/
 
     //Sign in with user
     public User signIn(String username, String password) {
