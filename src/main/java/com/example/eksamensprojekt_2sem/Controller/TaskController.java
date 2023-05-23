@@ -169,7 +169,7 @@ public class TaskController {
         }
         return "redirect:/sessionTimeout";
     }
-*/
+
 
 
     //get project with task and subtasks
