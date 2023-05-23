@@ -8,6 +8,7 @@ import com.example.eksamensprojekt_2sem.Service.SubtaskService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.boot.webservices.client.HttpWebServiceMessageSenderBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,22 +33,30 @@ public class TaskController {
         this.projectService = projectService;
     }
 
+    public boolean isSignedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
+    }
+
+
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
-        List<Task> tasks = taskService.getTaskByProID(project_id);
-        int user_id = userService.getUserID(project_id);
-        double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+        if(isSignedIn(session)) {
+            List<Task> tasks = taskService.getTaskByProID(project_id);
+            int user_id = userService.getUserID(project_id);
 
+            //Calculated time for task + subtask
+            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+            for (Task task : tasks) {
+                double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
+                task.setCalculatedTime(taskCalculatedTime);
+            }
 
-        for (Task task : tasks) {
-            double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
-            task.setCalculatedTime(taskCalculatedTime);
+            model.addAttribute("tasks", tasks);
+            model.addAttribute("user_id", user_id);
+            model.addAttribute("projectCalculatedTime", projectCalculatedTime);
+            return "Task/tasks";
         }
-
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("user_id", user_id);
-        model.addAttribute("projectCalculatedTime", projectCalculatedTime);
-        return "Task/tasks";
+        return "redirect:/sessionTimeout";
     }
 
 
@@ -55,108 +64,135 @@ public class TaskController {
     //create task page
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
-        Task task = new Task();
 
-        model.addAttribute("task", task);
-        model.addAttribute("project_id", project_id);
-        return "Task/createTask";
+        if (isSignedIn(session)) {
+            Task task = new Task();
+
+            model.addAttribute("task", task);
+            model.addAttribute("project_id", project_id);
+            return "Task/createTask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
-        taskService.createTask(task, project_id);
-        return "redirect:/tasks/" + project_id;
+        if (isSignedIn(session)) {
+            taskService.createTask(task, project_id);
+            return "redirect:/tasks/" + project_id;
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Edit task page
     @GetMapping(path = "/task/{project_id}/edit/{task_id}")
-    public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id) {
-        Task task = taskService.getTaskByIDs(task_id, project_id);
+    public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            Task task = taskService.getTaskByIDs(task_id, project_id);
 
-        model.addAttribute("task", task);
-        model.addAttribute("task_id", task_id);
-        model.addAttribute("project_id", project_id);
-        return "Task/editTask";
+            model.addAttribute("task", task);
+            model.addAttribute("task_id", task_id);
+            model.addAttribute("project_id", project_id);
+            return "Task/editTask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Edit task
     @PostMapping(path = "/task/{project_id}/edit/{task_id}")
-    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task updatedTask) {
-        Task existingTask = taskService.getTaskByIDs(task_id, project_id);
+    public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task updatedTask, HttpSession session) {
+        if (isSignedIn(session)) {
+            Task existingTask = taskService.getTaskByIDs(task_id, project_id);
 
-        existingTask.setTask_name(updatedTask.getTask_name());
-        existingTask.setHours(updatedTask.getHours());
-        existingTask.setStatus(updatedTask.getStatus());
+            existingTask.setTask_name(updatedTask.getTask_name());
+            existingTask.setHours(updatedTask.getHours());
+            existingTask.setStatus(updatedTask.getStatus());
 
-        // Check and update start_date if not null
-        LocalDate updatedStartDate = updatedTask.getStart_date();
-        if (updatedStartDate != null) {
-            existingTask.setStart_date(updatedStartDate);
+            // Check and update start_date if not null
+            LocalDate updatedStartDate = updatedTask.getStart_date();
+            if (updatedStartDate != null) {
+                existingTask.setStart_date(updatedStartDate);
+            }
+
+            // Check and update end_date if not null
+            LocalDate updatedEndDate = updatedTask.getEnd_date();
+            if (updatedEndDate != null) {
+                existingTask.setEnd_date(updatedEndDate);
+            }
+
+            taskService.editTask(existingTask, task_id, project_id);
+            return "redirect:/tasks/" + project_id;
         }
-
-        // Check and update end_date if not null
-        LocalDate updatedEndDate = updatedTask.getEnd_date();
-        if (updatedEndDate != null) {
-            existingTask.setEnd_date(updatedEndDate);
-        }
-
-        taskService.editTask(existingTask, task_id, project_id);
-        return "redirect:/tasks/" + project_id;
+        return "redirect:/sessionTimeout";
     }
 
 
     //Delete task page
     @GetMapping(path = "task/delete/{task_id}")
-    public String deleteTask(@PathVariable("task_id") int task_id, Model model) {
-        Task task = taskService.getTaskById(task_id);
+    public String deleteTask(@PathVariable("task_id") int task_id, Model model, HttpSession session) {
+        if (isSignedIn(session)) {
+            Task task = taskService.getTaskById(task_id);
 
-        model.addAttribute("task_id", task_id);
-        model.addAttribute("task", task);
-        return "Task/deleteTask";
+            model.addAttribute("task_id", task_id);
+            model.addAttribute("task", task);
+            return "Task/deleteTask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Delete task
     @PostMapping(path = "task/delete/{task_id}")
-    public String removeTask(@PathVariable("task_id") int task_id, Model model) {
-       int projectID = taskService.getProIDbyTaskID(task_id);
-        taskService.deleteTask(task_id);
-        return "redirect:/tasks/" + projectID;
+    public String removeTask(@PathVariable("task_id") int task_id, Model model, HttpSession session) {
+        if (isSignedIn(session)) {
+            int projectID = taskService.getProIDbyTaskID(task_id);
+            taskService.deleteTask(task_id);
+            return "redirect:/tasks/" + projectID;
+        }
+        return "redirect:/sessionTimeout";
     }
 
-  /*  //Gantt chart with  task and subtask by project_id
+  //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
-    public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
-        //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
-        //model.addAttribute("chartData", chartData);
+    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) {
 
-        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-        String taskSubtasksJson = new Gson().toJson(taskSubtasks);
+        if (isSignedIn(session)) {
+            //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
+            //model.addAttribute("chartData", chartData);
 
-        model.addAttribute("taskSubtasksJson", taskSubtasksJson);
+            List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+            System.out.println(taskSubtasks);
+            String taskSubtasksJson = new Gson().toJson(taskSubtasks);
 
-        return "Task/ganttChart";
+            model.addAttribute("taskSubtasksJson", taskSubtasksJson);
+
+            return "Task/ganttChart";
+        }
+        return "redirect:/sessionTimeout";
     }
-*/
 
 
     //get project with task and subtasks
     //TODO:: Insert buttons, and figure out how you should add, edit delete insert.
     @GetMapping(path="project/{project_id}")
-    public String showProject(Model model, @PathVariable int project_id) {
-        List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-        double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+    public String showProject(Model model, @PathVariable int project_id, HttpSession session) {
 
-        double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
-        for (TaskSubtaskDTO task : taskSubtasks) {
-            double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
-            task.setCalculatedTime(taskCalculatedTime2);
+        if (isSignedIn(session)) {
+            List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+
+            double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
+            for (TaskSubtaskDTO task : taskSubtasks) {
+                double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
+                task.setCalculatedTime(taskCalculatedTime2);
+            }
+
+            model.addAttribute("taskSubtask", taskSubtasks);
+            model.addAttribute("projectCalculatedTime", projectCalculatedTime);
+            model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
+
+            return "Task/taskSubtask";
         }
-
-        model.addAttribute("taskSubtask", taskSubtasks);
-        model.addAttribute("projectCalculatedTime", projectCalculatedTime);
-        model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
-
-        return "Task/taskSubtask";
+        return "redirect:/sessionTimeout";
     }
 
 }

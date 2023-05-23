@@ -3,6 +3,7 @@ package com.example.eksamensprojekt_2sem.Controller;
 import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.SubtaskService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,79 +25,106 @@ public class SubtaskController {
         this.projectService = projectService;
     }
 
+    public boolean isSignedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
+    }
+
 
     @GetMapping(path = "subtasks/{task_id}")
-    public String showSubtasks(Model model, @PathVariable int task_id) {
-        List<Subtask> subtasks = subtaskService.getSubtasksByTaskID(task_id);
-        int project_id = projectService.getProjectID(task_id);
-        model.addAttribute("subtasks", subtasks);
-        model.addAttribute("project_id", project_id);
-        return "Subtask/subtasks";
+    public String showSubtasks(Model model, @PathVariable int task_id, HttpSession session) {
+
+        if (isSignedIn(session)) {
+            List<Subtask> subtasks = subtaskService.getSubtasksByTaskID(task_id);
+            int project_id = projectService.getProjectID(task_id);
+            model.addAttribute("subtasks", subtasks);
+            model.addAttribute("project_id", project_id);
+            return "Subtask/subtasks";
+        }
+        return "redirect:/sessionTimeout";
+
     }
 
     @GetMapping(path = "subtasks/create/{task_id}")
-    public String showCreateSubtask(Model model, @PathVariable("task_id") int task_id) {
-        Subtask subtask = new Subtask();
-        model.addAttribute("subtask", subtask);
-        model.addAttribute("task_id", task_id);
-        return "Subtask/createSubtask";
+    public String showCreateSubtask(Model model, @PathVariable("task_id") int task_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            Subtask subtask = new Subtask();
+            model.addAttribute("subtask", subtask);
+            model.addAttribute("task_id", task_id);
+            return "Subtask/createSubtask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     @PostMapping(path = "subtasks/create/{task_id}")
-    public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id) {
-        subtaskService.createSubtask(subtask, task_id);
-        return "redirect:/subtasks/" + task_id;
-
+    public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            subtaskService.createSubtask(subtask, task_id);
+            return "redirect:/subtasks/" + task_id;
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Edit subtask page
     @GetMapping(path = "/subtask/{task_id}/edit/{subtask_id}")
-    public String showEditSubtask(Model model , @PathVariable int subtask_id, @PathVariable int task_id) {
-        Subtask subtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
-        model.addAttribute("subtask", subtask);
-        model.addAttribute("subtask_id", subtask_id);
-        model.addAttribute("task_id", task_id);
-        return "Subtask/editSubtask";
+    public String showEditSubtask(Model model, @PathVariable int subtask_id, @PathVariable int task_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            Subtask subtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
+            model.addAttribute("subtask", subtask);
+            model.addAttribute("subtask_id", subtask_id);
+            model.addAttribute("task_id", task_id);
+            return "Subtask/editSubtask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     //Edit subtask
     @PostMapping(path = "/subtask/{task_id}/edit/{subtask_id}")
-    public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask updatedSubtask) {
-        Subtask existingSubtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
+    public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask updatedSubtask, HttpSession session) {
 
-        existingSubtask.setSubtask_name(updatedSubtask.getSubtask_name());
-        existingSubtask.setHours(updatedSubtask.getHours());
-        existingSubtask.setStatus(updatedSubtask.getStatus());
+        if(isSignedIn(session)) {
+            Subtask existingSubtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
 
-        // Check and update start_date if not null
-        LocalDate updatedStartDate = updatedSubtask.getStart_date();
-        if (updatedStartDate != null) {
-            existingSubtask.setStart_date(updatedStartDate);
+            existingSubtask.setSubtask_name(updatedSubtask.getSubtask_name());
+            existingSubtask.setHours(updatedSubtask.getHours());
+            existingSubtask.setStatus(updatedSubtask.getStatus());
+
+            // Check and update start_date if not null
+            LocalDate updatedStartDate = updatedSubtask.getStart_date();
+            if (updatedStartDate != null) {
+                existingSubtask.setStart_date(updatedStartDate);
+            }
+
+            // Check and update end_date if not null
+            LocalDate updatedEndDate = updatedSubtask.getEnd_date();
+            if (updatedEndDate != null) {
+                existingSubtask.setEnd_date(updatedEndDate);
+            }
+
+            subtaskService.editSubtask(existingSubtask, subtask_id, task_id);
+            return "redirect:/subtasks/" + task_id;
         }
-
-        // Check and update end_date if not null
-        LocalDate updatedEndDate = updatedSubtask.getEnd_date();
-        if (updatedEndDate != null) {
-            existingSubtask.setEnd_date(updatedEndDate);
-        }
-
-        subtaskService.editSubtask(existingSubtask, subtask_id, task_id);
-        return "redirect:/subtasks/" + task_id;
+        return "redirect:/sessionTimeout";
     }
 
 
     @GetMapping(path = "subtasks/delete/{subtask_id}")
-    public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id) {
-        Subtask subtask = subtaskService.getSubtaskByID(subtask_id);
-        model.addAttribute("subtask", subtask);
-        return "Subtask/deleteSubtask";
+    public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            Subtask subtask = subtaskService.getSubtaskByID(subtask_id);
+            model.addAttribute("subtask", subtask);
+            return "Subtask/deleteSubtask";
+        }
+        return "redirect:/sessionTimeout";
     }
 
     @PostMapping(path = "subtasks/delete/{subtask_id}")
-    public String deleteSubtask(@PathVariable("subtask_id") int subtask_id) {
-        int task_id = subtaskService.getSubtaskByID(subtask_id).getTask_id();
-        subtaskService.deleteSubtask(subtask_id);
-        return "redirect:/subtasks/" + task_id;
+    public String deleteSubtask(@PathVariable("subtask_id") int subtask_id, HttpSession session) {
+        if (isSignedIn(session)) {
+            int task_id = subtaskService.getSubtaskByID(subtask_id).getTask_id();
+            subtaskService.deleteSubtask(subtask_id);
+            return "redirect:/subtasks/" + task_id;
+        }
+        return "redirect:/sessionTimeout";
     }
 
 }

@@ -81,5 +81,17 @@ public class Subtask {
         this.task_id = task_id;
     }
 
+    @Override
+    public String toString() {
+        return "Subtask{" +
+                "subtask_id=" + subtask_id +
+                ", subtask_name='" + subtask_name + '\'' +
+                ", hours=" + hours +
+                ", start_date=" + start_date +
+                ", end_date=" + end_date +
+                ", status=" + status +
+                ", task_id=" + task_id +
+                '}';
+    }
 
 }

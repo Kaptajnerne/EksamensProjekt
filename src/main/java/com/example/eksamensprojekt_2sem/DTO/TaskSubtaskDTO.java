@@ -114,4 +114,19 @@ public class TaskSubtaskDTO {
     public void setSubtasks(List<Subtask> subtasks) {
         this.subtasks = subtasks;
     }
+
+    @Override
+    public String toString() {
+        return "TaskSubtaskDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hours=" + hours +
+                ", start_date=" + start_date +
+                ", end_date=" + end_date +
+                ", status=" + status +
+                ", calculatedTime=" + calculatedTime +
+                ", project_id=" + project_id +
+                ", subtasks=" + subtasks +
+                '}';
+    }
 }
