@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>delete task</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<h2>Are you sure to delete the task?</h2>
+<div align="center">
 
-<form th:action="@{/task/delete/{task_id}(task_id=${task_id})}" method="post">
-    <input type="hidden" name="task_id" value="${task_id}">
-    <button type="submit">Delete task</button>
+    <h2>Are you sure to delete the task?</h2>
 
-    <a th:href="@{/tasks/{project_id}(project_id=${task.project_id})}">
-        <button type="button" class="btn go-back">Go Back</button>
-    </a>
+    <br>
+
+    <form th:action="@{/task/delete/{task_id}(task_id=${task_id})}" method="post">
+        <input type="hidden" name="task_id" value="${task_id}">
+        <button type="submit" class="btn" style="background-color: #d54848">Delete task</button>
+
+        <a th:href="@{/tasks/{project_id}(project_id=${task.project_id})}">
+            <button type="button" class="btn go-back" style="background-color: white">Go Back</button>
+        </a>
 
     </form>
 
-
+</div>
 
 </body>
 </html>

@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete subtask</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<h2>Are you sure to delete the Subtask?</h2>
+<div align="center">
 
-<form th:action="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask_id})}" method="post">
-  <input type="hidden" name="subtask_id" value="${subtask_id}">
-  <button type="submit">Delete subtask</button>
+    <h2>Are you sure to delete the Subtask?</h2>
 
-    <a th:href="@{/subtasks/{task_id}(task_id=${subtask.task_id})}">
-        <button type="button" class="btn go-back">Return to subtask</button>
-    </a>
+    <br>
 
-</form>
+    <form th:action="@{/subtasks/delete/{subtask_id}(subtask_id=${subtask_id})}" method="post">
+        <input type="hidden" name="subtask_id" value="${subtask_id}">
+        <button type="submit" class="btn" style="background-color: #d54848">Delete subtask</button>
+
+        <a th:href="@{/subtasks/{task_id}(task_id=${subtask.task_id})}">
+            <button type="button" class="btn">Return to subtask</button>
+        </a>
+
+    </form>
+
+</div>
+
+
 
 </body>
 </html>
