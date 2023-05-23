@@ -123,6 +123,7 @@ public class TaskController {
         return "redirect:/tasks/" + projectID;
     }
 
+
   /*  //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
     public String showGanttChart(@PathVariable("project_id") int project_id, Model model) {
@@ -145,7 +146,7 @@ public class TaskController {
     public String showProject(Model model, @PathVariable int project_id) {
         List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
         double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
-
+        int user_id = userService.getUserID(project_id);
         double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
         for (TaskSubtaskDTO task : taskSubtasks) {
             double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
@@ -155,6 +156,7 @@ public class TaskController {
         model.addAttribute("taskSubtask", taskSubtasks);
         model.addAttribute("projectCalculatedTime", projectCalculatedTime);
         model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
+        model.addAttribute("user_id", user_id);
 
         return "Task/taskSubtask";
     }
