@@ -40,7 +40,12 @@ table, th, td {
     padding: 1rem;
     border-collapse: collapse;
 }
-
+td {
+    text-align: left;
+}
+td .subtask{
+    margin-right: 40px;
+}
 main.table {
     width: 82vw;
     bacground-color: #fff5;
@@ -85,7 +90,9 @@ thead th{
     left: 0;
     background-color: rgb(224, 218, 241);
 }
-
+.subtask.custom-td {
+    padding-left: 50px;
+}
 tbody tr:nth-child(even){
     background-color: #fff8;
 }
@@ -348,4 +355,18 @@ body {
 
 .login-register p a:hover {
     text-decoration: underline;
+}
+.subtask {
+    padding-left: 20px;
+    margin-right: 60px;
+    font-weight: bolder;
+}
+
+.task {
+    padding-left: 20px;
+    font-weight: bolder;
+}
+
+.bold-text {
+    font-weight: bolder;
 }

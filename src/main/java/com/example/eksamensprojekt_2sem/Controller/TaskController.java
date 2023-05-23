@@ -171,6 +171,7 @@ public class TaskController {
     }
 
 
+
     //get project with task and subtasks
     //TODO:: Insert buttons, and figure out how you should add, edit delete insert.
     @GetMapping(path="project/{project_id}")
@@ -180,15 +181,18 @@ public class TaskController {
             List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
             double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
 
+            int user_id = userService.getUserID(project_id);
+
             double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
             for (TaskSubtaskDTO task : taskSubtasks) {
                 double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
                 task.setCalculatedTime(taskCalculatedTime2);
             }
 
-            model.addAttribute("taskSubtask", taskSubtasks);
-            model.addAttribute("projectCalculatedTime", projectCalculatedTime);
-            model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
+        model.addAttribute("taskSubtask", taskSubtasks);
+        model.addAttribute("projectCalculatedTime", projectCalculatedTime);
+        model.addAttribute("taskCalculatedTime", taskCalculatedTime1);
+        model.addAttribute("user_id", user_id);
 
             return "Task/taskSubtask";
         }

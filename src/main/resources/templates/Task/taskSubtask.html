@@ -3,23 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Project</title>
-    <style>
-        .subtask {
-            padding-left: 20px;
-        }
-
-        .task {
-            padding-left: 20px;
-            font-weight: bold;
-        }
-
-        .bold-text {
-            font-weight: bold;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<header>
+    <div class="logo"></div>
+    <nav class="navigation">
+        <a th:href="@{/projects/{user_id}(user_id=${user_id})}">Projects</a>
+        <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
+    </nav>
+</header>
 
 <main class="table">
     <section class="table_header">
@@ -40,7 +33,11 @@
             <tbody>
             <th:block th:each="task, taskIndex : ${taskSubtask}">
                 <tr>
-                    <td class="bold-text" th:text="${taskIndex.index + 1 + '. ' + task.name}"></td>
+                    <td class="task">
+                        <a th:href="@{/tasks/{project_id}(project_id=${project_id})}">
+                            <span th:text="${taskIndex.index + 1 + '. ' + task.name}"></span>
+                        </a>
+                    </td>
 
                     <td class="task" th:text="${task.hours}"></td>
                     <td class="task" th:text="${task.calculatedTime}"></td>
@@ -54,7 +51,11 @@
                 </tr>
                 <th:block th:each="subtask, subtaskIndex : ${task.subtasks}">
                     <tr>
-                        <td class="subtask" th:text="${taskIndex.index + 1 + '.' + (subtaskIndex.index + 1) + ' ' + subtask.subtask_name}"></td>
+                        <td class="subtask custom-td">
+                            <a th:href="@{/subtasks/{task_id}(task_id=${task.id})}">
+                                <span th:text="${taskIndex.index + 1 + '.' + (subtaskIndex.index + 1) + ' ' + subtask.subtask_name}"></span>
+                            </a>
+                        </td>
                         <td class="subtask" th:text="${subtask.hours}"></td>
                         <td class="subtask"></td>
                         <td class="subtask" th:text="${subtask.start_date}"></td>
@@ -75,8 +76,8 @@
         <br>
 
         <div>
-            <h4 style="display: inline;">Projects Estimated time: </h4>
-            <a th:text="${projectCalculatedTime}" style="display: inline;"></a>
+            <h2 style="display: inline;">Projects Estimated time: </h2>
+            <a th:text="${projectCalculatedTime}" style="display: inline; font-size: 22px; font-weight: bold;"></a>
         </div>
 
     </section>
