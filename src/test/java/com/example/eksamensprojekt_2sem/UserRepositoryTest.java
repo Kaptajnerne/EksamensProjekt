@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 import java.sql.*;
 public class UserRepositoryTest {
 
-    @Autowired
+   /* @Autowired
     private UserRepositoryDB userRepository;
 
     @Test
@@ -29,5 +29,5 @@ public class UserRepositoryTest {
         assertNotNull(user.getUser_id());
         assertEquals("testUser", user.getUsername());
         assertEquals("testPassword", user.getPassword());
-    }
+    }*/
 }

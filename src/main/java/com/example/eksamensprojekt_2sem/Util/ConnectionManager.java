@@ -1,14 +1,5 @@
 package com.example.eksamensprojekt_2sem.Util;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
