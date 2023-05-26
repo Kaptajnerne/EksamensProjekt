@@ -4,7 +4,6 @@ public class User {
 
     private int user_id;
     private String username;
-    private String email;
     private String password;
 
     public User(int user_id, String username, String password) {

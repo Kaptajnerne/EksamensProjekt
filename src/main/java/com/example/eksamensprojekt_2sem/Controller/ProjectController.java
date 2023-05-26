@@ -19,7 +19,7 @@ public class ProjectController {
 
     private ProjectService projectService;
     private UserService userService;
-    TaskService taskService;
+    private TaskService taskService;
 
     public ProjectController(ProjectService projectService, UserService userService, TaskService taskService) {
         this.projectService = projectService;

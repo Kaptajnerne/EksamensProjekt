@@ -119,7 +119,6 @@ public class UserRepositoryDB implements UserIRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     //edit deadline

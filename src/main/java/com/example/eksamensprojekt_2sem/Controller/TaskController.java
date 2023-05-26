@@ -7,6 +7,9 @@ import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.SubtaskService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.boot.webservices.client.HttpWebServiceMessageSenderBuilder;
 import org.springframework.stereotype.Controller;
@@ -153,7 +156,7 @@ public class TaskController {
 
   //Gantt chart with  task and subtask by project_id
     @GetMapping(path = "gantt/{project_id}")
-    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) {
+    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) throws JsonProcessingException {
 
         if (isSignedIn(session)) {
             //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
@@ -161,7 +164,10 @@ public class TaskController {
 
             List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
             System.out.println(taskSubtasks);
-            String taskSubtasksJson = new Gson().toJson(taskSubtasks);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String taskSubtasksJson = objectMapper.writeValueAsString(taskSubtasks);
 
             model.addAttribute("taskSubtasksJson", taskSubtasksJson);
 

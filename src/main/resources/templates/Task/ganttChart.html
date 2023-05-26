@@ -17,12 +17,13 @@
             data.addColumn('string', 'Dependencies');
 
             //TODO:: PROBLEM WITH PARSEING OUR DATA INTO THE GANTT CHART. WORKS WITH MANUAL INPUT
-            var taskSubtasks = JSON.parse(/*[[${taskSubtasksJson}]]*/ '[]');
+            var taskSubtasks = /*[[${taskSubtasksJson}]]*/ [];
 
             taskSubtasks.forEach(function (task) {
                 data.addRow([
                     task.task_id.toString(),
                     task.task_name,
+                    null,
                     new Date(task.task_start_date),
                     new Date(task.task_end_date),
                     null,
@@ -34,6 +35,7 @@
                     data.addRow([
                         subtask.subtask_id.toString(),
                         subtask.subtask_name,
+                        null,
                         new Date(subtask.subtask_start_date),
                         new Date(subtask.subtask_end_date),
                         null,

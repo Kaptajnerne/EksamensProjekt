@@ -15,6 +15,9 @@ public interface ProjectIRepository {
     //Edit project
     public void editProject(Project project, int project_id, int user_id);
 
+    //Delete project
+    public void deleteProject(int projectId);
+
     //Get project by project_id and user_id
     public Project getProjectByIDs(int project_id, int user_id);
 
