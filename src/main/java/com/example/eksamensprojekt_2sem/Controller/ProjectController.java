@@ -32,7 +32,6 @@ public class ProjectController {
     }
 
     //Get projects from user_id
-    //TODO:: Session timer from signin page doesn't translate over to projects. "session.setMaxInactiveInterval(10);"
     @GetMapping(path = "projects/{user_id}")
     public String showProjects(Model model, @PathVariable int user_id, HttpSession session) {
 

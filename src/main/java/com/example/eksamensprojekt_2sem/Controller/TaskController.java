@@ -40,7 +40,7 @@ public class TaskController {
         return session.getAttribute("user") != null;
     }
 
-
+    //Get tasks
     @GetMapping(path = "tasks/{project_id}")
     public String showTasks(Model model, @PathVariable int project_id, HttpSession session) {
         if(isSignedIn(session)) {
@@ -63,8 +63,7 @@ public class TaskController {
     }
 
 
-
-    //create task page
+    //Create task page
     @GetMapping(path = "task/create/{project_id}")
     public String showCreateTask(Model model, @PathVariable("project_id") int project_id, HttpSession session) {
 
@@ -78,6 +77,7 @@ public class TaskController {
         return "redirect:/sessionTimeout";
     }
 
+    //Create task
     @PostMapping(path = "task/create/{project_id}")
     public String createTask(@ModelAttribute("task") Task task, @PathVariable("project_id") int project_id, HttpSession session) {
         if (isSignedIn(session)) {
@@ -86,6 +86,7 @@ public class TaskController {
         }
         return "redirect:/sessionTimeout";
     }
+
 
     //Edit task page
     @GetMapping(path = "/task/{project_id}/edit/{task_id}")
@@ -154,32 +155,9 @@ public class TaskController {
         return "redirect:/sessionTimeout";
     }
 
-  //Gantt chart with  task and subtask by project_id
-    @GetMapping(path = "gantt/{project_id}")
-    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) throws JsonProcessingException {
-
-        if (isSignedIn(session)) {
-            //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
-            //model.addAttribute("chartData", chartData);
-
-            List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-            System.out.println(taskSubtasks);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            String taskSubtasksJson = objectMapper.writeValueAsString(taskSubtasks);
-
-            model.addAttribute("taskSubtasksJson", taskSubtasksJson);
-
-            return "Task/ganttChart";
-        }
-        return "redirect:/sessionTimeout";
-    }
-
 
 
     //get project with task and subtasks
-    //TODO:: Insert buttons, and figure out how you should add, edit delete insert.
     @GetMapping(path="project/{project_id}")
     public String showProject(Model model, @PathVariable int project_id, HttpSession session) {
 
@@ -204,5 +182,29 @@ public class TaskController {
         }
         return "redirect:/sessionTimeout";
     }
+
+
+   /* //Gantt chart with  task and subtask by project_id
+    @GetMapping(path = "gantt/{project_id}")
+    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) throws JsonProcessingException {
+
+        if (isSignedIn(session)) {
+            //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
+            //model.addAttribute("chartData", chartData);
+
+            List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
+            System.out.println(taskSubtasks);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String taskSubtasksJson = objectMapper.writeValueAsString(taskSubtasks);
+
+            model.addAttribute("taskSubtasksJson", taskSubtasksJson);
+
+            return "Task/ganttChart";
+        }
+        return "redirect:/sessionTimeout";
+    }
+*/
 
 }

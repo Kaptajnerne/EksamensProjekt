@@ -56,7 +56,6 @@ public class UserController {
     }
 
     //Sign in with user
-    //TODO:: if wrong login input redirect to signin page and let user do it again
     @PostMapping(path = "/signin")
     public String signIn(HttpSession session, @ModelAttribute("user") User user) {
         try {

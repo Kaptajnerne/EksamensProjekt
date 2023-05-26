@@ -44,6 +44,7 @@ public class SubtaskController {
 
     }
 
+    //Create subtask page
     @GetMapping(path = "subtasks/create/{task_id}")
     public String showCreateSubtask(Model model, @PathVariable("task_id") int task_id, HttpSession session) {
         if (isSignedIn(session)) {
@@ -55,6 +56,7 @@ public class SubtaskController {
         return "redirect:/sessionTimeout";
     }
 
+    //Create subtask
     @PostMapping(path = "subtasks/create/{task_id}")
     public String createSubtask(@ModelAttribute("subtask") Subtask subtask, @PathVariable("task_id") int task_id, HttpSession session) {
         if (isSignedIn(session)) {
@@ -106,7 +108,7 @@ public class SubtaskController {
         return "redirect:/sessionTimeout";
     }
 
-
+    //Delete subtask page
     @GetMapping(path = "subtasks/delete/{subtask_id}")
     public String showDeleteSubtask(Model model, @PathVariable("subtask_id") int subtask_id, HttpSession session) {
         if (isSignedIn(session)) {
@@ -117,6 +119,7 @@ public class SubtaskController {
         return "redirect:/sessionTimeout";
     }
 
+    //Delete Subtask
     @PostMapping(path = "subtasks/delete/{subtask_id}")
     public String deleteSubtask(@PathVariable("subtask_id") int subtask_id, HttpSession session) {
         if (isSignedIn(session)) {

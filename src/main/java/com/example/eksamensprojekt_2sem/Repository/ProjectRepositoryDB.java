@@ -155,21 +155,25 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     public void deleteProject(int projectId) {
         try {
             Connection connection = DriverManager.getConnection(db_url, uid, pwd);
-            PreparedStatement statement1 = connection.prepareStatement("DELETE FROM subtask WHERE task_id IN "
-                    + "(SELECT task_id FROM task WHERE project_id = ?)");
-            PreparedStatement statement2 = connection.prepareStatement("DELETE FROM task WHERE project_id = ?");
-            PreparedStatement statement3 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?");
-
             connection.setAutoCommit(false);
 
-            statement1.setInt(1, projectId);
-            statement1.executeUpdate();
+            //Delete subtask
+            String SQL1 = "DELETE FROM subtask WHERE task_id IN (SELECT task_id FROM task WHERE project_id = ?)";
+            PreparedStatement deleteSubtasksStatement = connection.prepareStatement(SQL1);
+            deleteSubtasksStatement.setInt(1, projectId);
+            deleteSubtasksStatement.executeUpdate();
 
-            statement2.setInt(1, projectId);
-            statement2.executeUpdate();
+            // Delete tasks
+            String SQL2 = "DELETE FROM task WHERE project_id = ?";
+            PreparedStatement deleteTasksStatement = connection.prepareStatement(SQL2);
+            deleteTasksStatement.setInt(1, projectId);
+            deleteTasksStatement.executeUpdate();
 
-            statement3.setInt(1, projectId);
-            statement3.executeUpdate();
+            // Delete project
+            String SQL3 = "DELETE FROM project WHERE project_id = ?";
+            PreparedStatement deleteProjectStatement = connection.prepareStatement(SQL3);
+            deleteProjectStatement.setInt(1, projectId);
+            deleteProjectStatement.executeUpdate();
 
             connection.commit();
         } catch (SQLException e) {

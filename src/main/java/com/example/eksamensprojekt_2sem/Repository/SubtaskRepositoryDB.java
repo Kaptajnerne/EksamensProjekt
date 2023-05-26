@@ -1,7 +1,6 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
 import com.example.eksamensprojekt_2sem.Model.Subtask;
-import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
