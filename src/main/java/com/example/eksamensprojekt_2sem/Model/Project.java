@@ -23,6 +23,7 @@ public class Project {
         this.end_date = end_date;
     }
 
+    //Default constructor
     public Project() {
 
     }

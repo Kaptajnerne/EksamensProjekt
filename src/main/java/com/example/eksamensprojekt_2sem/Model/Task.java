@@ -14,35 +14,30 @@ public class Task {
     private int status;
     private int project_id;
 
-    public Task(int task_id, String task_name, double hours, double calculatedTime, LocalDate start_date, LocalDate end_date, int status) {
-        this.task_id = task_id;
-        this.task_name = task_name;
-        this.hours = hours;
-        this.calculatedTime = calculatedTime;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.status = status;
-    }
-
-    public Task(int task_id, String task_name, double hours, int project_id, double calculatedTime) {
-        this.task_id = task_id;
-        this.task_name = task_name;
-        this.hours = hours;
-        this.project_id = project_id;
-        this.calculatedTime = calculatedTime;
-    }
-
+    //Used when receiving a task
     public Task(int task_id, String task_name, double hours, LocalDate start_date, LocalDate end_date, int status, int project_id) {
         this.task_id = task_id;
         this.task_name = task_name;
         this.hours = hours;
-        this.project_id = project_id;
         this.start_date = start_date;
         this.end_date = end_date;
         this.status = status;
+        this.project_id = project_id;
     }
 
+    //Used to add calculatedTime
+    public Task(int task_id, String task_name, double hours, double calculatedTime, LocalDate start_date, LocalDate end_date, int status, int project_id) {
+        this.task_id = task_id;
+        this.task_name = task_name;
+        this.hours = hours;
+        this.calculatedTime = calculatedTime;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.project_id = project_id;
+    }
 
+    //Default constructor
     public Task() {
     }
 

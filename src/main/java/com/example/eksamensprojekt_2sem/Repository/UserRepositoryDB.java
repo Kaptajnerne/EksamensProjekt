@@ -10,14 +10,6 @@ import java.sql.*;
 
 @Repository
 public class UserRepositoryDB implements UserIRepository {
-    @Value("jdbc:mysql://localhost:3306/pct_db2")
-    private String db_url;
-
-    @Value("root")
-    private String uid;
-
-    @Value("1234")
-    private String pwd;
 
 
     //Sign in with user
@@ -25,7 +17,7 @@ public class UserRepositoryDB implements UserIRepository {
         User user = null;
 
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM user WHERE username = ? AND password = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, username);
@@ -45,7 +37,7 @@ public class UserRepositoryDB implements UserIRepository {
     //Sign up user
     public void signUp(User user) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "INSERT INTO user (username ,password) VALUES (?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getUsername());
@@ -65,7 +57,7 @@ public class UserRepositoryDB implements UserIRepository {
     //edit user
     public void editUser(User user, int user_id) {
         try {
-            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection conn = ConnectionManager.getConnection();
             String SQL = "UPDATE user SET username = ?, password = ? WHERE user_id = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
                 pstmt.setString(1, user.getUsername());
@@ -84,7 +76,7 @@ public class UserRepositoryDB implements UserIRepository {
     //get user from id
     public User getUserFromId(int user_id) {
         try {
-            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection conn = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM user WHERE user_id = ?;";
             PreparedStatement ps = conn.prepareStatement(SQL);
             ps.setInt(1, user_id);
@@ -107,7 +99,7 @@ public class UserRepositoryDB implements UserIRepository {
     public int getUserID (int project_id){
         int user_id = 0;
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT user_id from project WHERE project_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, project_id);

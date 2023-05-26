@@ -12,6 +12,7 @@ public class User {
         this.password = password;
     }
 
+    //Default constructor
     public User() {
     }
 

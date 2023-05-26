@@ -22,6 +22,7 @@ public class Subtask {
         this.task_id = task_id;
     }
 
+    //Default constructor
     public Subtask() {
     }
 

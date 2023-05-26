@@ -9,13 +9,12 @@ import java.util.List;
 @Service
 public class ProjectService {
 
-
-
     private ProjectRepositoryDB projectRepositoryDB;
 
     public ProjectService(ProjectRepositoryDB projectRepositoryDB) {
         this.projectRepositoryDB = projectRepositoryDB;
     }
+
     //delete project
     public void deleteProject(int project_id) {
        projectRepositoryDB.deleteProject(project_id);

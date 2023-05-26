@@ -12,20 +12,12 @@ import java.util.List;
 
 @Repository
 public class SubtaskRepositoryDB implements SubtaskIRepository {
-    @Value("jdbc:mysql://localhost:3306/pct_db2")
-    private String db_url;
-
-    @Value("root")
-    private String uid;
-
-    @Value("1234")
-    private String pwd;
 
     //Get subtasks from project_id
     public List<Subtask> getSubtasksByTaskID(int task_id) {
         List<Subtask> subtasks = new ArrayList<>();
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL1 = "SELECT * FROM subtask WHERE task_id = ?;";
             PreparedStatement pstmt1 = con.prepareStatement(SQL1);
             pstmt1.setInt(1, task_id);
@@ -53,7 +45,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     public Subtask createSubtask(Subtask subtask, int task_id) {
         Subtask createdSubtask = null;
         try {
-            Connection conn = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection conn = ConnectionManager.getConnection();
 
             String SQL = "INSERT INTO subtask (subtask_name, hours, start_date, end_date, status, task_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -79,7 +71,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     //Edit subtask
     public void editSubtask(Subtask subtask, int subtask_id, int task_id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "UPDATE subtask SET subtask_name = ?, hours = ?, start_date = ?, end_date = ?, status = ? WHERE subtask_id = ? AND task_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, subtask.getSubtask_name());
@@ -104,7 +96,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
         Subtask subtask = null;
 
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM subtask WHERE subtask_id = ? AND task_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, subtask_id);
@@ -129,7 +121,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     //Delete subtask
     public void deleteSubtask(int subtask_id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "DELETE FROM subtask WHERE subtask_id = ?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, subtask_id);
@@ -143,7 +135,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     public Subtask getSubtaskByID(int subtask_id) {
         Subtask subtask = null;
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM subtask WHERE subtask_id = ?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, subtask_id);

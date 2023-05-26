@@ -13,21 +13,11 @@ import java.util.List;
 @Repository
 public class ProjectRepositoryDB implements ProjectIRepository {
 
-    @Value("jdbc:mysql://localhost:3306/pct_db2")
-    private String db_url;
-
-    @Value("root")
-    private String uid;
-
-    @Value("1234")
-    private String pwd;
-
-
     //Get projects from user_id
     public List<Project> getProjectsByID(int user_id) {
         List<Project> projects = new ArrayList<>();
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM project WHERE user_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, user_id);
@@ -52,7 +42,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     //Create projects
     public void createProject(Project project, int user_id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
 
             String SQL = "INSERT INTO project (project_name, project_description, start_date, end_date, user_id) VALUES (?, ?, ?, ?, ?);";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -78,7 +68,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     //Update project
     public void editProject(Project project, int project_id, int user_id) {
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "UPDATE project SET project_name = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ? AND user_id = ?";
             try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
                 pstmt.setString(1, project.getProject_name());
@@ -103,7 +93,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         Project project = null;
 
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM project WHERE project_id = ? AND user_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, project_id);
@@ -129,7 +119,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     public Project getProjectByProjectID(int project_id) {
         Project project = null;
         try {
-            Connection con = DriverManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT * FROM project WHERE project_id = ?;";
             PreparedStatement statement = con.prepareStatement(SQL);
             statement.setInt(1, project_id);
@@ -154,7 +144,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     //delete project
     public void deleteProject(int projectId) {
         try {
-            Connection connection = DriverManager.getConnection(db_url, uid, pwd);
+            Connection connection = ConnectionManager.getConnection();
             connection.setAutoCommit(false);
 
             //Delete subtask
@@ -185,7 +175,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     public int getProjectID(int task_id) {
         int project_id = 0;
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT project_id from task WHERE task_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, task_id);
@@ -204,7 +194,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     public Double getProjectCalculatedTime(int project_id) {
         double estimatedTime = 0;
         try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
+            Connection con = ConnectionManager.getConnection();
             String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
                     "LEFT JOIN subtask AS s USING(task_id)\n" +
                     "WHERE t.project_id = ?;";
