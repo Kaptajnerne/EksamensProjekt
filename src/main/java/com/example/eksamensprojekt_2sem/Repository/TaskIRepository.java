@@ -28,7 +28,10 @@ public interface TaskIRepository {
     //Get project_id from task_id
     public int getProIDbyTaskID(int task_id);
 
-    //Get task and subtask from project_id
+    //Get calculated time for task and subtask
+    public Double getTaskCalculatedTime(int task_id);
+
+    //Get task and subtask from project
     public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id);
 
 }

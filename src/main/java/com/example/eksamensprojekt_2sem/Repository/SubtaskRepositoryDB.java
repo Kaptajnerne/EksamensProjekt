@@ -100,7 +100,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
         }
     }
 
-    //Get project from user_id and user_id
+    //Get subtask from subtask_ and task_id
     public Subtask getSubtaskByIDs(int subtask_id, int task_id) {
         Subtask subtask = null;
 

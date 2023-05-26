@@ -22,7 +22,6 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     @Value("1234")
     private String pwd;
 
-    //---------------------------------PROJECT JDBC METHODS--------------------------------------//
 
     //Get projects from user_id
     public List<Project> getProjectsByID(int user_id) {
@@ -99,7 +98,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     }
 
 
-    //Get project from user_id and user_id
+    //Get project by project_id and user_id
     public Project getProjectByIDs(int project_id, int user_id) {
         Project project = null;
 
@@ -125,6 +124,8 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+
+    //Get project by project_id
     public Project getProjectByProjectID(int project_id) {
         Project project = null;
         try {
@@ -149,6 +150,8 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+
+    //delete project
     public void deleteProject(int projectId) {
         try {
             Connection connection = DriverManager.getConnection(db_url, uid, pwd);
@@ -174,6 +177,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
         }
     }
 
+    //Get project by task_id
     public int getProjectID(int task_id) {
         int project_id = 0;
         try {
