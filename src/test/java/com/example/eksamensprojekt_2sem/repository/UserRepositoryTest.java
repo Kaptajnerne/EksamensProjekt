@@ -44,4 +44,35 @@ public class UserRepositoryTest {
         System.out.println("Password: " + user.getPassword());
 
     }
+
+    @Test
+    public void testSignIn() {
+
+        //Test data - Already existing user in the database
+        String username = "KEA";
+        String password = "1234";
+
+        //SignIn method
+        User signInUser = userRepository.signIn(username, password);
+
+        //Assert successful result of the signIn method
+        assertNotNull(signInUser);
+        assertEquals(username, signInUser.getUsername());
+        assertEquals(password, signInUser.getPassword());
+    }
+
+    @Test
+    public void testFailedSignIn() {
+        // Test data - Nonexistent user in the database
+        String username = "IKEA";
+        String password = "1234";
+
+        //SignIn method
+        User signInUser = userRepository.signIn(username, password);
+
+        //Assert failed result of the signIn method
+        assertNull(signInUser);
+    }
+
+
 }
