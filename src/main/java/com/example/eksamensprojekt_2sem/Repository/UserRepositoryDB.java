@@ -11,7 +11,6 @@ import java.sql.*;
 @Repository
 public class UserRepositoryDB implements UserIRepository {
 
-
     //Sign in with user
     public User signIn(String username, String password) {
         User user = null;
