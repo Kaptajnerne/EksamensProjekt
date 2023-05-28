@@ -2,71 +2,44 @@
 
 ```SQL
 
-Table Organisation {
-  organisation_id int [pk]
-  organisation_name varchar
-  password varchar
-}
-
-Table Employee {
-  emp_id int [pk]
-  email varchar
+Table User {
+  user_id int [pk]
   username varchar
-  organisation_id int
+  password varchar 
 }
 
 Table Project {
   project_id int [pk]
   project_name varchar
-  estimated_time double
-  emp_id int
-  organisation_id int
+  project_description varchar
+  start_date date
+  end_Date date
+  user_id int
 }
 
 Table Task {
   task_id int [pk]
   task_name varchar
+  hours double
   start_date date
-  end_date date
+  end_Date date
+  status int
   project_id int
 }
-
 Table Subtask {
   subtask_id int [pk]
   subtask_name varchar
+  hours double
   start_date date
-  end_date date
+  end_Date date
+  status int
   task_id int
 }
 
-
-Table User_task {
-  task_id int [pk]
-  emp_id int [pk]
-}
-
-Table User_subtask {
-  subtask_id int [pk]
-  emp_id int [pk]
-}
-
-ref: public.Organisation.organisationID < public.Project.organisationID
-ref: public.Employee.empID <> public.Project.empID
-ref: public.Project.projectID < public.Task.projectID
-ref: public.Task.taskID < public.Subtask.taskID
-ref: public.Organisation.organisationID < Employee.organisationID
-ref: public.Project.empID < public.User_task.empID
-ref: public.User_task.taskID - public.Task.taskID
-ref: public.Project.empID < public.User_subtask.empID
-ref: public.User_subtask.subtaskID - public.Subtask.taskID
+ref: public.User.user_id < public.Project.user_id
+ref: public.Project.project_id < public.Task.project_id
+ref: public.Task.task_id < public.Subtask.task_id
 
 ```
 
-![ER diagram](https://user-images.githubusercontent.com/113116068/235660804-e99adc8a-1254-4d7d-8b87-7425ecc32115.png)
-
-
-
-
-
-
-
+![ER diagram](https://github.com/Kaptajnerne/EksamensProjekt/assets/113116068/d2722522-0ac3-4ca8-8170-b9f14cef0ae9)
