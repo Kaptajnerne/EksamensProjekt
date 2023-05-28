@@ -1,7 +1,7 @@
 
 <div align="center">
 
-  <h1>ProTool - Project Calcualtion Tool</h1>
+  <h1>ProTool - Project Calculation Tool</h1>
   
   ![image](https://github.com/Kaptajnerne/EksamensProjekt/assets/113116068/adef600a-6135-4c1f-8b7b-0d36f33e0063)
 
