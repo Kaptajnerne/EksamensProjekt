@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.example.eksamensprojekt_2sem.EksamensProjekt2semApplicat
- ion
-

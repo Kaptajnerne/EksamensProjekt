@@ -2,7 +2,6 @@ package com.example.eksamensprojekt_2sem.Repository;
 
 import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProjectRepositoryDB implements ProjectIRepository {
+public class ProjectRepositoryDB implements IProjectRepository {
 
     //Get projects from user_id
+    @Override
     public List<Project> getProjectsByID(int user_id) {
         List<Project> projects = new ArrayList<>();
         try {
@@ -40,6 +40,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //Create projects
+    @Override
     public void createProject(Project project, int user_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -66,6 +67,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //Update project
+    @Override
     public void editProject(Project project, int project_id, int user_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -89,6 +91,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //Get project by project_id and user_id
+    @Override
     public Project getProjectByIDs(int project_id, int user_id) {
         Project project = null;
 
@@ -116,6 +119,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //Get project by project_id
+    @Override
     public Project getProjectByProjectID(int project_id) {
         Project project = null;
         try {
@@ -142,6 +146,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //delete project
+    @Override
     public void deleteProject(int projectId) {
         try {
             Connection connection = ConnectionManager.getConnection();
@@ -172,6 +177,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
     }
 
     //Get project by task_id
+    @Override
     public int getProjectID(int task_id) {
         int project_id = 0;
         try {
@@ -191,6 +197,7 @@ public class ProjectRepositoryDB implements ProjectIRepository {
 
 
     //Get time for all tasks and subtasks
+    @Override
     public Double getProjectCalculatedTime(int project_id) {
         double estimatedTime = 0;
         try {

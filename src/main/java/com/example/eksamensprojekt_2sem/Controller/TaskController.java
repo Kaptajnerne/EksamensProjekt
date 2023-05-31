@@ -182,29 +182,4 @@ public class TaskController {
         }
         return "redirect:/sessionTimeout";
     }
-
-
-   /* //Gantt chart with  task and subtask by project_id
-    @GetMapping(path = "gantt/{project_id}")
-    public String showGanttChart(@PathVariable("project_id") int project_id, Model model, HttpSession session) throws JsonProcessingException {
-
-        if (isSignedIn(session)) {
-            //List<String> chartData = taskService.generateGanttChart(taskSubtasks);
-            //model.addAttribute("chartData", chartData);
-
-            List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-            System.out.println(taskSubtasks);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            String taskSubtasksJson = objectMapper.writeValueAsString(taskSubtasks);
-
-            model.addAttribute("taskSubtasksJson", taskSubtasksJson);
-
-            return "Task/ganttChart";
-        }
-        return "redirect:/sessionTimeout";
-    }
-*/
-
 }

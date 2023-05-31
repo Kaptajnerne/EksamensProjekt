@@ -4,7 +4,7 @@ import com.example.eksamensprojekt_2sem.Model.Project;
 
 import java.util.List;
 
-public interface ProjectIRepository {
+public interface IProjectRepository {
 
     //Get projects from org
     public List<Project> getProjectsByID(int organization_id);
@@ -26,4 +26,7 @@ public interface ProjectIRepository {
 
     //Get project by task_id
     public int getProjectID(int task_id);
+
+    //Get time for all tasks and subtasks
+    Double getProjectCalculatedTime(int project_id);
 }

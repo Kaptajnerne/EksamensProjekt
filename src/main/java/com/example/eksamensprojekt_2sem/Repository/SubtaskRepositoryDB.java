@@ -2,7 +2,6 @@ package com.example.eksamensprojekt_2sem.Repository;
 
 import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class SubtaskRepositoryDB implements SubtaskIRepository {
+public class SubtaskRepositoryDB implements ISubtaskRepository {
 
     //Get subtasks from project_id
+    @Override
     public List<Subtask> getSubtasksByTaskID(int task_id) {
         List<Subtask> subtasks = new ArrayList<>();
         try {
@@ -42,6 +42,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
 
 
     //Create subtask to project
+    @Override
     public Subtask createSubtask(Subtask subtask, int task_id) {
         Subtask createdSubtask = null;
         try {
@@ -69,6 +70,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     }
 
     //Edit subtask
+    @Override
     public void editSubtask(Subtask subtask, int subtask_id, int task_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -92,6 +94,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     }
 
     //Get subtask from subtask_ and task_id
+    @Override
     public Subtask getSubtaskByIDs(int subtask_id, int task_id) {
         Subtask subtask = null;
 
@@ -119,6 +122,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     }
 
     //Delete subtask
+    @Override
     public void deleteSubtask(int subtask_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -132,6 +136,7 @@ public class SubtaskRepositoryDB implements SubtaskIRepository {
     }
 
     //Get subtask by id
+    @Override
     public Subtask getSubtaskByID(int subtask_id) {
         Subtask subtask = null;
         try {

@@ -4,7 +4,7 @@ import com.example.eksamensprojekt_2sem.Model.Subtask;
 
 import java.util.List;
 
-public interface SubtaskIRepository {
+public interface ISubtaskRepository {
 
     //Get subtask from task_id
     public List<Subtask> getSubtasksByTaskID(int task_id);

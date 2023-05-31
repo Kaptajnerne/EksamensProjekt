@@ -4,7 +4,6 @@ import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
 import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,10 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TaskRepositoryDB implements TaskIRepository {
+public class TaskRepositoryDB implements ITaskRepository {
 
 
     //Get Task by project_id
+    @Override
     public List<Task> getTaskByProID(int project_id) {
         List<Task> tasks = new ArrayList<>();
 
@@ -44,6 +44,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Create Task
+    @Override
     public void createTask(Task task, int project_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -69,6 +70,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Edit task
+    @Override
     public void editTask(Task task, int task_id, int project_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -93,6 +95,7 @@ public class TaskRepositoryDB implements TaskIRepository {
 
 
     //Get project from user_id and user_id
+    @Override
     public Task getTaskByIDs(int task_id, int project_id) {
         Task task = null;
         try {
@@ -119,6 +122,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Delete Task
+    @Override
     public void deleteTask(int task_id) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -136,6 +140,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Get Task from task_id
+    @Override
     public Task getTaskbyTaskId(int task_id) {
         Task task = null;
         try {
@@ -162,6 +167,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Get project_id by task_id
+    @Override
     public int getProIDbyTaskID(int task_id) {
         int project_id = 0;
         try {
@@ -180,6 +186,7 @@ public class TaskRepositoryDB implements TaskIRepository {
     }
 
     //Calculated time for task and subtask
+    @Override
     public Double getTaskCalculatedTime(int task_id) {
         double estimatedTime = 0;
         try {
@@ -202,6 +209,7 @@ public class TaskRepositoryDB implements TaskIRepository {
 
 
     //Get task and subtask from project
+    @Override
     public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id) {
         List<TaskSubtaskDTO> taskSubtaskList = new ArrayList<>();
         int currentTaskId = -1;

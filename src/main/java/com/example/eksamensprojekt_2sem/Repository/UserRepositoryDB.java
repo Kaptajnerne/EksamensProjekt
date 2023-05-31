@@ -1,17 +1,16 @@
 package com.example.eksamensprojekt_2sem.Repository;
 
-import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.User;
 import com.example.eksamensprojekt_2sem.Util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
 @Repository
-public class UserRepositoryDB implements UserIRepository {
+public class UserRepositoryDB implements IUserRepository {
 
-    //Sign in with user
+    //Sign in with user'
+    @Override
     public User signIn(String username, String password) {
         User user = null;
 
@@ -34,6 +33,7 @@ public class UserRepositoryDB implements UserIRepository {
     }
 
     //Sign up user
+    @Override
     public void signUp(User user) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -54,6 +54,7 @@ public class UserRepositoryDB implements UserIRepository {
     }
 
     //edit user
+    @Override
     public void editUser(User user, int user_id) {
         try {
             Connection conn = ConnectionManager.getConnection();
@@ -73,6 +74,7 @@ public class UserRepositoryDB implements UserIRepository {
 
 
     //get user from id
+    @Override
     public User getUserFromId(int user_id) {
         try {
             Connection conn = ConnectionManager.getConnection();
@@ -95,6 +97,7 @@ public class UserRepositoryDB implements UserIRepository {
 
 
     //Get user id from project id
+    @Override
     public int getUserID (int project_id){
         int user_id = 0;
         try {
@@ -111,27 +114,4 @@ public class UserRepositoryDB implements UserIRepository {
             throw new RuntimeException(e);
         }
     }
-
-    //edit deadline
-    /*public void editDeadline(Project project, int project_id, int user_id) {
-        try {
-            Connection con = ConnectionManager.getConnection(db_url, uid, pwd);
-            String SQL = "UPDATE project SET project_name = ?, project_description = ?, start_date = ?, end_date = ? WHERE project_id = ? AND user_id = ?";
-            try (PreparedStatement pstmt = con.prepareStatement(SQL)) {
-                pstmt.setString(1, project.getProject_name());
-                pstmt.setString(2, project.getProject_description());
-                pstmt.setObject(3, Date.valueOf(project.getStart_date()));
-                pstmt.setObject(4, Date.valueOf(project.getEnd_date()));
-                pstmt.setInt(5, project_id);
-                pstmt.setInt(6, user_id);
-
-                pstmt.executeUpdate();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
 }
