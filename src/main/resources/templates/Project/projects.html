@@ -34,10 +34,11 @@
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
                 <th scope="col">Projects Estimated Time</th>
-                <th scope="col">Edit Project</th>
-                <th scope="col">Delete Project</th>
                 <th scope="col">View Tasks</th>
                 <th scope="col">Show Project</th>
+                <th scope="col">Edit Project</th>
+                <th scope="col">Delete Project</th>
+
             </tr>
             </thead>
             <tbody>
@@ -49,6 +50,18 @@
                 <td th:text="${project.projectCalculatedTime}"/>
 
                 <td>
+                    <a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
+                        <button type="button" class="btn">View Tasks</button>
+                    </a>
+                </td>
+
+                <td>
+                    <a th:href="@{/project/{project_id}(project_id=${project.project_id})}">
+                        <button type="button" class="btn">Show Project</button>
+                    </a>
+                </td>
+
+                <td>
                     <a th:href="@{/projects/{user_id}/edit/{project_id}(user_id=${user_id}, project_id=${project.project_id})}">
                         <button type="button" class="btn">Edit Project</button>
                     </a>
@@ -58,16 +71,7 @@
                         <button type="button" class="btn">Delete Project</button>
                     </a>
                 </td>
-                <td>
-                    <a th:href="@{/tasks/{project_id}(project_id=${project.project_id})}">
-                        <button type="button" class="btn">View Tasks</button>
-                    </a>
-                </td>
-                <td>
-                    <a th:href="@{/project/{project_id}(project_id=${project.project_id})}">
-                        <button type="button" class="btn">Show Project</button>
-                    </a>
-                </td>
+
             </tr>
             </tbody>
         </table>
