@@ -208,7 +208,6 @@ public class TaskRepositoryDB implements ITaskRepository {
     }
 
 
-    //Get task and subtask from project
     @Override
     public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id) {
         List<TaskSubtaskDTO> taskSubtaskList = new ArrayList<>();
@@ -231,11 +230,11 @@ public class TaskRepositoryDB implements ITaskRepository {
             while (rs.next()) {
                 int task_id = rs.getInt("task_id");
                 if (task_id != currentTaskId) {
-                    //Create a new TaskSubtaskDTO of the task
+                    // Create a new TaskSubtaskDTO of the task
                     String task_name = rs.getString("task_name");
                     Double task_hours = rs.getDouble("task_hours");
-                    LocalDate task_start_date = rs.getDate("task_start_date").toLocalDate();
-                    LocalDate task_end_date = rs.getDate("task_end_date").toLocalDate();
+                    LocalDate task_start_date = rs.getDate("task_start_date") != null ? rs.getDate("task_start_date").toLocalDate() : null;
+                    LocalDate task_end_date = rs.getDate("task_end_date") != null ? rs.getDate("task_end_date").toLocalDate() : null;
                     int task_status = rs.getInt("task_status");
 
                     currentTask = new TaskSubtaskDTO(task_id, task_name, task_hours, task_start_date, task_end_date, task_status, project_id, new ArrayList<>());
@@ -243,13 +242,13 @@ public class TaskRepositoryDB implements ITaskRepository {
                     currentTaskId = task_id;
                 }
 
-                //Create subtask and add to subtask list
+                // Create subtask and add to subtask list
                 int subtask_id = rs.getInt("subtask_id");
                 if (subtask_id >= 0) {
                     String subtask_name = rs.getString("subtask_name");
                     Double subtask_hours = rs.getDouble("subtask_hours");
-                    LocalDate subtask_start_date = rs.getDate("subtask_start_date").toLocalDate();
-                    LocalDate subtask_end_date = rs.getDate("subtask_end_date").toLocalDate();
+                    LocalDate subtask_start_date = rs.getDate("subtask_start_date") != null ? rs.getDate("subtask_start_date").toLocalDate() : null;
+                    LocalDate subtask_end_date = rs.getDate("subtask_end_date") != null ? rs.getDate("subtask_end_date").toLocalDate() : null;
                     int subtask_status = rs.getInt("subtask_status");
                     int subtask_task_id = rs.getInt("subtask_task_id");
 
@@ -264,4 +263,5 @@ public class TaskRepositoryDB implements ITaskRepository {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -62,7 +62,7 @@ public class UserController {
             User userLogin = userService.signIn(user.getUsername(), user.getPassword());
             if (userLogin != null) {
                 session.setAttribute("user", userLogin);
-                session.setMaxInactiveInterval(120);
+                session.setMaxInactiveInterval(300);
 
                 return "redirect:/home/" + userLogin.getUser_id();
             } else {
