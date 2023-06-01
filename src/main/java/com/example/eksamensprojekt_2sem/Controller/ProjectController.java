@@ -38,19 +38,23 @@ public class ProjectController {
        if(isSignedIn(session)) {
 
            List<Project> projects = projectService.getProjectsByID(user_id);
-           double projectCalculatedTime = 0;
 
            for (Project project : projects) {
                int project_id = project.getProject_id();
                List<Task> tasks = taskService.getTaskByProID(project_id);
+
+               double projectCalculatedTime = 0;
+
                for (Task task : tasks) {
                    double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
                    task.setCalculatedTime(taskCalculatedTime);
                    projectCalculatedTime += taskCalculatedTime;
                }
+
                project.setTasks(tasks);
                project.setProjectCalculatedTime(projectCalculatedTime);
            }
+
            model.addAttribute("projects", projects);
            return "Project/projects";
        }
