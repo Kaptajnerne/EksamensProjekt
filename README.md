@@ -12,7 +12,7 @@
 <p align="center"> 
 ProTool is a project calculation and management tool. With its user-friendly interface, users can organize projects, tasks, and subtasks. The tool calculates the progress of a given project, providing valuable insights into task completion and overall project advancement, making project management efficient and easy.
 
-**<div align="center">[ProTool](https://eksamens-projekt-alpha-solutions.onrender.com)</div>**
+**<div align="center">[Try ProTool](https://eksamens-projekt-alpha-solutions.onrender.com)</div>**
 </p>
 
 
