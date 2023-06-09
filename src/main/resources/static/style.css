@@ -64,11 +64,11 @@ main.table {
     width: 95%;
     max-height: calc(90% - .8rem);
     background-color: #fffb;
-
     margin: .8rem auto;
     border-radius: .6rem;
     overflow: auto;
 }
+
 .table_body::-webkit-scrollbar {
     width: .5rem;
     height: .5rem;

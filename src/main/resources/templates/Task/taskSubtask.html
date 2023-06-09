@@ -15,20 +15,17 @@
 </header>
 
 <main class="table">
-    <section class="table_header">
-    </section>
-
     <section class="table_body">
         <table>
             <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Hours</th>
-                <th scope="col">EST. time</th>
-                <th scope="col">Start date</th>
-                <th scope="col">End date</th>
-                <th scope="col">Status</th>
-            </tr>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Hours</th>
+                    <th scope="col">EST. time</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                    <th scope="col">Status</th>
+                </tr>
             </thead>
             <tbody>
             <th:block th:each="task, taskIndex : ${taskSubtask}">
