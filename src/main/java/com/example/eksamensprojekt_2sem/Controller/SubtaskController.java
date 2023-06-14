@@ -97,25 +97,25 @@ public class SubtaskController {
     public String editSubtask(@PathVariable int subtask_id, @PathVariable int task_id, @ModelAttribute Subtask updatedSubtask, HttpSession session) {
 
         if(isSignedIn(session)) {
-            Subtask existingSubtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
+            Subtask subtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
 
-            existingSubtask.setSubtask_name(updatedSubtask.getSubtask_name());
-            existingSubtask.setHours(updatedSubtask.getHours());
-            existingSubtask.setStatus(updatedSubtask.getStatus());
+            subtask.setSubtask_name(updatedSubtask.getSubtask_name());
+            subtask.setHours(updatedSubtask.getHours());
+            subtask.setStatus(updatedSubtask.getStatus());
 
             // Check and update start_date if not null
             LocalDate updatedStartDate = updatedSubtask.getStart_date();
             if (updatedStartDate != null) {
-                existingSubtask.setStart_date(updatedStartDate);
+                subtask.setStart_date(updatedStartDate);
             }
 
             // Check and update end_date if not null
             LocalDate updatedEndDate = updatedSubtask.getEnd_date();
             if (updatedEndDate != null) {
-                existingSubtask.setEnd_date(updatedEndDate);
+                subtask.setEnd_date(updatedEndDate);
             }
 
-            subtaskService.editSubtask(existingSubtask, subtask_id, task_id);
+            subtaskService.editSubtask(subtask, subtask_id, task_id);
             return "redirect:/subtasks/" + task_id;
         }
         return "redirect:/sessionTimeout";

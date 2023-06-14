@@ -113,25 +113,25 @@ public class TaskController {
     @PostMapping(path = "/task/{project_id}/edit/{task_id}")
     public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task updatedTask, HttpSession session) {
         if (isSignedIn(session)) {
-            Task existingTask = taskService.getTaskByIDs(task_id, project_id);
+            Task task = taskService.getTaskByIDs(task_id, project_id);
 
-            existingTask.setTask_name(updatedTask.getTask_name());
-            existingTask.setHours(updatedTask.getHours());
-            existingTask.setStatus(updatedTask.getStatus());
+            task.setTask_name(updatedTask.getTask_name());
+            task.setHours(updatedTask.getHours());
+            task.setStatus(updatedTask.getStatus());
 
             // Check and update start_date if not null
             LocalDate updatedStartDate = updatedTask.getStart_date();
             if (updatedStartDate != null) {
-                existingTask.setStart_date(updatedStartDate);
+                task.setStart_date(updatedStartDate);
             }
 
             // Check and update end_date if not null
             LocalDate updatedEndDate = updatedTask.getEnd_date();
             if (updatedEndDate != null) {
-                existingTask.setEnd_date(updatedEndDate);
+                task.setEnd_date(updatedEndDate);
             }
 
-            taskService.editTask(existingTask, task_id, project_id);
+            taskService.editTask(task, task_id, project_id);
             return "redirect:/tasks/" + project_id;
         }
         return "redirect:/sessionTimeout";
