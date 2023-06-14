@@ -16,8 +16,8 @@ CREATE TABLE project (
 project_id INT NOT NULL AUTO_INCREMENT,
 project_name VARCHAR(255) NOT NULL,
 project_description VARCHAR(1000),
-start_date DATE,
-end_date DATE,
+start_date DATE CHECK (start_date >= '1900-01-01' AND start_date <= '3000-12-31'),
+end_date DATE CHECK (end_date >= '1900-01-01' AND end_date <= '3000-12-31'),
 user_id INT NOT NULL,
 PRIMARY KEY (project_id),
 FOREIGN KEY (user_id) REFERENCES user (user_id)

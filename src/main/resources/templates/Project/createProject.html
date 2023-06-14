@@ -7,7 +7,6 @@
 </head>
 <body>
 
-<div align="center">
 
     <h1>Create Project</h1>
 
@@ -28,12 +27,12 @@
 
         <div>
             <label class="createProjectForm">Start Date</label>
-            <input type="date" th:field="*{start_date}">
+            <input type="date" th:field="*{start_date}" min="1900-01-01" max="3000-12-31">
         </div>
 
         <div>
             <label class="createProjectForm">End Date</label>
-            <input type="date" th:field="*{end_date}">
+            <input type="date" th:field="*{end_date}" min="1900-01-01" max="3000-12-31">
         </div>
 
         <br>
@@ -49,7 +48,6 @@
 
     </form>
 
-</div>
 
 </body>
 </html>
