@@ -19,7 +19,7 @@
 
   <div>
     <label class="createSubtaskForm">Set estimated hours:</label>
-    <input type="text" th:field="*{hours}" required>
+    <input type="text" th:field="*{hours}" placeholder="hours" min="0" max="9999" pattern="[0-9]{1,4}" title="Hours must be between 0 and 1000" required>
   </div>
 
   <div>
