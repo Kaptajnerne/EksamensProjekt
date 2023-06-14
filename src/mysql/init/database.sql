@@ -10,7 +10,9 @@ CREATE TABLE user
 (user_id INT NOT NULL auto_increment,
  username VARCHAR(255) NOT NULL,
  password VARCHAR(255),
- PRIMARY KEY(user_id));
+ PRIMARY KEY(user_id),
+ UNIQUE (username)
+);
 
 CREATE TABLE project (
 project_id INT NOT NULL AUTO_INCREMENT,
@@ -27,8 +29,8 @@ CREATE TABLE task (
 task_id INT NOT NULL AUTO_INCREMENT,
 task_name VARCHAR(255),
 hours DOUBLE CHECK (hours >= 0 AND hours <= 9999),
-start_date DATE,
-end_date DATE,
+start_date DATE CHECK (start_date >= '1900-01-01' AND start_date <= '3000-12-31'),
+end_date DATE CHECK (end_date >= '1900-01-01' AND end_date <= '3000-12-31'),
 status INT,
 project_id INT NOT NULL,
 PRIMARY KEY (task_id),
@@ -39,8 +41,8 @@ CREATE TABLE subtask (
 subtask_id INT NOT NULL AUTO_INCREMENT,
 subtask_name VARCHAR(255),
 hours DOUBLE CHECK (hours >= 0 AND hours <= 9999),
-start_date DATE,
-end_date DATE,
+start_date DATE CHECK (start_date >= '1900-01-01' AND start_date <= '3000-12-31'),
+end_date DATE CHECK (end_date >= '1900-01-01' AND end_date <= '3000-12-31'),
 status INT,
 task_id INT NOT NULL,
 PRIMARY KEY (subtask_id),

@@ -53,6 +53,23 @@ public class UserRepositoryDB implements IUserRepository {
         }
     }
 
+    //Is username taken
+    @Override
+    public boolean isUsernameTaken(String username) {
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String SQL = "SELECT username FROM user WHERE username = ?";
+            PreparedStatement pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            // Returns true if the username is found, and false if it doesn't
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //edit user
     @Override
     public void editUser(User user, int user_id) {
@@ -94,7 +111,6 @@ public class UserRepositoryDB implements IUserRepository {
             return null;
         }
     }
-
 
     //Get user id from project id
     @Override

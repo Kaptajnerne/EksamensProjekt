@@ -2,6 +2,7 @@ package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.User;
 import com.example.eksamensprojekt_2sem.Service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -83,9 +84,17 @@ public class UserController {
         return "User/signup";
     }
 
+
     //Sign up
     @PostMapping(path = "/signup")
-    public String signup(@ModelAttribute("organization") User user) {
+    public String signup(@ModelAttribute("organization") User user, Model model) {
+        boolean isUsernameTaken = userService.isUsernameTaken(user.getUsername());
+
+        if (isUsernameTaken) {
+            model.addAttribute("usernameTaken", true);
+            return "User/signup";
+        }
+
         userService.signUp(user);
         return "redirect:/signin";
     }

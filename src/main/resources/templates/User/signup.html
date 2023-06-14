@@ -7,42 +7,39 @@
 </head>
 <body>
 
-
-<div align="center">
-
-  <h1>Sign up User</h1>
-
-  <br>
-
-  <form th:action="@{/signup}" method="post" th:object="${user}">
-
-    <div class="signupForm">
-        <label class="col-sm-2 col-form-label"> Username:</label>
-        <input type="text" th:field="*{username}" placeholder="User name" required>
-    </div>
-    <div class="signupForm">
-        <label class="col-sm-2 col-form-label"> Password:</label>
-        <input type="text" th:field="*{password}" placeholder="Password" required>
-    </div>
+    <h1>Sign up User</h1>
 
     <br>
 
-    <div>
-      <input type="submit" value="Sign up" class="btn"/>
-      <input type="reset" value="Reset" class="btn"/>
-    </div>
+    <form th:action="@{/signup}" method="post" th:object="${user}">
 
-    <br>
+        <div class="signupForm">
+            <label class="col-sm-2 col-form-label">Username:</label>
+            <input type="text" th:field="*{username}" placeholder="User name" required>
+        </div>
 
-      <a th:href="@{/signin}">Already got an account?</a>
+        <div class="signupForm">
+            <label class="col-sm-2 col-form-label"> Password:</label>
+            <input type="password" th:field="*{password}" placeholder="Password" required>
+        </div>
 
-  </form>
+        <br>
 
-    <a th:href="@{/}">
-        <button type="button" class="btn btn-secondary btn-lg">Go Back</button>
-    </a>
+        <div>
+            <input type="submit" value="Sign up" class="btn"/>
+            <input type="reset" value="Reset" class="btn"/>
+        </div>
 
-</div>
+        <br>
+
+        <a th:href="@{/signin}">Already got an account?</a>
+
+        <a th:href="@{/}">
+            <button type="button" class="btn btn-secondary btn-lg">Go Back</button>
+        </a>
+    </form>
+
+
 
 </body>
 </html>

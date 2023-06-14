@@ -23,6 +23,11 @@ public class UserService {
         userRepositoryDB.signUp(user);
     }
 
+    //Is username taken
+    public boolean isUsernameTaken(String username) {
+        return userRepositoryDB.isUsernameTaken(username);
+    }
+
     //Get user_id from project_id
     public int getUserID(int project_id) {
         return userRepositoryDB.getUserID(project_id);
