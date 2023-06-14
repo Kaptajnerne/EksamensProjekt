@@ -9,9 +9,6 @@
 <form method="post" th:action="@{/signin}" th:object="${user}">
     <header>
         <div class="logo"></div>
-        <nav class="navigation">
-            <button class="btnlogin-popup">Login</button>
-        </nav>
     </header>
     <div class="wrapper">
 <span class="icon-close">
@@ -36,6 +33,11 @@
                 <div class="login-register">
                     <p>Don't have an account? <a href="/signup"class="register-link">Register</a> </p>
                 </div>
+
+                <div id="error-message" th:if="${loginFailed}" class="error-message">
+                    Wrong login, please try again.
+                </div>
+
             </form>
         </div>
     </div>

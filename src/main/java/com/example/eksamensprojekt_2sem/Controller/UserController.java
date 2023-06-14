@@ -57,7 +57,7 @@ public class UserController {
 
     //Sign in with user
     @PostMapping(path = "/signin")
-    public String signIn(HttpSession session, @ModelAttribute("user") User user) {
+    public String signIn(HttpSession session, @ModelAttribute("user") User user, Model model) {
         try {
             User userLogin = userService.signIn(user.getUsername(), user.getPassword());
             if (userLogin != null) {
@@ -66,6 +66,7 @@ public class UserController {
 
                 return "redirect:/home/" + userLogin.getUser_id();
             } else {
+                model.addAttribute("loginFailed", true);
                 return "User/signin";
             }
         } catch (Exception e) {
