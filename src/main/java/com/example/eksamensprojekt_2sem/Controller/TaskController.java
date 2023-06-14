@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
+import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
@@ -69,9 +70,12 @@ public class TaskController {
 
         if (isSignedIn(session)) {
             Task task = new Task();
+            Project project = projectService.getProjectByProjectID(project_id);
 
             model.addAttribute("task", task);
             model.addAttribute("project_id", project_id);
+            model.addAttribute("project_start_date", project.getStart_date());
+            model.addAttribute("project_end_date", project.getEnd_date());
             return "Task/createTask";
         }
         return "redirect:/sessionTimeout";
@@ -93,10 +97,13 @@ public class TaskController {
     public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id, HttpSession session) {
         if (isSignedIn(session)) {
             Task task = taskService.getTaskByIDs(task_id, project_id);
+            Project project = projectService.getProjectByProjectID(project_id);
 
             model.addAttribute("task", task);
             model.addAttribute("task_id", task_id);
             model.addAttribute("project_id", project_id);
+            model.addAttribute("project_start_date", project.getStart_date());
+            model.addAttribute("project_end_date", project.getEnd_date());
             return "Task/editTask";
         }
         return "redirect:/sessionTimeout";

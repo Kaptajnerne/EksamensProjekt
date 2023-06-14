@@ -23,12 +23,12 @@
 
         <div>
             <label class="createTaskForm">Start Date</label>
-            <input type="date" th:field="*{start_date}" required>
+            <input type="date" th:field="*{start_date}" th:min="${project_start_date}" th:max="${project_end_date}" required>
         </div>
 
         <div>
             <label class="createTaskForm">End Date</label>
-            <input type="date" th:field="*{end_date}" required>
+            <input type="date" th:field="*{end_date}" th:min="${project_start_date}" th:max="${project_end_date}" required>
         </div>
 
         <div>

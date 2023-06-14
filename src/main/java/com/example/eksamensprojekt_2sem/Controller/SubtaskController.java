@@ -1,8 +1,10 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.Model.Subtask;
+import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
 import com.example.eksamensprojekt_2sem.Service.SubtaskService;
+import com.example.eksamensprojekt_2sem.Service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +21,12 @@ public class SubtaskController {
 
     private SubtaskService subtaskService;
     private ProjectService projectService;
+    private TaskService taskService;
 
-    public SubtaskController(SubtaskService subtaskService, ProjectService projectService) {
+    public SubtaskController(SubtaskService subtaskService, ProjectService projectService, TaskService taskService) {
         this.subtaskService = subtaskService;
         this.projectService = projectService;
+        this.taskService = taskService;
     }
 
     public boolean isSignedIn(HttpSession session) {
@@ -36,6 +40,7 @@ public class SubtaskController {
         if (isSignedIn(session)) {
             List<Subtask> subtasks = subtaskService.getSubtasksByTaskID(task_id);
             int project_id = projectService.getProjectID(task_id);
+
             model.addAttribute("subtasks", subtasks);
             model.addAttribute("project_id", project_id);
             return "Subtask/subtasks";
@@ -49,8 +54,12 @@ public class SubtaskController {
     public String showCreateSubtask(Model model, @PathVariable("task_id") int task_id, HttpSession session) {
         if (isSignedIn(session)) {
             Subtask subtask = new Subtask();
+            Task task = taskService.getTaskById(task_id);
+
             model.addAttribute("subtask", subtask);
             model.addAttribute("task_id", task_id);
+            model.addAttribute("task_start_date", task.getStart_date());
+            model.addAttribute("task_end_date", task.getEnd_date());
             return "Subtask/createSubtask";
         }
         return "redirect:/sessionTimeout";
@@ -71,9 +80,13 @@ public class SubtaskController {
     public String showEditSubtask(Model model, @PathVariable int subtask_id, @PathVariable int task_id, HttpSession session) {
         if (isSignedIn(session)) {
             Subtask subtask = subtaskService.getSubtaskbyIDs(subtask_id, task_id);
+            Task task = taskService.getTaskById(task_id);
+
             model.addAttribute("subtask", subtask);
             model.addAttribute("subtask_id", subtask_id);
             model.addAttribute("task_id", task_id);
+            model.addAttribute("task_start_date", task.getStart_date());
+            model.addAttribute("task_end_date", task.getEnd_date());
             return "Subtask/editSubtask";
         }
         return "redirect:/sessionTimeout";
