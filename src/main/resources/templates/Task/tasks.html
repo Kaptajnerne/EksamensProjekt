@@ -13,7 +13,9 @@
         <a th:href="@{/logout}" button class="btnlogin-popup">Sign out</a>
     </nav>
 </header>
+
 <h1>Tasks</h1>
+
 <div style="position: fixed; top: 15%; left: 80%; transform: translate(-50%, -50%);">
     <a th:href="@{/task/create/{project_id}(project_id=${project_id})}">
         <button type="button" class="btn">Create Task</button>
