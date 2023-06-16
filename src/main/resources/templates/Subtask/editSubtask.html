@@ -18,7 +18,7 @@
 
 
     <label for="hours" class="form-label">Hours:</label>
-    <input id="hours" type="text" th:name="hours" th:value="${subtask.hours}" placeholder="hours" min="0" max="9999" pattern="[0-9]{1,4}" title="Hours must be between 0 and 1000">
+    <input id="hours" type="text" th:name="hours" th:value="${subtask.hours}" placeholder="hours" min="0" max="9999" pattern="[0-9]{1,4}" title="Hours must be between 0 and 9999">
 
     <label for="subtask_start_date" class="form-label">Start date</label>
     <input id="subtask_start_date" type="date" th:field="${subtask.start_date}" th:min="${task_start_date}" th:max="${task_end_date}" >
