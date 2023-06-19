@@ -16,7 +16,7 @@ ProTool is a project calculation and management tool. With its user-friendly int
 </p>
 
 
-## Technologies
+## Technologies 
 - Java
 - MySQL
 - Docker
