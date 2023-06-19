@@ -46,7 +46,7 @@ public class ProjectController {
                double projectCalculatedTime = 0;
 
                for (Task task : tasks) {
-                   double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
+                   double taskCalculatedTime = taskService.getProjectTimeByTaskID(task.getTask_id());
                    task.setCalculatedTime(taskCalculatedTime);
                    projectCalculatedTime += taskCalculatedTime;
                }

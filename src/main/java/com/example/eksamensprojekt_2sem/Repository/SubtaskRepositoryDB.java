@@ -63,8 +63,8 @@ public class SubtaskRepositoryDB implements ISubtaskRepository {
                 int subtask_id = rs.getInt(1);
                 subtask.setSubtask_id(subtask_id);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return createdSubtask;
     }

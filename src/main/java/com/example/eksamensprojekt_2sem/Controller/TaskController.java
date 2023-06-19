@@ -49,9 +49,9 @@ public class TaskController {
             int user_id = userService.getUserID(project_id);
 
             //Calculated time for task + subtask
-            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+            double projectCalculatedTime = projectService.getProjectTimeByProjectID(project_id);
             for (Task task : tasks) {
-                double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
+                double taskCalculatedTime = taskService.getProjectTimeByTaskID(task.getTask_id());
                 task.setCalculatedTime(taskCalculatedTime);
             }
 
@@ -170,13 +170,13 @@ public class TaskController {
 
         if (isSignedIn(session)) {
             List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+            double projectCalculatedTime = projectService.getProjectTimeByProjectID(project_id);
 
             int user_id = userService.getUserID(project_id);
 
-            double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
+            double taskCalculatedTime1 = projectService.getProjectTimeByProjectID(project_id);
             for (TaskSubtaskDTO task : taskSubtasks) {
-                double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
+                double taskCalculatedTime2 = taskService.getProjectTimeByTaskID(task.getId());
                 task.setCalculatedTime(taskCalculatedTime2);
             }
 

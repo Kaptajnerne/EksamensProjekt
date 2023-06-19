@@ -198,23 +198,25 @@ public class ProjectRepositoryDB implements IProjectRepository {
 
     //Get time for all tasks and subtasks
     @Override
-    public Double getProjectCalculatedTime(int project_id) {
+    public Double getProjectTimeByProjectID(int project_id) {
         double estimatedTime = 0;
         try {
             Connection con = ConnectionManager.getConnection();
-            String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
-                    "LEFT JOIN subtask AS s USING(task_id)\n" +
-                    "WHERE t.project_id = ?;";
+            String SQL = "SELECT COALESCE(t.taskHours, 0) + COALESCE(SUM(s.hours), 0) AS totalTime " +
+                    "FROM (SELECT task_id, COALESCE(SUM(hours), 0) AS taskHours FROM task WHERE project_id = ? GROUP BY task_id) AS t " +
+                    "LEFT JOIN subtask AS s ON t.task_id = s.task_id " +
+                    "GROUP BY t.task_id;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, project_id);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                estimatedTime = rs.getDouble("totalTime");
+            while (rs.next()) {
+                estimatedTime += rs.getDouble("totalTime");
             }
             return estimatedTime;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 }

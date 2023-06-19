@@ -52,8 +52,8 @@ public class ProjectService {
     }
 
     //Projects calcualted estimated time
-    public Double getProjectCalculatedTime (int project_id) {
-        return projectRepositoryDB.getProjectCalculatedTime(project_id);
+    public Double getProjectTimeByProjectID (int project_id) {
+        return projectRepositoryDB.getProjectTimeByProjectID(project_id);
     }
 
 
