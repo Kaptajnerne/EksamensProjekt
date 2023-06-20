@@ -187,11 +187,12 @@ public class TaskRepositoryDB implements ITaskRepository {
 
     //Calculated time for task and subtask
     @Override
-    public Double getTaskCalculatedTime(int task_id) {
+    public Double getProjectTimeByTaskID(int task_id) {
         double estimatedTime = 0;
         try {
             Connection con = ConnectionManager.getConnection();
-            String SQL = "SELECT SUM(COALESCE(t.hours, 0) + COALESCE(s.hours, 0)) AS totalTime FROM task AS t\n" +
+            String SQL = "SELECT COALESCE(t.hours, 0) + COALESCE(SUM(s.hours), 0) AS totalTime " +
+                    "FROM task AS t\n" +
                     "LEFT JOIN subtask AS s USING(task_id)\n" +
                     "WHERE t.task_id = ?;";
             PreparedStatement pstmt = con.prepareStatement(SQL);
@@ -206,6 +207,7 @@ public class TaskRepositoryDB implements ITaskRepository {
             throw new RuntimeException(e);
         }
     }
+
 
 
     @Override

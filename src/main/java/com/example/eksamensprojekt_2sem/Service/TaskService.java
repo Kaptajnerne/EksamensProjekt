@@ -52,8 +52,8 @@ public class TaskService {
     }
 
     //Calculated time for task and subtask
-    public Double getTaskCalculatedTime (int task_id) {
-        return taskRepositoryDB.getTaskCalculatedTime(task_id);
+    public Double getProjectTimeByTaskID (int task_id) {
+        return taskRepositoryDB.getProjectTimeByTaskID(task_id);
     }
 
     //Get task and subtask by project_id

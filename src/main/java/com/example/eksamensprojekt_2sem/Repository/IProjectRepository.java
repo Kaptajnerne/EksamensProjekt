@@ -28,5 +28,5 @@ public interface IProjectRepository {
     public int getProjectID(int task_id);
 
     //Get time for all tasks and subtasks
-    Double getProjectCalculatedTime(int project_id);
+    Double getProjectTimeByProjectID(int project_id);
 }

@@ -10,6 +10,9 @@ public interface IUserRepository {
     //Sign up
     public void signUp(User user);
 
+    //Is username taken
+    public boolean isUsernameTaken(String username);
+
     //Edit user
     public void editUser(User user, int user_id);
 

@@ -29,7 +29,7 @@ public interface ITaskRepository {
     public int getProIDbyTaskID(int task_id);
 
     //Get calculated time for task and subtask
-    public Double getTaskCalculatedTime(int task_id);
+    public Double getProjectTimeByTaskID(int task_id);
 
     //Get task and subtask from project
     public List<TaskSubtaskDTO> getTaskSubtasksByProID(int project_id);

@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
+import com.example.eksamensprojekt_2sem.Model.Project;
 import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
@@ -48,9 +49,9 @@ public class TaskController {
             int user_id = userService.getUserID(project_id);
 
             //Calculated time for task + subtask
-            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+            double projectCalculatedTime = projectService.getProjectTimeByProjectID(project_id);
             for (Task task : tasks) {
-                double taskCalculatedTime = taskService.getTaskCalculatedTime(task.getTask_id());
+                double taskCalculatedTime = taskService.getProjectTimeByTaskID(task.getTask_id());
                 task.setCalculatedTime(taskCalculatedTime);
             }
 
@@ -69,9 +70,12 @@ public class TaskController {
 
         if (isSignedIn(session)) {
             Task task = new Task();
+            Project project = projectService.getProjectByProjectID(project_id);
 
             model.addAttribute("task", task);
             model.addAttribute("project_id", project_id);
+            model.addAttribute("project_start_date", project.getStart_date());
+            model.addAttribute("project_end_date", project.getEnd_date());
             return "Task/createTask";
         }
         return "redirect:/sessionTimeout";
@@ -93,10 +97,13 @@ public class TaskController {
     public String showEditTask(Model model , @PathVariable int task_id, @PathVariable int project_id, HttpSession session) {
         if (isSignedIn(session)) {
             Task task = taskService.getTaskByIDs(task_id, project_id);
+            Project project = projectService.getProjectByProjectID(project_id);
 
             model.addAttribute("task", task);
             model.addAttribute("task_id", task_id);
             model.addAttribute("project_id", project_id);
+            model.addAttribute("project_start_date", project.getStart_date());
+            model.addAttribute("project_end_date", project.getEnd_date());
             return "Task/editTask";
         }
         return "redirect:/sessionTimeout";
@@ -106,25 +113,25 @@ public class TaskController {
     @PostMapping(path = "/task/{project_id}/edit/{task_id}")
     public String editTask(@PathVariable int task_id, @PathVariable int project_id, @ModelAttribute Task updatedTask, HttpSession session) {
         if (isSignedIn(session)) {
-            Task existingTask = taskService.getTaskByIDs(task_id, project_id);
+            Task task = taskService.getTaskByIDs(task_id, project_id);
 
-            existingTask.setTask_name(updatedTask.getTask_name());
-            existingTask.setHours(updatedTask.getHours());
-            existingTask.setStatus(updatedTask.getStatus());
+            task.setTask_name(updatedTask.getTask_name());
+            task.setHours(updatedTask.getHours());
+            task.setStatus(updatedTask.getStatus());
 
             // Check and update start_date if not null
             LocalDate updatedStartDate = updatedTask.getStart_date();
             if (updatedStartDate != null) {
-                existingTask.setStart_date(updatedStartDate);
+                task.setStart_date(updatedStartDate);
             }
 
             // Check and update end_date if not null
             LocalDate updatedEndDate = updatedTask.getEnd_date();
             if (updatedEndDate != null) {
-                existingTask.setEnd_date(updatedEndDate);
+                task.setEnd_date(updatedEndDate);
             }
 
-            taskService.editTask(existingTask, task_id, project_id);
+            taskService.editTask(task, task_id, project_id);
             return "redirect:/tasks/" + project_id;
         }
         return "redirect:/sessionTimeout";
@@ -163,13 +170,13 @@ public class TaskController {
 
         if (isSignedIn(session)) {
             List<TaskSubtaskDTO> taskSubtasks = taskService.getTaskSubtasksByProID(project_id);
-            double projectCalculatedTime = projectService.getProjectCalculatedTime(project_id);
+            double projectCalculatedTime = projectService.getProjectTimeByProjectID(project_id);
 
             int user_id = userService.getUserID(project_id);
 
-            double taskCalculatedTime1 = projectService.getProjectCalculatedTime(project_id);
+            double taskCalculatedTime1 = projectService.getProjectTimeByProjectID(project_id);
             for (TaskSubtaskDTO task : taskSubtasks) {
-                double taskCalculatedTime2 = taskService.getTaskCalculatedTime(task.getId());
+                double taskCalculatedTime2 = taskService.getProjectTimeByTaskID(task.getId());
                 task.setCalculatedTime(taskCalculatedTime2);
             }
 
