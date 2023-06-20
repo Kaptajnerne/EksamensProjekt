@@ -5,11 +5,19 @@ public class User {
     private int user_id;
     private String username;
     private String password;
+    private int role_id;
 
     public User(int user_id, String username, String password) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
+    }
+
+    public User(int user_id, String username, String password, int role_id) {
+        this.user_id = user_id;
+        this.username = username;
+        this.password = password;
+        this.role_id = role_id;
     }
 
     //Default constructor
@@ -38,5 +46,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
     }
 }

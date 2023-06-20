@@ -37,10 +37,11 @@ public class UserRepositoryDB implements IUserRepository {
     public void signUp(User user) {
         try {
             Connection con = ConnectionManager.getConnection();
-            String SQL = "INSERT INTO user (username ,password) VALUES (?, ?)";
+            String SQL = "INSERT INTO user (username ,password, role_id) VALUES (?, ?, ?)";
             PreparedStatement pstmt = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
+            pstmt.setInt(3, user.getRole_id());
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 

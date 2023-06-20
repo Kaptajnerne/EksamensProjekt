@@ -2,24 +2,17 @@ package com.example.eksamensprojekt_2sem.Controller;
 
 import com.example.eksamensprojekt_2sem.DTO.TaskSubtaskDTO;
 import com.example.eksamensprojekt_2sem.Model.Project;
-import com.example.eksamensprojekt_2sem.Model.Subtask;
 import com.example.eksamensprojekt_2sem.Model.Task;
 import com.example.eksamensprojekt_2sem.Service.ProjectService;
-import com.example.eksamensprojekt_2sem.Service.SubtaskService;
 import com.example.eksamensprojekt_2sem.Service.TaskService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.webservices.client.HttpWebServiceMessageSenderBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.util.List;

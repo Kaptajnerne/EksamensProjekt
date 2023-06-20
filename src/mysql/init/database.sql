@@ -8,16 +8,16 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS role;
 
 CREATE TABLE role (
-                      role_id INT NOT NULL AUTO_INCREMENT,
-                      role VARCHAR(45),
+                      role_id INT NOT NULL AUTO_INCREMENT NOT NULL,
+                      role VARCHAR(45) NOT NULL,
                       PRIMARY KEY (role_id)
 );
 
 CREATE TABLE user (
                       user_id INT NOT NULL AUTO_INCREMENT,
                       username VARCHAR(255) NOT NULL,
-                      password VARCHAR(255),
-                      role_id INT,
+                      password VARCHAR(255) NOT NULL,
+                      role_id INT NOT NULL,
                       PRIMARY KEY (user_id),
                       FOREIGN KEY (role_id) REFERENCES role (role_id),
                       UNIQUE (username)
@@ -36,11 +36,11 @@ CREATE TABLE project (
 
 CREATE TABLE task (
                       task_id INT NOT NULL AUTO_INCREMENT,
-                      task_name VARCHAR(255),
+                      task_name VARCHAR(255) NOT NULL,
                       hours DOUBLE CHECK (hours >= 0 AND hours <= 9999),
                       start_date DATE CHECK (start_date >= '2000-01-01' AND start_date <= '3000-12-31'),
                       end_date DATE CHECK (end_date >= '2000-01-01' AND end_date <= '3000-12-31'),
-                      status INT,
+                      status INT NOT NULL,
                       project_id INT NOT NULL,
                       PRIMARY KEY (task_id),
                       FOREIGN KEY (project_id) REFERENCES project (project_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -48,11 +48,11 @@ CREATE TABLE task (
 
 CREATE TABLE subtask (
                          subtask_id INT NOT NULL AUTO_INCREMENT,
-                         subtask_name VARCHAR(255),
+                         subtask_name VARCHAR(255) NOT NULL,
                          hours DOUBLE CHECK (hours >= 0 AND hours <= 9999),
                          start_date DATE CHECK (start_date >= '2000-01-01' AND start_date <= '3000-12-31'),
                          end_date DATE CHECK (end_date >= '2000-01-01' AND end_date <= '3000-12-31'),
-                         status INT,
+                         status INT NOT NULL,
                          task_id INT NOT NULL,
                          PRIMARY KEY (subtask_id),
                          FOREIGN KEY (task_id) REFERENCES task (task_id) ON DELETE CASCADE ON UPDATE CASCADE

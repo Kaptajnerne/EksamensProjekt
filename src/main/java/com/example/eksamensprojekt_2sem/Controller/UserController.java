@@ -1,20 +1,25 @@
 package com.example.eksamensprojekt_2sem.Controller;
 
+import com.example.eksamensprojekt_2sem.Model.Role;
 import com.example.eksamensprojekt_2sem.Model.User;
+import com.example.eksamensprojekt_2sem.Service.RoleService;
 import com.example.eksamensprojekt_2sem.Service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping(path = "")
 @org.springframework.stereotype.Controller
 public class UserController {
 
     private UserService userService;
+    private RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     public boolean isSignedIn(HttpSession session) {
@@ -79,15 +84,17 @@ public class UserController {
     //Sign up page
     @GetMapping(path = "/signup")
     public String showSignUp(Model model) {
+        List<Role> roles = roleService.getAllRoles();
         User user = new User();
+
         model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
         return "User/signup";
     }
 
-
     //Sign up
     @PostMapping(path = "/signup")
-    public String signup(@ModelAttribute("organization") User user, Model model) {
+    public String signup(@ModelAttribute("organization") User user, @RequestParam("role") int role_id, Model model) {
         boolean isUsernameTaken = userService.isUsernameTaken(user.getUsername());
 
         if (isUsernameTaken) {
@@ -95,6 +102,7 @@ public class UserController {
             return "User/signup";
         }
 
+        user.setRole_id(role_id);
         userService.signUp(user);
         return "redirect:/signin";
     }

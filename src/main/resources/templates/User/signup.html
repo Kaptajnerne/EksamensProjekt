@@ -19,8 +19,15 @@
         </div>
 
         <div class="signupForm">
-            <label class="col-sm-2 col-form-label"> Password:</label>
+            <label class="col-sm-2 col-form-label">Password:</label>
             <input type="password" th:field="*{password}" placeholder="Password" required>
+        </div>
+
+        <div class="signupForm">
+            <label class="col-sm-2 col-form-label">Role:</label>
+            <select name="role" class="form-control">
+                <option th:each="role : ${roles}" th:value="${role.role_id}" th:text="${role.role_name}"></option>
+            </select>
         </div>
 
         <br>
