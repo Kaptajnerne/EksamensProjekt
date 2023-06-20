@@ -77,7 +77,7 @@ public class ProjectController {
     }
 
     //Create project
-    @PostMapping(path = "projects/create/{user_id}")
+    @PostMapping(path = "projects/create/{user_id}")            //localhost//8080:/projects/create/1
     public String createProject(@ModelAttribute("project") Project project, @PathVariable int user_id) {
         projectService.createProject(project, user_id);
         return "redirect:/projects/" + user_id;
